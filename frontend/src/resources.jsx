@@ -1,9 +1,11 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route  } from 'react-router-dom'
-export default function resources(branch,semsester) {
+import Navbar from './pages/Navbar'
+
+export default function Resources() {
   return (
-    <div>
-      
-    </div>
+    <>
+      <Navbar/>
+    </>
   )
 }

@@ -1,35 +1,13 @@
 import React from "react";
 import "./Home.css";
 import character from "./../assets/character.png"
+import Navbar from "./Navbar";
 
 export function Home() {
     return (
         <>
             <div class="home">
-                <header>
-                    <div class="logo">
-                        <h1>Website name and logo</h1>
-                    </div>
-                    <nav>
-                        <ul>
-                            <li>
-                                <a href="#">Home</a>
-                            </li>
-                            <li>
-                                <a href="#">Resources</a>
-                            </li>
-                            <li>
-                                <a href="#">Contact Us</a>
-                            </li>
-                            <li>
-                                <a href="#">Groups</a>
-                            </li>
-                            <li>
-                                <a href="#">Contribute</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </header>
+                <Navbar/>
 
                 <section class="hero">
                     <div class="hero-text">

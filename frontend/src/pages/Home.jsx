@@ -1,5 +1,6 @@
 import React from "react";
 import "./Home.css";
+import character from "./../assets/character.png"
 
 export function Home() {
     return (
@@ -48,7 +49,7 @@ export function Home() {
                         </div>
                     </div>
                     <div class="hero-image">
-                        <img src="character.png" alt="Character Illustration" />
+                        <img src={character} alt="Character Illustration" />
                     </div>
                 </section>
             </div>

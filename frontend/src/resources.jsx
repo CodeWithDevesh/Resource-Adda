@@ -1,15 +1,16 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { BrowserRouter, Routes, Route, useParams  } from 'react-router-dom'
 import Navbar from './pages/Navbar'
+import axios from 'axios'
 
 export default function Resources() {
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState({});
   const [folders, setFolders] = useState({});
   const {branch, sem} = useParams();
-  // Fetch files from the backend
   useEffect(() => {
     axios.get(`/files?branch=${branch}&sem=${sem}`)
       .then(response => {
+        console.log(response.data)
         setFiles(response.data.files);
         groupFilesBySubject(response.data.files);
       })
@@ -17,8 +18,6 @@ export default function Resources() {
         console.error('Error fetching files:', error);
       });
   }, [branch, sem]);
-
-  // Function to group files by subject
   const groupFilesBySubject = (files) => {
     const groupedFiles = files.reduce((acc, file) => {
       acc[file.subject] = acc[file.subject] || [];
@@ -37,8 +36,6 @@ export default function Resources() {
     </div>
   );
 };
-
-// Folder component to handle collapsible folders
 const Folder = ({ subject, files }) => {
   const [isOpen, setIsOpen] = useState(false);
 

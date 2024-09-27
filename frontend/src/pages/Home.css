@@ -41,7 +41,12 @@ nav ul li a {
     font-size: 1em;
 }
 
+.hide{
+    display: none;
+}
+
 .hero {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -90,12 +95,18 @@ nav ul li a {
 }
 
 .hero-image {
-    max-width: 45%; /* Ensure image takes more space */
+    max-width: 45%;/*Ensure image takes more space*/
     /* display: flex;*/
     position:absolute;
     top:-69px;
     right:100px;
     /* justify-content: flex-end; */
+}
+
+.hero-image>img{
+    /* height: 100%; */
+    position: relative;
+    width: 100%;
 }
 
 .hero-image img {

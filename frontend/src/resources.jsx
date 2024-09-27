@@ -1,61 +1,34 @@
-import React,{useState,useEffect} from 'react'
-import { BrowserRouter, Routes, Route, useParams  } from 'react-router-dom'
-import Navbar from './pages/Navbar'
-import axios from 'axios'
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
+import Navbar from "./pages/Navbar";
+import axios from "axios";
 
 export default function Resources() {
-  const [files, setFiles] = useState({});
-  const [folders, setFolders] = useState({});
-  const {branch, sem} = useParams();
-  useEffect(() => {
-    axios.get(`/files?branch=${branch}&sem=${sem}`)
-      .then(response => {
-        console.log(response.data)
-        setFiles(response.data.files);
-        groupFilesBySubject(response.data.files);
-      })
-      .catch(error => {
-        console.error('Error fetching files:', error);
-      });
-  }, [branch, sem]);
-  const groupFilesBySubject = (files) => {
-    const groupedFiles = files.reduce((acc, file) => {
-      acc[file.subject] = acc[file.subject] || [];
-      acc[file.subject].push(file);
-      return acc;
-    }, {});
+    const [files, setFiles] = useState({});
+    const [folders, setFolders] = useState({});
+    const { branch, sem } = useParams();
+    const gf = {};
+    useEffect(() => {
+        axios
+            .get(`http://localhost:3333/files?branch=${branch}&sem=${sem}`)
+            .then((response) => {
+                console.log(response.data);
+                setFiles(response.data.files);
+                groupFilesBySubject(response.data.files);
+                console.log(gf)
+            })
+            .catch((error) => {
+                console.error("Error fetching files:", error);
+            });
+    }, [branch, sem]);
+    const groupFilesBySubject = (files) => {
+        const groupedFiles = files.reduce((acc, file) => {
+            acc[file.subject] = acc[file.subject] || [];
+            acc[file.subject].push(file);
+            return acc;
+        }, {});
+        console.log(groupedFiles)
+    };
 
-    setFolders(groupedFiles);
-  };
-
-  return (
-    <div className="file-explorer">
-      {Object.keys(folders).map((subject) => (
-        <Folder key={subject} subject={subject} files={folders[subject]} />
-      ))}
-    </div>
-  );
-};
-const Folder = ({ subject, files }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleFolder = () => {
-    setIsOpen(!isOpen);
-  };
-
-  return (
-    <div className="folder">
-      <div className="folder-header" onClick={toggleFolder}>
-        <span>{isOpen ? '📂' : '📁'} {subject}</span>
-      </div>
-      {isOpen && (
-        <div className="file-list">
-          {files.map((file) => (
-            <File key={file.fileName} file={file} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-
+    return <>Resources</>;
 }

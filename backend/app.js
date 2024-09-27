@@ -5,6 +5,8 @@ const { Storage } = require('@google-cloud/storage');
 const { v4: uuidV4 } = require('uuid')
 const path = require('path')
 const Document = require('./document')
+const cors = require('cors');
+
 
 const mongoose = require('mongoose');
 const uri = process.env.MONGO_URI;
@@ -20,7 +22,7 @@ async function run() {
   }
 }
 run().catch(console.dir);
- 
+
 // Create a new instance of the Google Cloud Storage class
 const storage = new Storage();
 const bucketName = 'shayog-data'; // Update with your bucket name
@@ -28,6 +30,11 @@ const bucket = storage.bucket(bucketName);
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(cors({
+  origin: 'http://localhost:5173',  // Replace this with your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}));
 
 // Set up Multer to handle file uploads in memory
 const upload = multer({
@@ -101,22 +108,26 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 });
 
 app.get('/files', async (req, res) => {
-  const { branch, sem } = req.query;
+  const { branch, sem, subject } = req.query;
 
   if (!branch || !sem) {
-    return res.status(400).send('Please provide both branch and year.');
+    return res.status(400).send('Please provide both branch and sem.');
   }
 
+  const searchPara = {branch, sem};
+  if(subject)
+      searchPara.subject = subject
+
   try {
-    // Find files by branch and year
-    const files = await Document.find({ branch, sem });
+    // Find files by branch and sem
+    const files = await Document.find(searchPara);
 
     if (files.length === 0) {
-      return res.status(404).send('No files found for the given branch and year.');
+      return res.status(404).send('No files found for the given branch and sem.');
     }
 
     res.status(200).json({
-      message: `Files for branch: ${branch}, year: ${sem}`,
+      message: `Files for branch: ${branch}, sem: ${sem}`,
       files,
     });
   } catch (error) {
@@ -124,6 +135,8 @@ app.get('/files', async (req, res) => {
     res.status(500).send('Error retrieving files.');
   }
 });
+
+app.get('/subjects', async )
 
 // Start the server
 app.listen(port, () => {

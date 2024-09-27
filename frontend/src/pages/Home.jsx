@@ -19,10 +19,10 @@ export function Home() {
                         </p>
                         <div class="buttons">
                             <a href="#" class="btn btn-pink">
-                                Start learning
+                                <b>Start learning</b>
                             </a>
                             <a href="#" class="btn btn-outline">
-                                Learn more
+                                Contribute
                             </a>
                         </div>
                     </div>

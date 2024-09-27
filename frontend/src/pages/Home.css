@@ -1,7 +1,6 @@
 
 
 .home {
-    font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #7928ca, #ff0080);
     /* background-color: red; */
     color: white;
@@ -13,33 +12,6 @@
     overflow: hidden;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-}
-
-.logo h1 {
-    font-size: 1.5em;
-    color: white;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-nav ul li {
-    display: inline;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: white;
-    font-size: 1em;
-}
 
 .hide{
     display: none;

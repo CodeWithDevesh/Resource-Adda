@@ -1,35 +1,21 @@
 import React from "react";
 import "./Home.css";
-import character from "./../assets/character.png"
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
+import Backdrop from "../components/Backdrop";
 
 export function Home() {
     return (
         <>
-            <div class="home">
-                <Navbar/>
-
-                <section class="hero">
-                    <div class="hero-text">
-                        <h1>Start Learning with us</h1>
-                        <p>
-                            Your one stop solution for cracking your semester
-                            exam with ease. All resources and notes you will
-                            ever need for your preparation.
-                        </p>
-                        <div class="buttons">
-                            <a href="#" class="btn btn-pink">
-                                <b>Start learning</b>
-                            </a>
-                            <a href="#" class="btn btn-outline">
-                                Contribute
-                            </a>
-                        </div>
+            <Navbar />
+            <div className="home">
+                <div className="section-1">
+                    <div className="first-slang">
+                        <span>Haa Bhaai... Aa gyaa Padhnee</span>
                     </div>
-                    <div class="hero-image">
-                        <img src={character} alt="Character Illustration" />
+                    <div className="second-slang">
+                        <span>Notes nhi milre ??</span>
                     </div>
-                </section>
+                </div>
             </div>
         </>
     );

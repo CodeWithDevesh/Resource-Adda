@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useParams } from "react-router-dom";
-import Navbar from "./pages/Navbar";
 import axios from "axios";
 
 export default function Resources() {

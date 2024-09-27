@@ -11,17 +11,20 @@ export default function fileexplorer() {
     axios
       .get(`http://localhost:3333/files?branch=${branch}&sem=${sem}`)
       .then((res) => {
+        console.log(res.data);
         setData(res.data);
       });
   }, []);
-let groupedBySubject={};
+  const [groupedBySubject,setGroupedBySubject] = useState({});
+
   useEffect(() => {
-    if(!data.files)return
-     groupedBySubject = data.files.reduce((acc, file) => {
+    if (!data.files) return;
+    setGroupedBySubject(data.files.reduce((acc, file) => {
       acc[file.subject] = acc[file.subject] || [];
       acc[file.subject].push(file);
       return acc;
-    }, {});
+    }, {}));
+    console.log(groupedBySubject)
   }, [data]);
   // State to track the selected folder
 

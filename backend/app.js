@@ -135,9 +135,6 @@ app.get('/files', async (req, res) => {
     res.status(500).send('Error retrieving files.');
   }
 });
-
-app.get('/subjects', async )
-
 // Start the server
 app.listen(port, () => {
   console.log(`Server started on http://localhost:${port}`);

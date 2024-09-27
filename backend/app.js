@@ -136,7 +136,6 @@ app.get('/files', async (req, res) => {
   }
 });
 
-app.get('/subjects', async )
 
 // Start the server
 app.listen(port, () => {

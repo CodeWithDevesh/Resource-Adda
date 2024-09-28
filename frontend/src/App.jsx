@@ -1,14 +1,22 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home } from "./pages/Home"
-import Resources from "./resources";
+import { Home } from "./pages/Home";
+import Resources from "./pages/Resources";
 import Fileexplorer from "./fileexplorer";
+import Backdrop from "./components/Backdrop";
+import Navbar from "./components/Navbar";
 function App() {
     return (
         <>
+            <Backdrop />
             <BrowserRouter>
+                <Navbar />
                 <Routes>
-                    <Route path="/" element={<Fileexplorer/>} />
-                    <Route path="/resources/:branch/:sem" element={<Resources/>}/>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/resources" element={<Resources />} />
+                    <Route
+                        path="/resources/:branch/:sem"
+                        element={<Resources />}
+                    />
                 </Routes>
             </BrowserRouter>
         </>

@@ -1,35 +1,34 @@
 import React from "react";
 import "./Home.css";
-import character from "./../assets/character.png"
-import Navbar from "./Navbar";
+import Navbar from "../components/Navbar";
+import Backdrop from "../components/Backdrop";
+import { Link } from "react-router-dom";
 
 export function Home() {
     return (
         <>
-            <div class="home">
-                <Navbar/>
-
-                <section class="hero">
-                    <div class="hero-text">
-                        <h1>Start Learning with us</h1>
-                        <p>
-                            Your one stop solution for cracking your semester
-                            exam with ease. All resources and notes you will
-                            ever need for your preparation.
-                        </p>
-                        <div class="buttons">
-                            <a href="#" class="btn btn-pink">
-                                <b>Start learning</b>
-                            </a>
-                            <a href="#" class="btn btn-outline">
-                                Contribute
-                            </a>
+            <div className="home">
+                <div className="container">
+                    <div className="section-1">
+                        <div className="slangs">
+                            <div className="text first-slang">
+                                <span>Haa Bhaai... Aa gyaa Padhnee</span>
+                            </div>
+                            <div className="text second-slang">
+                                <span>Notes nhi milre ??</span>
+                            </div>
+                        </div>
+                        <div className="btn res-btn">
+                            <Link to="/resources">Get Study Material</Link>
                         </div>
                     </div>
-                    <div class="hero-image">
-                        <img src={character} alt="Character Illustration" />
+                    <div className="topper-sec">
+                        <span className="text">Topper's Section</span>
+                        <div className="btn contri-btn">
+                            <Link to="/contribute">Contribute</Link>
+                        </div>
                     </div>
-                </section>
+                </div>
             </div>
         </>
     );

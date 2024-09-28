@@ -1,0 +1,33 @@
+.backdrop {
+    position: fixed;
+    inset: -10px;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.sec-1 {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.sec-1 img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, .7);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    inset: 0;
+}
+
+/* @media (max-width: 768px) {
+    .overlay{
+        background-color: rgba(0, 0, 0, .5);
+    }
+} */

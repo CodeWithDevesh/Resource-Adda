@@ -1,0 +1,71 @@
+.res{
+    height: 80vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.res-inner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5vh;
+    font-size: 5vh;
+    color: white;
+    background-color: rgba(0, 0, 0, .6);
+    padding: 7vh 3vw;
+    border-radius: 20px;
+    font-family: "Permanent Marker";
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    margin-left: 3vw;
+    transition: transform 0.3s;
+}
+
+.res-inner:hover {
+    transform: scale(1.02);
+}
+
+.res-inner div{
+    display: flex;
+    justify-content: center;
+    gap: 5vw;
+    align-items: center;
+}
+
+.res-inner label {
+    font-size: 4vh;
+    margin-right: 1vw;
+    white-space: nowrap;
+}
+
+.res-inner div select{
+    border: 1px solid white;
+    border-radius: 25px;
+    min-width: max-content;
+    cursor: pointer;
+    padding: 0.5vh 1vw;
+    min-width: 14ch; 
+    width: fit-content;
+    background-color: transparent;
+    color: white;
+    font-family:'Courier New', Courier, monospace;
+    transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.res-inner div select:hover {
+    border-color: #00ffcc;
+    box-shadow: 0 4px 10px rgba(0, 255, 204, 0.5);
+}
+
+.res-inner div option{
+    font-family:'Courier New', Courier, monospace;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.res-inner div select:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.8);
+}

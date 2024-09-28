@@ -31,6 +31,7 @@
 .section-1 span{
     color: white;
     font-family: 'Permanent Marker';
+    user-select: none;
 }
 
 .btm-tag{
@@ -42,6 +43,25 @@
 
 .sec-1 img{
     object-fit: cover;
+}
+
+.res-btn{
+    align-self: flex-end;
+    margin-right: 6vw;
+    background-color: rgba(0, 0, 0, .8);
+    padding: 10px 20px;
+    border-radius: 2vh;
+}
+
+.res-btn a:hover .res-btn{
+    background-color: rgba(0, 0, 0, .9);
+}
+
+.res-btn a{
+    color: white;
+    font-family: 'Permanent Marker';
+    font-size: 4vh;
+    user-select: none;
 }
 
 @media(max-width: 1182px){

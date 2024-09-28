@@ -6,7 +6,6 @@ import Backdrop from "../components/Backdrop";
 export function Home() {
     return (
         <>
-            <Navbar />
             <div className="home">
                 <div className="section-1">
                     <div className="first-slang">
@@ -15,6 +14,8 @@ export function Home() {
                     <div className="second-slang">
                         <span>Notes nhi milre ??</span>
                     </div>
+                    <div className="res-btn"><a href="/resources">Get Study Material</a></div>
+                    
                 </div>
             </div>
         </>

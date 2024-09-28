@@ -1,0 +1,32 @@
+.res{
+    height: 80vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.res-inner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5vh;
+    font-size: 8vh;
+    color: white;
+    background-color: rgba(0, 0, 0, .9);
+    padding: 7vh 3vw;
+    border-radius: 20px;
+    font-family: "Permanent Marker";
+    margin-left: 3vw;
+}
+
+.res-inner div{
+    display: flex;
+    justify-content: center;
+    gap: 5vw;
+}
+
+.res-inner div select{
+    background-color: transparent;
+    color: white;
+}

@@ -18,6 +18,7 @@
 .sec-1 img{
     height: 100%;
     width: 100%;
+    object-fit: cover;
 }
 
 .overlay{
@@ -27,3 +28,4 @@
     position: absolute;
     inset: 0;
 }
+

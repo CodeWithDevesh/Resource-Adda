@@ -4,6 +4,7 @@ import Resources from "./pages/Resources";
 import Fileexplorer from "./fileexplorer";
 import Backdrop from "./components/Backdrop";
 import Navbar from "./components/Navbar";
+import "./App.css"
 function App() {
     return (
         <>

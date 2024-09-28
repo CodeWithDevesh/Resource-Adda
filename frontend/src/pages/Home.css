@@ -5,7 +5,7 @@
     justify-content: center;
 }
 
-.container{
+.container {
     min-height: 80vh;
     width: 100vw;
     max-width: 1100px;
@@ -39,25 +39,12 @@
 .text {
     font-size: 8vh;
     color: white;
-    font-family: 'Permanent Marker', sans-serif;
     user-select: none;
 }
 
-.btm-tag {
-    position: absolute;
-    font-size: 3vh;
-    bottom: 10px;
-    right: 50px;
-}
 
 .sec-1 img {
     object-fit: cover;
-}
-
-.btn {
-    background-color: rgba(0, 0, 0, .5);
-    padding: 10px 20px;
-    border-radius: 2vh;
 }
 
 .res-btn {
@@ -68,19 +55,7 @@
     background-color: rgba(0, 0, 0, .9);
 }
 
-.btn a{
-    color: white;
-    font-family: 'Permanent Marker', sans-serif;
-    font-size: 4vh;
-    user-select: none;
-    text-decoration: underline;
-}
-
-.btn a:hover {
-    color: #ddd;
-}
-
-.topper-sec{
+.topper-sec {
     display: flex;
     flex-direction: column;
     align-self: flex-start;
@@ -97,11 +72,11 @@
         align-items: center;
     }
 
-    .topper-sec{
+    .topper-sec {
         align-self: center;
     }
 
-    .text{
+    .text {
         font-size: 4vh;
     }
 
@@ -112,11 +87,8 @@
         /* Center the text on smaller screens */
     }
 
-    .btn {
+    .res-btn,
+    .contri-btn {
         align-self: center;
-    }
-
-    .btn a {
-        font-size: 3vh;
     }
 }

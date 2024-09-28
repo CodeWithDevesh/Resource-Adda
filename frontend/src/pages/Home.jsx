@@ -3,6 +3,7 @@ import "./Home.css";
 import Navbar from "../components/Navbar";
 import Backdrop from "../components/Backdrop";
 import { Link } from "react-router-dom";
+import NavigateButton from "../components/NavigateButton";
 
 export function Home() {
     return (
@@ -18,15 +19,11 @@ export function Home() {
                                 <span>Notes nhi milre ??</span>
                             </div>
                         </div>
-                        <div className="btn res-btn">
-                            <Link to="/resources">Get Study Material</Link>
-                        </div>
+                        <NavigateButton className="res-btn" text={"Get Study Material"} path={"/resources"}/>
                     </div>
                     <div className="topper-sec">
                         <span className="text">Topper's Section</span>
-                        <div className="btn contri-btn">
-                            <Link to="/contribute">Contribute</Link>
-                        </div>
+                        <NavigateButton className={"contri-btn"} text={"Contribute"} path={"/contribute"}/>
                     </div>
                 </div>
             </div>

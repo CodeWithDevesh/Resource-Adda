@@ -9,6 +9,7 @@ header {
     background-color: rgba(0, 0, 0, .5);
     font-family: 'Permanent Marker';
     height: 80px;
+    user-select: none;
 }
 
 .logo h1 {
@@ -129,7 +130,34 @@ nav ul li a {
     padding: 10px 0;
     list-style: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scaleY(1);
+    transform-origin: top;
+    transition: transform .3s ease-in-out;
 }
+
+.underlay{
+    display: block;
+    position: absolute;
+    inset: 0;
+}
+
+.underlay.collapse{
+    display: none;
+}
+
+.hamburger-cont.collapse{
+    transform: scaleY(0);
+}
+
+.hamburger svg{
+    transform: rotate(-90deg);
+    transition: transform .3s ease-in-out;
+}
+
+.hamburger.collapse svg{
+    transform: rotate(0deg);
+}
+
 
 .hamburger-cont ul{
     display: flex;

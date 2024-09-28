@@ -27,7 +27,6 @@ export default function Navbar() {
                             </li>
                             <li className="resources">
                                 <Link to="/resources">Resources</Link>
-                                {/* <BranchMenu /> */}
                             </li>
                             <li>
                                 <Link to="#">Contact Us</Link>
@@ -79,6 +78,7 @@ export default function Navbar() {
                                 ? "hamburger-cont"
                                 : "hamburger-cont collapse"
                         }
+                        onClick={toggleMenu}
                     >
                         <HamburgerMenu />
                     </div>
@@ -176,7 +176,7 @@ function HamburgerMenu() {
                     <Link to="/">Home</Link>
                 </li>
                 <li className="resources">
-                    <Link to="/">Resources</Link>
+                    <Link to="/resources">Resources</Link>
                     {/* <BranchMenu /> */}
                 </li>
                 <li>

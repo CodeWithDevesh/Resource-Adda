@@ -7,8 +7,9 @@ export default function Resources() {
             <div className="res">
                 <div className="res-inner">
                     <div className="br">
-                        <span>Aapki Branch??</span>
-                        <select name="Branch">
+                        <label for="branch">Aapki Branch??</label>
+                        <select name="Branch" id="branch">
+                            <option value="" disabled selected hidden>Select Branch</option>
                             <option value="IT">IT</option>
                             <option value="CSE">CSE</option>
                             <option value="ECE">ECE</option>
@@ -16,8 +17,9 @@ export default function Resources() {
                         </select>
                     </div>
                     <div className="sem">
-                        <span>Aapka Sem ??</span>
-                        <select name="sem">
+                        <label for="sem">Aapka Sem??</label>
+                        <select name="sem" id="sem">
+                            <option value="" disabled selected hidden>Select Semester</option>
                             <option value="1">Sem-1</option>
                             <option value="2">Sem-2</option>
                             <option value="3">Sem-3</option>

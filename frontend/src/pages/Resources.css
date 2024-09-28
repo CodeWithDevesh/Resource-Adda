@@ -13,7 +13,7 @@
     gap: 5vh;
     font-size: 8vh;
     color: white;
-    background-color: rgba(0, 0, 0, .9);
+    background-color: rgba(0, 0, 0, .6);
     padding: 7vh 3vw;
     border-radius: 20px;
     font-family: "Permanent Marker";
@@ -27,6 +27,16 @@
 }
 
 .res-inner div select{
+    border: 1px solid white;
+    border-radius: 25px;
+    width: max-content;
     background-color: transparent;
+    color: white;
+    font-family:'Courier New', Courier, monospace;
+}
+
+.res-inner div option{
+    font-family:'Courier New', Courier, monospace;
+    background-color: black;
     color: white;
 }

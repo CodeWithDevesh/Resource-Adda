@@ -69,14 +69,3 @@
     outline: none;
     box-shadow: 0 0 10px rgba(0, 255, 204, 0.8);
 }
-
-.go-btn{
-    align-self: center;
-}
-
-@media(max-width: 768px){
-    .res-inner div{
-        flex-direction: column;
-        gap: 5vw;
-    }
-}

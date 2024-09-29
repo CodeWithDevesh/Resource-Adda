@@ -64,3 +64,8 @@
     color: white;
     cursor: pointer;
 }
+
+.res-inner div select:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.8);
+}

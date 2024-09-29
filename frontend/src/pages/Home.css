@@ -1,91 +1,94 @@
-.home{
-    height: 100vh;
+.home {
     width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.section-1{
+.container {
+    min-height: 80vh;
+    width: 100vw;
+    max-width: 1100px;
     display: flex;
-    padding-top: 100px;
-    justify-content: start;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 3vw;
+}
+
+.section-1 {
+    display: flex;
+    padding-top: 20px;
+    justify-content: space-around;
     align-items: stretch;
     flex-direction: column;
     gap: 5vh;
-    height: 70vh;
+    min-height: 50hv;
     position: relative;
-    font-size: 8vh;
 }
 
-.section-1>div{
+.section-1>div {
     display: flex;
     flex-direction: column;
 }
 
-
-.first-slang{
-    padding-left: 3vw;
-}
-.second-slang {
-    padding-left: 650px;
+.slangs {
+    display: flex;
+    gap: 5vh;
 }
 
-.section-1 span{
+.text {
+    font-size: 8vh;
     color: white;
-    font-family: 'Permanent Marker';
     user-select: none;
 }
 
-.btm-tag{
-    position: absolute;
-    font-size: 3vh;
-    bottom: 10px;
-    right: 50px;
-}
 
-.sec-1 img{
+.sec-1 img {
     object-fit: cover;
 }
 
-.res-btn{
+.res-btn {
     align-self: flex-end;
-    margin-right: 6vw;
-    background-color: rgba(0, 0, 0, .8);
-    padding: 10px 20px;
-    border-radius: 2vh;
 }
 
-.res-btn a:hover .res-btn{
+.btn:hover {
     background-color: rgba(0, 0, 0, .9);
 }
 
-.res-btn a{
-    color: white;
-    font-family: 'Permanent Marker';
-    font-size: 4vh;
-    user-select: none;
+.topper-sec {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
-@media(max-width: 1182px){
-    .second-slang{
-        padding-left: 550px;
-    }
-}
-
-@media (max-width: 1024px){
-
-    .second-slang{
-        padding-left: 300px;
-    }
-}
-
-@media (max-width: 600px){
-    .section-1{
-        font-size: 4vh;
+@media (max-width: 768px) {
+    .section-1 {
+        min-height: 40vh;
         gap: 10px;
+        justify-content: space-around;
+        align-items: center;
     }
-    .first-slang{
-        padding-left: 25px;
+
+    .topper-sec {
+        align-self: center;
     }
-    .second-slang{
-        padding-left: 25px;
+
+    .text {
+        font-size: 4vh;
+    }
+
+
+    .first-slang,
+    .second-slang {
+        text-align: center;
+        /* Center the text on smaller screens */
+    }
+
+    .res-btn,
+    .contri-btn {
+        align-self: center;
     }
 }

@@ -1,70 +1,76 @@
 .file-explorer {
-    display: flex;
-    height: 100vh;
-  }
-  
-  .left-pane {
-    width: 30%;
-    background-color: #f7f7f7;
-    border-right: 1px solid #ccc;
-    padding: 20px;
-  }
-  
-  .right-pane {
-    width: 70%;
-    padding: 20px;
-  }
-  
-  .folder-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .folder-item {
-    padding: 10px;
-    cursor: pointer;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 5px;
-    background-color: #f0f0f0;
-  }
-  
-  .folder-item.selected {
-    background-color: #0073e6;
-    color: white;
-  }
-  
-  .folder-item:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .file-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .file-item {
-    margin-bottom: 10px;
-  }
-  
-  .file-item a {
-    text-decoration: none;
-    color: #0073e6;
-  }
-  
-  .file-item a:hover {
-    text-decoration: underline;
-  }
-  
-  .file-meta {
-    font-size: 12px;
-    color: #666;
-  }
-  
-  .empty-box {
-    font-size: 18px;
-    color: #888;
-    text-align: center;
-    margin-top: 20px;
-  }
-  
+  display: flex;
+  height: 100vh;
+}
+
+.left-pane {
+  width: 30%;
+  background-color: #f7f7f7;
+  border-right: 1px solid #ccc;
+  padding: 20px;
+}
+
+.right-pane {
+  width: 70%;
+  padding: 20px;
+}
+
+.folder-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.folder-item {
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  background-color: #f0f0f0;
+}
+
+.subject {
+  font-weight: bold;
+}
+
+.subject.selected {
+  background-color: #0073e6;
+  color: white;
+}
+
+.unit-dropdown {
+  width: 100%;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.file-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.file-item {
+  margin-bottom: 10px;
+}
+
+.file-item a {
+  text-decoration: none;
+  color: #0073e6;
+}
+
+.file-item a:hover {
+  text-decoration: underline;
+}
+
+.file-meta {
+  font-size: 12px;
+  color: #666;
+}
+
+.empty-box {
+  font-size: 18px;
+  color: #888;
+  text-align: center;
+  margin-top: 20px;
+}
+

@@ -16,7 +16,7 @@ function App() {
                     <Route path="/resources" element={<Resources />} />
                     <Route
                         path="/resources/:branch/:sem"
-                        element={<Resources />}
+                        element={<Fileexplorer />}
                     />
                 </Routes>
             </BrowserRouter>

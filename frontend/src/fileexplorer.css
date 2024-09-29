@@ -1,6 +1,7 @@
 .file-explorer {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  justify-content: stretch;
 }
 
 .left-pane {
@@ -34,6 +35,10 @@
   font-weight: bold;
 }
 
+.unit-dropdown {
+  --hover-color: rgb(27, 255, 11);
+}
+
 
 .unit-dropdown {
   width: 100%;
@@ -42,7 +47,7 @@
   background-color: black;
 }
 
-.unit-dropdown option{
+.unit-dropdown option {
   background-color: black;
 
 }
@@ -50,15 +55,28 @@
 .file-list {
   list-style-type: none;
   padding: 0;
+  margin-top: 20px;
 }
 
 .file-item {
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
+  padding: 10px 0;
+  margin-bottom: -2px;
+  border-bottom: white solid 2px;
+  display: flex;
+  justify-content: center;
+}
+
+.file-item:hover a{
+  color:var(--hover-color);
+}
+
+.file-item {
+  border-top: white solid 2px;
 }
 
 .file-item a {
   text-decoration: none;
-  color: #0073e6;
 }
 
 .file-item a:hover {
@@ -76,4 +94,3 @@
   text-align: center;
   margin-top: 20px;
 }
-

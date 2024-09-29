@@ -24,7 +24,7 @@ const FolderList = ({
             <h2>Subjects</h2>
             <ul className="folder-list">
                 {Object.keys(groupedBySubject).map((subject, idx) => (
-                    <li key={idx} className="folder-item">
+                    <li key={idx} className="folder-item hover-effect">
                         <div
                             onClick={() => toggleDropdown(subject)}
                             className={`subject ${
@@ -36,13 +36,13 @@ const FolderList = ({
                         {/* Dropdown for units */}
                         {dropdownOpen === subject && (
                             <select
-                                className="unit-dropdown"
+                                className="unit-dropdown hover-effect"
                                 onChange={(e) =>
                                     setSelectedUnit(e.target.value)
                                 }
-                                defaultValue=""
+                                value=""
                             >
-                                <option value="" disabled>
+                                <option value="" disabled hidden>
                                     Select Unit
                                 </option>
                                 {Object.keys(groupedBySubject[subject]).map(

@@ -6,15 +6,13 @@ header {
     padding: 20px;
     z-index: 99;
     width: 100%;
-    background-color: rgba(0, 0, 0, .5);
-    font-family: 'Permanent Marker';
+    background-color: var(--primary-back);
     height: 80px;
     user-select: none;
 }
 
 .logo h1 {
     font-size: 2rem;
-    color: white;
 }
 
 nav ul {
@@ -31,14 +29,12 @@ nav ul li {
 
 nav ul li a {
     text-decoration: underline;
-    color: white;
     font-size: 1em;
 }
 
 .hamburger{
     height: 100%;
     width: 100%;
-    color: white;
     display: flex;
     align-items: center;
     justify-content: end;
@@ -57,7 +53,6 @@ nav ul li a {
     top: 100%;
     left: 0;
     background-color: rgba(0, 0, 0, .5);
-    color: white;
     padding: 10px 0;
     list-style: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -88,7 +83,6 @@ nav ul li a {
     top: -10%;
     left: 100%;
     background-color: rgba(0, 0, 0, .5);
-    color: white;
     padding: 10px 0;
     list-style: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -126,7 +120,6 @@ nav ul li a {
     left: 0;
     right: 0;
     background-color: rgba(0, 0, 0,1);
-    color: white;
     padding: 10px 0;
     list-style: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -177,5 +170,4 @@ nav ul li a {
 
 .hamburger-cont ul li a{
     text-decoration: none;
-    color: white;
 }

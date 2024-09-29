@@ -19,7 +19,7 @@
 }
 
 .overlay {
-    background-color: rgba(0, 0, 0, .7);
+    background-color: var(--overlay-color);
     height: 100%;
     width: 100%;
     position: absolute;

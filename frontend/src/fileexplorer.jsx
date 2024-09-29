@@ -54,6 +54,32 @@ export default function fileexplorer() {
                 uploadedAt: "2024-09-26T19:32:13.698Z",
                 __v: 0,
             },
+            {
+                isPyq: false,
+                _id: "66f5b6bd4c214b6f668fa7ae",
+                fileUrl:
+                    "https://storage.googleapis.com/shayog-data/5ae11226-cc8e-44bc-87d8-a55dc9a3075f.pdf",
+                branch: "IT",
+                sem: "3",
+                unit: "2",
+                fileName: "Ethos-SoftwareDevelopge.pdf",
+                subject: "maths",
+                uploadedAt: "2024-09-26T19:32:13.698Z",
+                __v: 0,
+            },
+            {
+                isPyq: false,
+                _id: "66f5b6bd4c214b6f668fa7ae",
+                fileUrl:
+                    "https://storage.googleapis.com/shayog-data/5ae11226-cc8e-44bc-87d8-a55dc9a3075f.pdf",
+                branch: "IT",
+                sem: "3",
+                unit: "2",
+                fileName: "Ethos-SoftwareDevelopment Challenge.pdf",
+                subject: "physics",
+                uploadedAt: "2024-09-26T19:32:13.698Z",
+                __v: 0,
+            },
         ],
     });
     const groupedBySubject = data.files.reduce((acc, file) => {

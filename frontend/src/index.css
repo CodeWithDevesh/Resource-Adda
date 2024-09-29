@@ -1,14 +1,25 @@
-*, *::before, *::after{
+:root {
+  --hover-color: #00ffcc;
+  --text-color: white;
+  --overlay-color: rgba(0, 0, 0, .7);
+  --primary-back: rgba(0, 0, 0, .5);
+  --shadow-color: rgba(0, 255, 204, 0.5);
+  --font-family: "Permanent Marker"
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   font-family: 'Permanent Marker', sans-serif;
-  color: white;
+  color: var(--text-color);
+  font-family: var(--font-family);
 }
 
-body{
+body {
   overflow-x: hidden;
   background-color: black;
-    font-family: 'Arial', sans-serif;
-    min-height: 100vh;
+  min-height: 100vh;
 }

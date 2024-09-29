@@ -10,7 +10,7 @@ export default function NavigateButton({path, text, className}) {
   }
 
   return (
-    <div className={'nav-btn ' + className} onClick={handleNav}>
+    <div className={'nav-btn hover-effect ' + className} onClick={handleNav}>
       {text}
     </div>
   )

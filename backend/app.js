@@ -48,14 +48,14 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   }
 
   // Extract the metadata from the request body
-  const { branch, sem, subject } = req.body;
+  const { branch, sem, subject, unit } = req.body;
 
-  if (!branch || !sem || !subject) {
-    return res.status(400).send('Missing metadata: branch, year, or subject.');
+  if (!branch || !sem || !subject || !unit) {
+    return res.status(400).send('Missing metadata: branch, sem, subject or unit.');
   }
 
   // Log the received metadata (for verification purposes)
-  console.log(`Received metadata - Branch: ${branch}, Sem: ${sem}, Subject: ${subject}`);
+  console.log(`Received metadata - Branch: ${branch}, Sem: ${sem}, Subject: ${subject}, Unit: ${unit}`);
 
   // Set up Google Cloud Storage file upload
   const extension = path.extname(req.file.originalname);
@@ -83,6 +83,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         sem,
         fileName: req.file.originalname,  // UUID file name
         subject,
+        unit
       });
 
       await fileRecord.save();  // Save to MongoDB
@@ -94,6 +95,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
           branch,
           sem,
           subject,
+          unit,
           fileName: req.file.originalname
         },
       });
@@ -108,15 +110,17 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 });
 
 app.get('/files', async (req, res) => {
-  const { branch, sem, subject } = req.query;
+  const { branch, sem, subject, unit } = req.query;
 
   if (!branch || !sem) {
     return res.status(400).send('Please provide both branch and sem.');
   }
 
-  const searchPara = {branch, sem};
-  if(subject)
-      searchPara.subject = subject
+  const searchPara = { branch, sem };
+  if (subject)
+    searchPara.subject = subject
+  if (unit)
+    searchPara.unit = unit
 
   try {
     // Find files by branch and sem

@@ -10,11 +10,10 @@ export default function Navbar() {
     };
     return (
         <>
-            <div className={
-                            isMenuOpen
-                                ? "underlay"
-                                : "underlay collapse"
-                        } onClick={toggleMenu}></div>
+            <div
+                className={isMenuOpen ? "underlay" : "underlay collapse"}
+                onClick={toggleMenu}
+            ></div>
             <div>
                 <header>
                     <div className="logo">
@@ -23,19 +22,19 @@ export default function Navbar() {
                     <nav>
                         <ul>
                             <li>
-                                <Link to="/">Home</Link>
+                                <Link className="hover-effect" to="/">Home</Link>
                             </li>
                             <li className="resources">
-                                <Link to="/resources">Resources</Link>
+                                <Link className="hover-effect" to="/resources">Resources</Link>
                             </li>
                             <li>
-                                <Link to="#">Contact Us</Link>
+                                <Link className="hover-effect" to="/contact">Contact Us</Link>
                             </li>
                             <li>
-                                <Link to="#">Groups</Link>
+                                <Link className="hover-effect" to="#">Groups</Link>
                             </li>
                             <li>
-                                <Link to="#">Contribute</Link>
+                                <Link className="hover-effect" to="#">Contribute</Link>
                             </li>
                         </ul>
                         <div

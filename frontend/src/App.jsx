@@ -4,7 +4,8 @@ import Resources from "./pages/Resources";
 import Fileexplorer from "./fileexplorer";
 import Backdrop from "./components/Backdrop";
 import Navbar from "./components/Navbar";
-import "./App.css"
+import "./App.css";
+import Contacts from "./pages/Contacts";
 function App() {
     return (
         <>
@@ -18,6 +19,7 @@ function App() {
                         path="/resources/:branch/:sem"
                         element={<Fileexplorer />}
                     />
+                    <Route path="/contact" element={<Contacts />} />
                 </Routes>
             </BrowserRouter>
         </>

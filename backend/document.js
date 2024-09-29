@@ -8,7 +8,7 @@ const docSchema = new Schema({
     fileName: {type: String, required: true},
     subject: {type: String, required: true},
     uploadedAt: {type: Date, default: Date.now},
-    isPyq: {type: Boolean, default: false}
+    unit: {type: String, required: true}
 })
 
 const Document = model('Document', docSchema)

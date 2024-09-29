@@ -16,6 +16,7 @@
   font-family: 'Permanent Marker', sans-serif;
   color: var(--text-color);
   font-family: var(--font-family);
+  user-select: none;
 }
 
 body {

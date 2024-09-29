@@ -21,7 +21,7 @@ const FolderList = ({
 
     return (
         <div>
-            <h2>Folders</h2>
+            <h2>Subjects</h2>
             <ul className="folder-list">
                 {Object.keys(groupedBySubject).map((subject, idx) => (
                     <li key={idx} className="folder-item">

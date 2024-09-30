@@ -3,6 +3,7 @@ import "./Contacts.css"
 import akshat from "../assets/akshat.jpg"
 import akshata from "../assets/akshata.jpg"
 import divyansh from "../assets/divyansh.jpg"
+import devesh from "../assets/devesh.png"
 
 export default function Contacts() {
   return (
@@ -13,10 +14,10 @@ export default function Contacts() {
 
     <section class="team-container res">
         <div class="res-inner">
-        <img src={akshat} class="profile-photo"/>
+        <img src={devesh} class="profile-photo"/>
             <h2>Devesh Agrawal</h2>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto nemo hic dignissimos eum quidem mollitia magni a laborum, unde excepturi, laudantium consequatur accusamus sequi autem porro rem ab. Soluta, laborum.</p>
-            <p>Email: <a href="mailto:devesh@example.com">devesh@example.com</a></p>
+            <p>Email: <a href="mailto:deveshagarwal652005@gmail.com">deveshagarwal652005@gmail.com</a></p>
         </div>
 
         <div class="res-inner">

@@ -40,7 +40,7 @@ const FolderList = ({
                                 onChange={(e) =>
                                     setSelectedUnit(e.target.value)
                                 }
-                                value=""
+                                defaultValue=""
                             >
                                 <option value="" disabled hidden>
                                     Select Unit

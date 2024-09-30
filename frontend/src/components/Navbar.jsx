@@ -31,7 +31,7 @@ export default function Navbar() {
                                 <Link className="hover-effect" to="/contact">Contact Us</Link>
                             </li>
                             <li>
-                                <Link className="hover-effect" to="#">Groups</Link>
+                                <Link className="hover-effect" to="/groups">Groups</Link>
                             </li>
                             <li>
                                 <Link className="hover-effect" to="#">Contribute</Link>

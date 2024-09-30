@@ -6,6 +6,7 @@ import Backdrop from "./components/Backdrop";
 import Navbar from "./components/Navbar";
 import "./App.css";
 import Contacts from "./pages/Contacts";
+import Grouops from "./groups";
 function App() {
     return (
         <>
@@ -20,6 +21,7 @@ function App() {
                         element={<Fileexplorer />}
                     />
                     <Route path="/contact" element={<Contacts />} />
+                    <Route path="/groups" element={<Grouops />} />
                 </Routes>
             </BrowserRouter>
         </>

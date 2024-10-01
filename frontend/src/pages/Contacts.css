@@ -14,18 +14,18 @@
     padding-left: 1.9rem;
     gap: 2rem;
 }
-.res-inner{
+.res-inner-contact{
     margin-left: 0;
     width: 100%;
 }
 @media (max-width: 1000px){
-    .res-inner{
+    .res-inner-contact{
         font-size:larger;
         width: 100%;
     }
 }
 @media (max-width: 768px){
-    .res-inner{
+    .res-inner-contact{
         font-size:small;
         width: 100%;
     }

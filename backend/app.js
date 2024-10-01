@@ -233,7 +233,7 @@ app.post('/server/addAdmin', async (req, res) => {
 })
 
 //serve static files if other routes does not match
-app.get('*', (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
 

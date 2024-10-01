@@ -19,6 +19,7 @@ function App() {
                 <Navbar />
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/home" element={<Home />} />
                     <Route path="/resources" element={<Resources />} />
                     <Route
                         path="/resources/:branch/:sem"
@@ -28,7 +29,7 @@ function App() {
                     <Route path="/groups" element={<Grouops />} />
                     <Route path="/addAdmin" element={<SuperAdmin/>}/>
                     <Route path="/upload" element={<Upload/>}/>
-                    <Route path="*" element={<Page404/>}/>
+                    {/* <Route path="*" element={<Page404/>}/> */}
                 </Routes>
             </BrowserRouter>
         </>

@@ -26,7 +26,7 @@ run().catch(console.dir);
 
 // Create a new instance of the Google Cloud Storage class
 const storage = new Storage();
-const bucketName = 'shayog-data'; // Update with your bucket name
+const bucketName = process.env.BUCKET_NAME; // Update with your bucket name
 const bucket = storage.bucket(bucketName);
 
 const app = express();

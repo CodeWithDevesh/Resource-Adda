@@ -184,7 +184,7 @@ const LoginDialog = ({ setJwtToken }) => {
                     onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <Button type='submit' text="Login"/>
+            <button type="submit" className="btn">Login</button>
         </div>
     );
 };

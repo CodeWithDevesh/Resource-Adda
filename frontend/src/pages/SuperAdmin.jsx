@@ -4,8 +4,8 @@ import "./SuperAdmin.css"
 export default function SuperAdmin() {
   return (
     <div>
-      <div class="res">
-        <div class="res-inner">
+      <div class="res-super">
+        <div class="res-inner-super">
   
             <div>
                 <label for="superadmin-password" class="text">Super Admin Password</label>

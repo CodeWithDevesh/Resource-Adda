@@ -8,7 +8,7 @@ const Document = require('./document')
 const adminDoc = require('./admin')
 const cors = require('cors');
 const bcrypt = require('bcrypt')
-
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const uri = process.env.MONGO_URI;
 const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
@@ -46,8 +46,26 @@ const upload = multer({
   storage: multer.memoryStorage(), // Store file in memory before uploading
 });
 
+
+// The middleware for authentication of admins
+function authenticateJWT(req, res, next) {
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+  if (!token) {
+    return res.sendStatus(403); // Forbidden
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, username) => {
+    if (err) {
+      return res.sendStatus(403); // Forbidden
+    }
+    next();
+  });
+}
+
+
+
 // Endpoint for uploading a file along with metadata (branch, year, subject)
-app.post('/server/upload', upload.single('file'), async (req, res) => {
+app.post('/server/upload', authenticateJWT, upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }
@@ -148,8 +166,26 @@ app.get('/server/files', async (req, res) => {
 })
 
 
-app.post('/server/admin_login', async (req, res) => {
-  
+app.post('/server/admin_login', express.urlencoded({ extended: false }), async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) {
+    res.sendStatus(400)
+    return
+  }
+
+  try {
+    const user = await adminDoc.findOne({ username });
+    if (!user)
+      return res.status(401).send('Invalid credentials');
+    if (! await bcrypt.compare(password, user.password))
+      return res.status(401).send('Invalid credentials');
+
+    console.log("validated")
+    const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token });
+  } catch {
+    res.sendStatus(500);
+  }
 })
 
 

@@ -9,7 +9,6 @@ import {BASE_SERVER_URL} from './constants'
 export default function fileexplorer() {
     const [data, setData] = useState({});
     const {branch, sem} = useParams()
-    const [isFolderListVisible, setIsFolderListVisible] = useState(false); 
     useEffect(() => {
         axios
             .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
@@ -47,21 +46,13 @@ export default function fileexplorer() {
     //     acc[file.subject][file.unit].push(file);
     //     return acc;
     // }, {});
-    const toggleFolderList = () => {
-        setIsFolderListVisible(!isFolderListVisible);
-    };
-
+    
     const [selectedSubject, setSelectedSubject] = useState(null);
     const [selectedUnit, setSelectedUnit] = useState(null);
 
     return (
         <div className="file-explorer">
-
-<button className="toggle-btn" onClick={toggleFolderList}>
-                {isFolderListVisible ? 'Hide Folders' : 'Show Folders'}
-            </button>
-
-            <div className={`left-pane ${isFolderListVisible ? 'visible' : ''}`}>
+            <div className="left-pane">
                 <FolderList
                     groupedBySubject={groupedBySubject}
                     selectedSubject={selectedSubject}

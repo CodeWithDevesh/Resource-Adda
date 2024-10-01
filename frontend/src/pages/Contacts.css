@@ -16,5 +16,17 @@
 }
 .res-inner{
     margin-left: 0;
+    width: 100%;
 }
-
+@media (max-width: 1000px){
+    .res-inner{
+        font-size:larger;
+        width: 100%;
+    }
+}
+@media (max-width: 768px){
+    .res-inner{
+        font-size:small;
+        width: 100%;
+    }
+}

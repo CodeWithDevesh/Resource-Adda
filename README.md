@@ -78,6 +78,3 @@ We encourage contributions from students and educators. Here’s how you can get
 
 If you have any questions, suggestions, or need support, please reach out to us via the contact details on the **Contact Us** page.
 
-## License
-
-This project is licensed under the MIT License. For more details, refer to the LICENSE file.

@@ -7,6 +7,9 @@ import Navbar from "./components/Navbar";
 import "./App.css";
 import Contacts from "./pages/Contacts";
 import Grouops from "./groups";
+import SuperAdmin from "./pages/SuperAdmin";
+import Page404 from "./pages/Page404";
+
 function App() {
     return (
         <>
@@ -22,6 +25,8 @@ function App() {
                     />
                     <Route path="/contact" element={<Contacts />} />
                     <Route path="/groups" element={<Grouops />} />
+                    <Route path="/addAdmin" element={<SuperAdmin/>}/>
+                    <Route path="*" element={<Page404/>}/>
                 </Routes>
             </BrowserRouter>
         </>

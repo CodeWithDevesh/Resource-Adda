@@ -1,0 +1,1 @@
+export const BASE_SERVER_URL = "https://shayog-webbie.el.r.appspot.com/server"

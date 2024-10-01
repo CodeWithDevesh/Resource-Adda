@@ -4,12 +4,14 @@ import FolderList from "./FolderList";
 import FileList from "./FileList";
 import axios from "axios";
 import {useParams} from 'react-router-dom'
+import {BASE_SERVER_URL} from './constants'
+
 export default function fileexplorer() {
     const [data, setData] = useState({});
     const {branch, sem} = useParams()
     useEffect(() => {
         axios
-            .get(`http://localhost:3333/files?branch=${branch}&sem=${sem}`)
+            .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
             .then((res) => {
                 console.log(res.data);
                 setData(res.data);

@@ -5,8 +5,9 @@ const { Storage } = require('@google-cloud/storage');
 const { v4: uuidV4 } = require('uuid')
 const path = require('path')
 const Document = require('./document')
+const adminDoc = require('./admin')
 const cors = require('cors');
-
+const bcrypt = require('bcrypt')
 
 const mongoose = require('mongoose');
 const uri = process.env.MONGO_URI;
@@ -36,13 +37,17 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
 
+app.use(express.static(path.join(__dirname, 'dist')))
+
+
+
 // Set up Multer to handle file uploads in memory
 const upload = multer({
   storage: multer.memoryStorage(), // Store file in memory before uploading
 });
 
 // Endpoint for uploading a file along with metadata (branch, year, subject)
-app.post('/upload', upload.single('file'), async (req, res) => {
+app.post('/server/upload', upload.single('file'), async (req, res) => {
   if (!req.file) {
     return res.status(400).send('No file uploaded.');
   }
@@ -109,7 +114,9 @@ app.post('/upload', upload.single('file'), async (req, res) => {
   blobStream.end(req.file.buffer);
 });
 
-app.get('/files', async (req, res) => {
+
+
+app.get('/server/files', async (req, res) => {
   const { branch, sem, subject, unit } = req.query;
 
   if (!branch || !sem) {
@@ -138,7 +145,46 @@ app.get('/files', async (req, res) => {
     console.error('Error fetching files from MongoDB:', error);
     res.status(500).send('Error retrieving files.');
   }
+})
+
+
+app.post('/server/admin_login', async (req, res) => {
+  
+})
+
+
+app.post('/server/addAdmin', express.urlencoded({ extended: false }), async (req, res) => {
+  const { admin_password: ADMIN_PASS, username, password } = req.body
+  if (!ADMIN_PASS) {
+    res.status(403).send("Forbidden")
+    return
+  }
+  if (await bcrypt.compare(ADMIN_PASS, process.env.PASSWORD)) {
+    if (!username || !password) {
+      res.sendStatus(400)
+      return
+    }
+    try {
+      const hashed = await bcrypt.hash(password, 10)
+      const admin = new adminDoc({ username, password: hashed })
+      await admin.save()
+    } catch {
+      res.sendStatus(500)
+      return
+    }
+  } else {
+    res.status(403).send("Forbidden")
+    return
+  }
+  res.sendStatus(201)
+})
+
+//serve static files if other routes does not match
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server started on http://localhost:${port}`);

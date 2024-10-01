@@ -38,7 +38,8 @@ app.use(cors({
 }));
 
 app.use(express.static(path.join(__dirname, 'dist')))
-
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
 
 // Set up Multer to handle file uploads in memory
@@ -61,6 +62,22 @@ function authenticateJWT(req, res, next) {
     next();
   });
 }
+
+app.get('/validate-token', (req, res) => {
+  const token = req.headers.authorization.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).send('No token provided');
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).send('Invalid token');
+    }
+
+    res.send('Token is valid');
+  });
+});
 
 
 
@@ -189,7 +206,7 @@ app.post('/server/admin_login', express.urlencoded({ extended: false }), async (
 })
 
 
-app.post('/server/addAdmin', express.urlencoded({ extended: false }), async (req, res) => {
+app.post('/server/addAdmin', async (req, res) => {
   const { admin_password: ADMIN_PASS, username, password } = req.body
   if (!ADMIN_PASS) {
     res.status(403).send("Forbidden")

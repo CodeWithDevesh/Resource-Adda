@@ -35,7 +35,7 @@
 }
 
 /* Label styling to match the theme */
-.text {
+.text-super {
     font-size: 2rem;
     color: white;
     margin-bottom: 5px;
@@ -89,7 +89,7 @@
         flex-direction: column;
     }
 
-    .text {
+    .text-super {
         font-size: 1.5rem;
     }
 

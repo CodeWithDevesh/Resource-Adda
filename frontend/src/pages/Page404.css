@@ -1,18 +1,13 @@
-/* General container styling for the 404 page */
-.home {
+/* .home-404 {
     width: 100vw;
-    height: 100vh; /* Full viewport height */
+    min-height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: transparent;
-    transform: translateX(300px) translateY(-90px);
     overflow-y: hidden;
- /* Dark background for a modern look */
 }
 
-/* Container for content */
-.container {
+.container-404 {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,41 +15,34 @@
     text-align: center;
     width: 100%;
     max-width: 1100px;
-    padding: 20px;
-    height: 100%; /* Full height for proper vertical centering */
+    height: 100%; 
 }
 
-/* Section 1 container */
-.section-1 {
+.section-1-404 {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 20px; /* Space between the GIF, text, and button */
+    gap: 20px; 
     width: 100%;
 }
 
-/* GIF styling */
-.gif-img {
+.gif-img-404 {
     max-width: 250px;
-    width: 100%;
-    height: auto;
+    height: 50vh;
     object-fit: cover;
     border-radius: 10px;
 }
 
-/* Error text styling */
-.text {
+.text-404 {
     font-size: 6vh;
     color: white;
-    /* font-family: ; Specified font-family */
     font-weight: bold;
     user-select: none;
     margin-bottom: 10px;
 }
 
-/* Button styling */
-.btn {
+.btn-404 {
     padding: 15px 30px;
     font-size: 2vh;
     background-color: #ff5f5f;
@@ -67,23 +55,21 @@
     transform: translateX(-180px);
 }
 
-/* Button hover effect */
-.btn:hover {
+.btn-404:hover {
     background-color: rgba(255, 95, 95, 0.8);
 }
 
-/* Responsive design for smaller screens */
 @media (max-width: 768px) {
-    .gif-img {
+    .gif-img-404 {
         max-width: 300px;
     }
 
-    .text {
+    .text-404 {
         font-size: 4vh;
     }
 
-    .btn {
+    .btn-404 {
         padding: 10px 20px;
         font-size: 1.8vh;
     }
-}
+} */

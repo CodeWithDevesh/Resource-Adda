@@ -30,7 +30,7 @@ const bucketName = process.env.BUCKET_NAME; // Update with your bucket name
 const bucket = storage.bucket(bucketName);
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3333;
 
 app.use(cors({
   origin: 'http://localhost:5173',  // Replace this with your frontend URL
@@ -38,8 +38,8 @@ app.use(cors({
 }));
 
 app.use(express.static(path.join(__dirname, 'dist')))
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json())
+// app.use(express.urlencoded({ extended: false }))
+// app.use(express.json())
 
 
 // Set up Multer to handle file uploads in memory
@@ -233,7 +233,7 @@ app.post('/server/addAdmin', async (req, res) => {
 })
 
 //serve static files if other routes does not match
-app.get('/*', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
 

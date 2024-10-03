@@ -5,11 +5,11 @@ import Fileexplorer from "./fileexplorer";
 import Backdrop from "./components/Backdrop";
 import Navbar from "./components/Navbar";
 import "./App.css";
-import Contacts from "./pages/Contacts";
 import Grouops from "./groups";
 import SuperAdmin from "./pages/SuperAdmin";
 import Page404 from "./pages/Page404";
 import AdminPannel from "./pages/AdminPannel";
+import About from "./pages/About";
 
 function App() {
     return (
@@ -25,7 +25,7 @@ function App() {
                         path="/resources/:branch/:sem"
                         element={<Fileexplorer />}
                     />
-                    <Route path="/contact" element={<Contacts />} />
+                    <Route path="/aboutus" element={<About />} />
                     <Route path="/groups" element={<Grouops />} />
                     <Route path="/addAdmin" element={<SuperAdmin />} />
                     <Route path="/admin" element={<AdminPannel />} />

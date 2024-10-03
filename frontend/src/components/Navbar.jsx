@@ -28,10 +28,7 @@ export default function Navbar() {
                                 <Link className="hover-effect" to="/resources">Resources</Link>
                             </li>
                             <li>
-                                <Link className="hover-effect" to="/contact">Contact Us</Link>
-                            </li>
-                            <li>
-                                <Link className="hover-effect" to="/groups">Groups</Link>
+                                <Link className="hover-effect" to="/aboutus">About Us</Link>
                             </li>
                             <li>
                                 <Link className="hover-effect" to="#">Contribute</Link>
@@ -179,10 +176,7 @@ function HamburgerMenu() {
                     {/* <BranchMenu /> */}
                 </li>
                 <li>
-                    <Link to="#">Contact Us</Link>
-                </li>
-                <li>
-                    <Link to="#">Groups</Link>
+                    <Link to="/aboutus">About Us</Link>
                 </li>
                 <li>
                     <Link to="#">Contribute</Link>

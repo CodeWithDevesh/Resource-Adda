@@ -92,7 +92,7 @@ app.post(
         if (!req.file) {
             return res.status(400).send("No file uploaded.");
         }
-
+        console.log("trying to upload")
         // Extract the metadata from the request body
         const { branch, sem, subject, unit } = req.body;
 

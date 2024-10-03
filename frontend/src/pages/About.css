@@ -1,0 +1,66 @@
+.profile-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 2vh;
+}
+
+.aboutus{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-head{
+    font-size: 8vh;
+    margin: 2rem;
+    text-align: center;
+}
+
+.team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 2rem;
+    height: fit-content;
+    max-width: 80vw;
+}
+
+.res-inner-contact{
+    margin-left: 0;
+    width: 100%;
+}
+
+.res-inner-contact>img{
+    align-self: center;
+}
+
+.res-inner-contact>span{
+    font-size: 7vh;
+    align-self: center;
+}
+
+@media (max-width: 1000px){
+    .res-inner-contact{
+        font-size:larger;
+        width: 100%;
+    }
+}
+@media (max-width: 768px){
+    .contact-head{
+        font-size: 6vh;
+        margin: 1rem;
+    }
+
+    .res-inner-contact{
+        font-size:small;
+        width: 100%;
+        gap: 3vh;
+    }
+
+    .res-inner-contact span{
+        font-size: 4vh;
+    }
+}

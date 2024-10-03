@@ -6,6 +6,7 @@ const FolderList = ({
     selectedSubject,
     setSelectedSubject,
     setSelectedUnit,
+    setIsFolderListVisible,
 }) => {
     const [dropdownOpen, setDropdownOpen] = useState(null); // Manage dropdown state for each subject
 
@@ -37,8 +38,10 @@ const FolderList = ({
                         {dropdownOpen === subject && (
                             <select
                                 className="unit-dropdown hover-effect"
-                                onChange={(e) =>
+                                onChange={(e) =>{
                                     setSelectedUnit(e.target.value)
+                                    setIsFolderListVisible(false)
+                                }
                                 }
                                 defaultValue=""
                             >

@@ -1,25 +1,34 @@
+/* Basic reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Main layout */
 .file-explorer {
   display: flex;
-  min-height: 100vh;
-  justify-content: stretch;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .left-pane {
   width: 30%;
-  background-color: rgba(0, 0, 0, .75);
+  background-color: rgba(0, 0, 0, 0.75);
   border-right: 1px solid #ccc;
   border-top: 1px solid #ccc;
   padding: 20px;
+  transition: transform 0.3s ease; /* Smooth slide effect */
 }
 
 .right-pane {
   width: 70%;
   padding: 20px;
+  overflow-y: auto;
 }
 
 .folder-list {
   list-style-type: none;
-  margin-top: 10px;
 }
 
 .folder-item {
@@ -28,28 +37,13 @@
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-bottom: 10px;
-  background-color: transparent;
 }
-
-.subject {
-  font-weight: bold;
-}
-
-.unit-dropdown {
-  --hover-color: rgb(27, 255, 11);
-}
-
 
 .unit-dropdown {
   width: 100%;
   margin-top: 10px;
   padding: 5px;
   background-color: black;
-}
-
-.unit-dropdown option {
-  background-color: black;
-
 }
 
 .file-list {
@@ -59,33 +53,17 @@
 }
 
 .file-item {
-  /* margin-bottom: 10px; */
   padding: 10px 0;
   margin-bottom: -2px;
   border-bottom: white solid 2px;
-  display: flex;
-  justify-content: center;
 }
 
-.file-item:hover a{
-  color:var(--hover-color);
-}
-
-.file-item {
-  border-top: white solid 2px;
+.file-item:hover a {
+  color: var(--hover-color);
 }
 
 .file-item a {
   text-decoration: none;
-}
-
-.file-item a:hover {
-  text-decoration: underline;
-}
-
-.file-meta {
-  font-size: 12px;
-  color: #666;
 }
 
 .empty-box {
@@ -95,6 +73,52 @@
   margin-top: 20px;
 }
 
-@media (max-width: 768px){
-  
+
+.toggle-btn {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
+
+.toggle-btn:hover {
+  background-color: #2980b9;
+}
+
+
+@media (max-width: 1000px) {
+  .file-explorer {
+    flex-direction: column;
+  }
+
+  .left-pane {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+  }
+
+  .left-pane.visible {
+    transform: translateX(0);
+  }
+
+  .right-pane {
+    width: 100%;
+  }
+
+  .toggle-btn {
+    display: block; 
+  }
+}
+

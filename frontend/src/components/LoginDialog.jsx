@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "./Button";
 import axios from "axios";
+import { BASE_SERVER_URL } from "../constants";
 
 // Its css is defined in AdminPannel.css
 export default function LoginDialog({ setJwtToken }) {
@@ -10,7 +11,7 @@ export default function LoginDialog({ setJwtToken }) {
     const handleLogin = async () => {
         try {
             const res = await axios.post(
-                "http://localhost:3333/server/admin_login",
+            `${BASE_SERVER_URL}/admin_login`,
                 {
                     username,
                     password,

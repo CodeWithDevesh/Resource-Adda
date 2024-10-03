@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function FileList({ files, subject, unit }) {
-    console.log(files)
+    console.log(files);
     return (
         <div>
             <h2>

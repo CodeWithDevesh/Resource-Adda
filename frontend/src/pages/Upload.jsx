@@ -10,36 +10,85 @@ export default function Upload({ jwtToken }) {
     const [branchSem, setBranchSem] = useState({});
     const [data, setData] = useState({});
     const [uploading, setUploading] = useState(false);
-
+    const [selectedSubject, setSelectedSubject] = useState(null);
+    const [selectedUnit, setSelectedUnit] = useState(null);
     let branch, sem;
-    useEffect(() => {
+
+    const load = () => {
         if (!branchSem.branch || !branchSem.sem || uploading) return;
         branch = branchSem.branch;
         sem = branchSem.sem;
-        axios
-            .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
-            .then((res) => {
-                setData(res.data);
-            });
-    }, [branchSem, uploading]);
-    const [groupedBySubject, setGroupedBySubject] = useState({});
+        try {
+            axios
+                .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
+                .then((res) => {
+                    console.log("Got Files");
+                    setData(res.data);
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        } catch (e) {
+            alert("something went wrong");
+        }
+    };
+
     useEffect(() => {
-        if (!data.files) return;
-        setGroupedBySubject(
-            data.files.reduce((acc, file) => {
-                if (!acc[file.subject]) {
-                    acc[file.subject] = {};
-                }
-                if (!acc[file.subject][file.unit]) {
-                    acc[file.subject][file.unit] = [];
-                }
-                acc[file.subject][file.unit].push(file);
-                return acc;
-            }, {})
-        );
+        load();
+    }, [branchSem, uploading]);
+
+    const [groupedBySubject, setGroupedBySubject] = useState({});
+
+    useEffect(() => {
+        if (data.files) {
+            setGroupedBySubject(
+                data.files.reduce((acc, file) => {
+                    if (!acc[file.subject]) {
+                        acc[file.subject] = {};
+                    }
+                    if (!acc[file.subject][file.unit]) {
+                        acc[file.subject][file.unit] = [];
+                    }
+                    acc[file.subject][file.unit].push(file);
+                    return acc;
+                }, {})
+            );
+        }else setGroupedBySubject({})
+        console.log("Got Till here");
+        if (selectedSubject && selectedUnit) {
+            console.log(groupedBySubject[selectedSubject][selectedUnit]);
+            if (!groupedBySubject[selectedSubject][selectedUnit]) {
+                console.log("removing access");
+                setSelectedUnit(null);
+                setSelectedSubject(null);
+            }
+        }
+        console.log("Pta nhi kya hua");
     }, [data]);
-    const [selectedSubject, setSelectedSubject] = useState(null);
-    const [selectedUnit, setSelectedUnit] = useState(null);
+
+    const del = async (url) => {
+        try {
+            axios
+                .delete(`${BASE_SERVER_URL}/delete`, {
+                    headers: {
+                        Authorization: `Bearer ${jwtToken}`,
+                    },
+                    data: {
+                        fileUrl: url,
+                    },
+                })
+                .then((res) => {
+                    console.log("File deleted successfully:", res.data);
+                    load();
+                });
+        } catch (error) {
+            console.error(
+                "Error deleting file:",
+                error.response ? error.response.data : error.message
+            );
+        }
+    };
+
     return (
         <>
             {(!branchSem.branch || !branchSem.sem) && (
@@ -78,6 +127,7 @@ export default function Upload({ jwtToken }) {
                                     }
                                     subject={selectedSubject}
                                     unit={selectedUnit}
+                                    del={del}
                                 />
                             ) : (
                                 <div className="empty-box">
@@ -168,7 +218,9 @@ const Uploader = ({ branch, sem, jwtToken, setUploading }) => {
         }
     };
 
-    const cancel = () => {setUploading(false)};
+    const cancel = () => {
+        setUploading(false);
+    };
 
     return (
         <>

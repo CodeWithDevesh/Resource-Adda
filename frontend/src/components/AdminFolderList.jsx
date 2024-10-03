@@ -60,4 +60,4 @@ const AdminFolderList = ({
     );
 };
 
-export default AdminFolderList
+export default AdminFolderList;

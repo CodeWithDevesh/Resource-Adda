@@ -76,6 +76,17 @@
     transform: scale(1.2);
 }
 
+.admin-file-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+}
+
+.delete-btn{
+    font-size: .7em;
+}
+
 @media(max-width: 768px){
     .login-dialog div,
     .uploader-cont div{
@@ -93,3 +104,4 @@
         gap: 8px;
     }
 }
+

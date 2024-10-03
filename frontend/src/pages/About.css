@@ -13,6 +13,10 @@
     justify-content: center;
 }
 
+.intro{
+    max-width: 80vw;
+}
+
 .contact-head{
     font-size: 8vh;
     margin: 2rem;

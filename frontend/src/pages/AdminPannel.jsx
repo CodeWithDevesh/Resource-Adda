@@ -4,6 +4,7 @@ import "./AdminPannel.css";
 import AdminNavbar from "../components/AdminNavbar";
 import LoginDialog from "../components/LoginDialog";
 import Upload from "./Upload";
+import { BASE_SERVER_URL } from "../constants";
 
 export default function AdminPannel() {
     const [jwtToken, setJwtToken] = useState(localStorage.getItem("token"));
@@ -16,7 +17,7 @@ export default function AdminPannel() {
             setShowLogin(true);
         } else {
             axios
-                .get("http://localhost:3333/validate-token", {
+                .get(`${BASE_SERVER_URL}/validate-token`, {
                     headers: { Authorization: `Bearer ${jwtToken}` },
                 })
                 .then((res) => {

@@ -13,7 +13,6 @@ export default function fileexplorer() {
         axios
             .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
             .then((res) => {
-                console.log(res.data);
                 setData(res.data);
             });
     }, []);

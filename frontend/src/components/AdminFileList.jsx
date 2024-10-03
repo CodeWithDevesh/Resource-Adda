@@ -1,6 +1,7 @@
 import React from "react";
+import Button from "./Button";
 
-export default function FileList({ files, subject, unit }) {
+export default function AdminFileList({ files, subject, unit, del }) {
     console.log(files);
     return (
         <div>
@@ -9,7 +10,10 @@ export default function FileList({ files, subject, unit }) {
             </h2>
             <ul className="file-list">
                 {files.map((file) => (
-                    <li key={file._id} className="file-item hover-effect">
+                    <li
+                        key={file._id}
+                        className="file-item admin-file-item hover-effect"
+                    >
                         <a
                             href={file.fileUrl}
                             target="_blank"
@@ -17,6 +21,13 @@ export default function FileList({ files, subject, unit }) {
                         >
                             {file.fileName}
                         </a>
+                        <Button
+                            className={"delete-btn"}
+                            text={"Delete"}
+                            onClick={() => {
+                                del(file.fileUrl);
+                            }}
+                        />
                     </li>
                 ))}
             </ul>

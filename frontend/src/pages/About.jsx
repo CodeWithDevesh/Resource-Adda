@@ -49,11 +49,8 @@ export default function About() {
                     <img src={akshata} className="profile-photo" />
                     <span>Akshata Bakre</span>
                     <p>
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Nihil molestias soluta delectus iste voluptate
-                        dolorem recusandae perferendis adipisci qui deserunt
-                        doloremque consectetur odit saepe laudantium odio,
-                        cumque placeat, consequatur aliquam.
+                    Hey peers! I worked on the design and frontend of this website, which aims to provide a convenient platform for you to browse relevant study material for your semester exams.📚
+                    Leave your worries to us as the most of these resources are tried and tested, and have helped us score good. I hope you make the most of it!🙃
                     </p>
                     <p>
                         Email:{" "}

@@ -15,7 +15,7 @@ export default function About() {
                 Welcome to our platform, crafted by a team of dedicated students
                 who understand the pressures of college life. We built this
                 resource hub to simplify last-minute study prep, providing easy
-                access to essential study materials, notes, and more. Our team
+                access to essential study materials. Our team
                 has worked tirelessly to ensure that every subject, unit, and
                 branch has the resources you need, all in one place. This
                 platform is for students, by students—designed to help you

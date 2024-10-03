@@ -63,11 +63,7 @@ export default function About() {
                     <img src={akshat} className="profile-photo" />
                     <span>Akshat Mishra</span>
                     <p>
-                        Lorem, ipsum dolor sit amet consectetur adipisicing
-                        elit. Ratione vel mollitia incidunt quidem nesciunt
-                        consequatur facere iure aperiam impedit corrupti animi,
-                        eius adipisci fugit facilis pariatur eum eveniet
-                        reiciendis asperiores.
+                    Hello fellow learner! I’m a frontend developer who came up with the idea for this website and worked closely with my team to build it.👨🏻‍💻 I focused on making the site easy to use and visually appealing, bringing together design and development to turn our ideas into a working website.🙃
                     </p>
                     <p>
                         Email:{" "}

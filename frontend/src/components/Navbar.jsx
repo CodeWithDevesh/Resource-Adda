@@ -15,7 +15,7 @@ export default function Navbar() {
                 onClick={toggleMenu}
             ></div>
             <div>
-                <header>
+                <header className="nav-header">
                     <div className="logo">
                         <h1>ADDA</h1>
                     </div>

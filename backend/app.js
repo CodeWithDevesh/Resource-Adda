@@ -15,7 +15,7 @@ const clientOptions = { serverApi: { version: '1', strict: true, deprecationErro
 async function run() {
   try {
     // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
-    await mongoose.connect(uri, clientOptions);
+    await mongoose.connect(uri);
     await mongoose.connection.db.admin().command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
@@ -38,8 +38,8 @@ app.use(cors({
 }));
 
 app.use(express.static(path.join(__dirname, 'dist')))
-// app.use(express.urlencoded({ extended: false }))
-// app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
 
 // Set up Multer to handle file uploads in memory
@@ -65,7 +65,6 @@ function authenticateJWT(req, res, next) {
 
 app.get('/validate-token', (req, res) => {
   const token = req.headers.authorization.split(' ')[1];
-
   if (!token) {
     return res.status(401).send('No token provided');
   }
@@ -180,6 +179,23 @@ app.get('/server/files', async (req, res) => {
     console.error('Error fetching files from MongoDB:', error);
     res.status(500).send('Error retrieving files.');
   }
+})
+
+
+app.get("/server/subjects", async (req, res) => {
+  const { branch, sem } = req.query;
+  if (!branch || !sem) {
+    return res.status(400).send('Please provide both branch and sem.');
+  }
+
+  try {
+    const subjects = await Document.distinct("subject", { branch, sem });
+    res.json({subjects});
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: "Server error" });
+  }
+
 })
 
 

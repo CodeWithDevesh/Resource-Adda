@@ -1,190 +1,267 @@
-import React, { useState, useEffect } from "react";
+import React, { useDebugValue, useEffect } from "react";
+import { useState } from "react";
+import Button from "../components/Button";
 import axios from "axios";
-import "./Upload.css";
-import Button from "../components/Button"
+import { BASE_SERVER_URL } from "../constants";
+import AdminFileList from "../components/AdminFileList";
+import AdminFolderList from "../components/AdminFolderList";
 
-export default function Upload() {
-    const [branch, setBranch] = useState("");
-    const [unit, setUnit] = useState("");
-    const [sem, setSem] = useState("");
-    const [subject, setSubject] = useState("");
-    const [file, setFile] = useState(null);
-    const [showLogin, setShowLogin] = useState(false);
-    const [jwtToken, setJwtToken] = useState("");
+export default function Upload({ jwtToken }) {
+    const [branchSem, setBranchSem] = useState({});
+    const [data, setData] = useState({});
+    const [uploading, setUploading] = useState(false);
 
+    let branch, sem;
     useEffect(() => {
-        // Check if the JWT token is valid
-        if (!jwtToken) {
-            setShowLogin(true);
-        } else {
-            // Validate token with backend (optional)
-            axios
-                .get("http://localhost:3333/validate-token", {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                })
-                .then((res) => {
-                    // If token is valid, do nothing
-                    setShowLogin(false);
-                })
-                .catch((err) => {
-                    // If token is invalid, show login
-                    setShowLogin(true);
-                });
-        }
-    }, [jwtToken]);
+        if (!branchSem.branch || !branchSem.sem || uploading) return;
+        branch = branchSem.branch;
+        sem = branchSem.sem;
+        axios
+            .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
+            .then((res) => {
+                setData(res.data);
+            });
+    }, [branchSem, uploading]);
+    const [groupedBySubject, setGroupedBySubject] = useState({});
+    useEffect(() => {
+        if (!data.files) return;
+        setGroupedBySubject(
+            data.files.reduce((acc, file) => {
+                if (!acc[file.subject]) {
+                    acc[file.subject] = {};
+                }
+                if (!acc[file.subject][file.unit]) {
+                    acc[file.subject][file.unit] = [];
+                }
+                acc[file.subject][file.unit].push(file);
+                return acc;
+            }, {})
+        );
+    }, [data]);
+    const [selectedSubject, setSelectedSubject] = useState(null);
+    const [selectedUnit, setSelectedUnit] = useState(null);
+    return (
+        <>
+            {(!branchSem.branch || !branchSem.sem) && (
+                <Select setBranchSem={setBranchSem} />
+            )}
+            {uploading && (
+                <div className="admin-cont">
+                    <div className="admin-inner-cont">
+                        <Uploader
+                            branch={branchSem.branch}
+                            sem={branchSem.sem}
+                            jwtToken={jwtToken}
+                            setUploading={setUploading}
+                        />
+                    </div>
+                </div>
+            )}
+            {branchSem.branch && branchSem.sem && !uploading && (
+                <div className="upload">
+                    <div className="file-explorer">
+                        <div className="left-pane">
+                            <AdminFolderList
+                                groupedBySubject={groupedBySubject}
+                                selectedSubject={selectedSubject}
+                                setSelectedSubject={setSelectedSubject}
+                                setSelectedUnit={setSelectedUnit}
+                            />
+                        </div>
+                        <div className="right-pane">
+                            {selectedSubject && selectedUnit ? (
+                                <AdminFileList
+                                    files={
+                                        groupedBySubject[selectedSubject][
+                                            selectedUnit
+                                        ]
+                                    }
+                                    subject={selectedSubject}
+                                    unit={selectedUnit}
+                                />
+                            ) : (
+                                <div className="empty-box">
+                                    Select a folder to see files
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <AddFileBtn setUploading={setUploading} />
+                </div>
+            )}
+        </>
+    );
+}
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
+const AddFileBtn = ({ setUploading }) => {
+    return (
+        <>
+            <div
+                onClick={() => {
+                    setUploading(true);
+                }}
+                className="add-file-btn hover-effect"
+            >
+                <svg
+                    enableBackground="new 0 0 50 50"
+                    height="50px"
+                    id="Layer_1"
+                    version="1.1"
+                    viewBox="0 0 50 50"
+                    width="50px"
+                >
+                    <rect fill="none" height="50" width="50" />
+                    <line
+                        fill="none"
+                        stroke="#FFF"
+                        strokeMiterlimit="10"
+                        strokeWidth="4"
+                        x1="9"
+                        x2="41"
+                        y1="25"
+                        y2="25"
+                    />
+                    <line
+                        fill="none"
+                        stroke="#FFF"
+                        strokeMiterlimit="10"
+                        strokeWidth="4"
+                        x1="25"
+                        x2="25"
+                        y1="9"
+                        y2="41"
+                    />
+                </svg>
+            </div>
+        </>
+    );
+};
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+const Uploader = ({ branch, sem, jwtToken, setUploading }) => {
+    const [subject, setSubject] = useState("");
+    const [unit, setUnit] = useState("");
+    const [file, setFile] = useState(null);
 
-        if (!file) {
-            alert("Please select a file");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("branch", branch);
-        formData.append("unit", unit);
-        formData.append("sem", sem);
-        formData.append("subject", subject);
-        formData.append("file", file);
+    const submit = () => {
+        if (!subject || !unit || !file || !branch || !sem) return;
 
         try {
-            const res = await axios.post(
-                "http://localhost:3333/server/upload",
-                formData,
-                {
-                    headers: { Authorization: `Bearer ${jwtToken}` },
-                }
-            );
-            console.log(res.data);
-            alert("File uploaded successfully");
-        } catch (error) {
-            console.error("Error uploading file", error);
+            const formData = new FormData();
+            formData.append("branch", branch);
+            formData.append("sem", sem);
+            formData.append("subject", subject);
+            formData.append("unit", unit);
+            formData.append("file", file);
+            axios
+                .post(`${BASE_SERVER_URL}/upload`, formData, {
+                    headers: {
+                        Authorization: `Bearer ${jwtToken}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((res) => {
+                    console.log(res);
+                    alert("Uploaded Successfully");
+                });
+        } catch {
+            alert("Something Went Wrong");
         }
+    };
+
+    const cancel = () => {setUploading(false)};
+
+    return (
+        <>
+            <div className="uploader-cont">
+                <div className="subject-cont">
+                    <label htmlFor="subject">Subject : </label>
+                    <input
+                        onChange={(e) => {
+                            setSubject(e.target.value);
+                        }}
+                        type="text"
+                        id="subject"
+                    />
+                </div>
+                <div className="unit-cont">
+                    <label htmlFor="unit">Unit : </label>
+                    <input
+                        onChange={(e) => {
+                            setUnit(e.target.value);
+                        }}
+                        type="text"
+                        id="unit"
+                    />
+                </div>
+                <div className="file-cont">
+                    <label htmlFor="file">File : </label>
+                    <input
+                        onChange={(e) => {
+                            setFile(e.target.files[0]);
+                        }}
+                        type="file"
+                        id="file"
+                    />
+                </div>
+                <div className="btn-cont">
+                    <Button text={"Upload"} onClick={submit} />
+                    <Button text={"Go Back"} onClick={cancel} />
+                </div>
+            </div>
+        </>
+    );
+};
+
+const Select = ({ setBranchSem }) => {
+    const [branch, setBranch] = useState("");
+    const [sem, setSem] = useState("");
+
+    const setItems = () => {
+        if (!branch || !sem) return;
+        setBranchSem({ branch, sem });
     };
 
     return (
         <>
             <div className="res">
                 <div className="res-inner">
-                    {showLogin && <LoginDialog setJwtToken={setJwtToken} />}
-                    {!showLogin && (
-                        <div>
-                            <h1>Upload Notes</h1>
-                            <form onSubmit={handleSubmit}>
-                                <div>
-                                    <label>Branch:</label>
-                                    <input
-                                        type="text"
-                                        value={branch}
-                                        onChange={(e) =>
-                                            setBranch(e.target.value)
-                                        }
-                                        // style="text-transform:uppercase"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label>Unit:</label>
-                                    <input
-                                        type="text"
-                                        value={unit}
-                                        onChange={(e) =>
-                                            setUnit(e.target.value)
-                                        }
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label>Semester:</label>
-                                    <input
-                                        type="number"
-                                        value={sem}
-                                        max='8'
-                                        min='1'
-                                        step='1'
-                                        onChange={(e) =>
-                                            setSem(e.target.value)
-                                        }
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label>Subject:</label>
-                                    <input
-                                        type="text"
-                                        value={subject}
-                                        onChange={(e) =>
-                                            setSubject(e.target.value)
-                                        }
-                                        // style="text-transform:uppercase"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label>File:</label>
-                                    <input
-                                        type="file"
-                                        onChange={handleFileChange}
-                                        required
-                                    />
-                                </div>
-                                <Button type="submit" text="Upload"/>
-                            </form>
-                        </div>
-                    )}
+                    <div className="br">
+                        <label htmlFor="branch">Branch ??</label>
+                        <select
+                            value={branch}
+                            onChange={(e) => setBranch(e.target.value)}
+                            name="Branch"
+                            id="branch"
+                        >
+                            <option value="" disabled hidden>
+                                Select Branch
+                            </option>
+                            <option value="IT">IT</option>
+                            <option value="CSE">CSE</option>
+                            <option value="ECE">ECE</option>
+                            <option value="Electrical">Electrical</option>
+                        </select>
+                    </div>
+                    <div className="sem">
+                        <label htmlFor="sem">Semester ??</label>
+                        <select
+                            value={sem}
+                            onChange={(e) => setSem(e.target.value)}
+                            name="sem"
+                            id="sem"
+                        >
+                            <option value="" disabled hidden>
+                                Select Semester
+                            </option>
+                            <option value="1">Sem-1</option>
+                            <option value="2">Sem-2</option>
+                            <option value="3">Sem-3</option>
+                            <option value="4">Sem-4</option>
+                        </select>
+                    </div>
+                    <Button className="go-btn" text={"GO"} onClick={setItems} />
                 </div>
             </div>
         </>
-    );
-}
-
-const LoginDialog = ({ setJwtToken }) => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-
-    const handleLogin = async () => {
-        try {
-            const res = await axios.post(
-                "http://localhost:3333/server/admin_login",
-                {
-                    username,
-                    password,
-                }
-            );
-            const { token } = res.data;
-            setJwtToken(token); // Save token in parent state
-            alert("Login successful");
-        } catch (error) {
-            console.error("Login failed", error);
-            alert("Invalid credentials");
-        }
-    };
-
-    return (
-        <div className="login-dialog">
-            <h2>Login</h2>
-            <div>
-                <label>Username:</label>
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-            </div>
-            <div>
-                <label>Password:</label>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <Button text={"Login"} onClick={handleLogin}/>
-        </div>
     );
 };

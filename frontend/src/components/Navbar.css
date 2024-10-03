@@ -1,4 +1,4 @@
-header {
+.nav-header {
     display: flex;
     position: sticky;
     justify-content: space-between;
@@ -30,6 +30,12 @@ nav ul li {
 nav ul li a {
     text-decoration: underline;
     font-size: 1em;
+}
+
+nav ul li label {
+    text-decoration: underline;
+    font-size: 1em;
+    cursor: pointer;
 }
 
 .hamburger{

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function FileList({ files, subject, unit }) {
+export default function AdminFileList({ files, subject, unit }) {
     console.log(files)
     return (
         <div>

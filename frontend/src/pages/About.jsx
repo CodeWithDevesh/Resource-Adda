@@ -11,16 +11,16 @@ export default function About() {
             <span className="contact-head">About Us</span>
 
             <section className="team-container res">
-            <div className="res-inner res-inner-contact">
-                Welcome to our platform, crafted by a team of dedicated students
-                who understand the pressures of college life. We built this
-                resource hub to simplify last-minute study prep, providing easy
-                access to essential study materials. Our team
-                has worked tirelessly to ensure that every subject, unit, and
-                branch has the resources you need, all in one place. This
-                platform is for students, by students—designed to help you
-                succeed when it matters most!
-            </div>
+                <div className="res-inner res-inner-contact">
+                    Welcome to our platform, crafted by a team of dedicated
+                    students who understand the pressures of college life. We
+                    built this resource hub to simplify last-minute study prep,
+                    providing easy access to essential study materials. Our team
+                    has worked tirelessly to ensure that every subject, unit,
+                    and branch has the resources you need, all in one place.
+                    This platform is for students, by students—designed to help
+                    you succeed when it matters most!
+                </div>
             </section>
 
             <span className="contact-head">Team</span>
@@ -30,10 +30,12 @@ export default function About() {
                     <img src={devesh} className="profile-photo" />
                     <span>Devesh Agarwal</span>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Iusto nemo hic dignissimos eum quidem mollitia magni a
-                        laborum, unde excepturi, laudantium consequatur
-                        accusamus sequi autem porro rem ab. Soluta, laborum.
+                        As the lead developer of this website, I’ve worked on
+                        both the frontend and backend. Honestly, my CPI and I
+                        don’t exactly go hand in hand 🤧, which is why I wanted
+                        to create this platform to help others improve their's.
+                        Hopefully, this makes your academic journey a little
+                        easier!😉
                     </p>
                     <p>
                         Email:{" "}

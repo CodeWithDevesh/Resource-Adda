@@ -17,6 +17,7 @@ export default function fileexplorer() {
             });
     }, []);
     const [groupedBySubject, setGroupedBySubject] = useState({});
+    const [isFolderListVisible, setIsFolderListVisible] = useState(false);
 
     useEffect(() => {
         if (!data.files) return;
@@ -48,15 +49,25 @@ export default function fileexplorer() {
     
     const [selectedSubject, setSelectedSubject] = useState(null);
     const [selectedUnit, setSelectedUnit] = useState(null);
+    const toggleFolderList = () => {
+        setIsFolderListVisible(!isFolderListVisible);
+    };
+
 
     return (
         <div className="file-explorer">
-            <div className="left-pane">
+
+<button className="toggle-btn" onClick={toggleFolderList}>
+                {isFolderListVisible ? 'Hide Folders' : 'Show Folders'}
+            </button>
+
+            <div className={`left-pane ${isFolderListVisible ? 'visible' : ''}`}>
                 <FolderList
                     groupedBySubject={groupedBySubject}
                     selectedSubject={selectedSubject}
                     setSelectedSubject={setSelectedSubject}
                     setSelectedUnit={setSelectedUnit}
+                    setIsFolderListVisible={setIsFolderListVisible}
                 />
             </div>
             <div className="right-pane">

@@ -3,24 +3,24 @@ import "./Navbar.css";
 // import "./AdminNavbar.css"
 import { useState } from "react";
 import { Link } from "react-router-dom";
-export default function AdminNavbar({setView}) {
+export default function AdminNavbar({ setView }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    
+
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
     const goToHome = () => {
-        setView('home')
-    }
+        setView("home");
+    };
 
     const goToUpload = () => {
-        setView('upload')
-    }
+        setView("upload");
+    };
 
     const goToRequests = () => {
-        setView('requests')
-    }
+        setView("requests");
+    };
 
     return (
         <>
@@ -36,17 +36,33 @@ export default function AdminNavbar({setView}) {
                     <nav>
                         <ul>
                             <li>
-                                {/* <Link className="hover-effect" to="/admin">Admin Home</Link> */}
-                                <label onClick={goToHome} className="hover-effect">Admin Home</label>
-                            </li>
-                            <li >
-                                <label onClick={goToUpload} className="hover-effect">Upload</label>
-                            </li>
-                            <li>
-                                <label onClick={goToRequests} className="hover-effect">Requests</label>
+                                <label
+                                    onClick={goToHome}
+                                    className="hover-effect"
+                                >
+                                    Admin Home
+                                </label>
                             </li>
                             <li>
-                                <Link className="hover-effect" to="/">Client Panel</Link>
+                                <label
+                                    onClick={goToUpload}
+                                    className="hover-effect"
+                                >
+                                    Upload
+                                </label>
+                            </li>
+                            <li>
+                                <label
+                                    onClick={goToRequests}
+                                    className="hover-effect"
+                                >
+                                    Requests
+                                </label>
+                            </li>
+                            <li>
+                                <Link className="hover-effect" to="/">
+                                    Client Panel
+                                </Link>
                             </li>
                         </ul>
                         <div
@@ -91,7 +107,7 @@ export default function AdminNavbar({setView}) {
                         }
                         onClick={toggleMenu}
                     >
-                        <HamburgerMenu />
+                        <HamburgerMenu goToHome={goToHome} goToUpload={goToUpload} goToRequests={goToRequests}/>
                     </div>
                 </header>
             </div>
@@ -99,24 +115,29 @@ export default function AdminNavbar({setView}) {
     );
 }
 
-function HamburgerMenu() {
+function HamburgerMenu({goToHome, goToUpload, goToRequests}) {
     return (
         <>
             <ul>
                 <li>
-                    <Link to="/">Home</Link>
-                </li>
-                <li className="resources">
-                    <Link to="/resources">Resources</Link>
-                </li>
-                <li>
-                    <Link to="#">Contact Us</Link>
+                    <label onClick={goToHome} className="hover-effect">
+                        Admin Home
+                    </label>
                 </li>
                 <li>
-                    <Link to="#">Groups</Link>
+                    <label onClick={goToUpload} className="hover-effect">
+                        Upload
+                    </label>
                 </li>
                 <li>
-                    <Link to="#">Contribute</Link>
+                    <label onClick={goToRequests} className="hover-effect">
+                        Requests
+                    </label>
+                </li>
+                <li>
+                    <Link className="hover-effect" to="/">
+                        Client Panel
+                    </Link>
                 </li>
             </ul>
         </>

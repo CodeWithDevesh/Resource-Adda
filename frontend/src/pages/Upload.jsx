@@ -57,6 +57,10 @@ export default function Upload({ jwtToken }) {
         if (selectedSubject && selectedUnit) {
             try {
                 const b = a[selectedSubject][selectedUnit];
+                if (!b) {
+                    setSelectedSubject(null);
+                    setSelectedUnit(null);
+                }
             } catch {
                 setSelectedSubject(null);
                 setSelectedUnit(null);

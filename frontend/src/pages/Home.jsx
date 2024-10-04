@@ -1,9 +1,8 @@
 import React from "react";
 import "./Home.css";
-import Navbar from "../components/Navbar";
-import Backdrop from "../components/Backdrop";
-import { Link } from "react-router-dom";
 import NavigateButton from "../components/NavigateButton";
+import character from "../assets/character.png"
+
 
 export function Home() {
     return (
@@ -19,6 +18,7 @@ export function Home() {
                                 <span>Notes nhi milre ??</span>
                             </div>
                         </div>
+                        <img className="char" src={character} alt="" />
                         <NavigateButton className="res-btn" text={"Get Study Material"} path={"/resources"}/>
                     </div>
                     <div className="topper-sec">

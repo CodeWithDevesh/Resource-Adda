@@ -10,6 +10,7 @@ import SuperAdmin from "./pages/SuperAdmin";
 import Page404 from "./pages/Page404";
 import AdminPannel from "./pages/AdminPannel";
 import About from "./pages/About";
+import Contribute from "./pages/Contribute";
 
 function App() {
     return (
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/groups" element={<Grouops />} />
                     <Route path="/addAdmin" element={<SuperAdmin />} />
                     <Route path="/admin" element={<AdminPannel />} />
+                    <Route path="/contribute" element={<Contribute />} />
                     <Route path="*" element={<Page404 />} />
                 </Routes>
             </BrowserRouter>

@@ -1,0 +1,26 @@
+.contribute{
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding-top: 1rem;
+    max-width: 90vw;
+    margin: auto;
+}
+
+.contri-form-cont{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.contri-head{
+    font-size: 3rem;
+}
+
+.contribute .res-inner{
+}

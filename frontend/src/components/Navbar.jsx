@@ -31,7 +31,7 @@ export default function Navbar() {
                                 <Link className="hover-effect" to="/aboutus">About Us</Link>
                             </li>
                             <li>
-                                <Link className="hover-effect" to="#">Contribute</Link>
+                                <Link className="hover-effect" to="/contribute">Contribute</Link>
                             </li>
                         </ul>
                         <div
@@ -179,7 +179,7 @@ function HamburgerMenu() {
                     <Link to="/aboutus">About Us</Link>
                 </li>
                 <li>
-                    <Link to="#">Contribute</Link>
+                    <Link to="/contribute">Contribute</Link>
                 </li>
             </ul>
         </>

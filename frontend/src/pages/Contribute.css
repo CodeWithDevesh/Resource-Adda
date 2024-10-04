@@ -9,6 +9,8 @@
     margin: auto;
 }
 
+
+
 .contri-form-cont{
     flex-grow: 1;
     display: flex;
@@ -23,4 +25,5 @@
 }
 
 .contribute .res-inner{
+    margin: 0;
 }

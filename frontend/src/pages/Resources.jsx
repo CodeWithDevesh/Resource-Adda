@@ -12,7 +12,7 @@ export default function Resources() {
         else
             setRedirect("")
     }, [branch, sem])
-
+    
     return (
         <>
             <div className="res">

@@ -3,12 +3,12 @@ import "./fileexplorer.css";
 import FolderList from "./FolderList";
 import FileList from "./FileList";
 import axios from "axios";
-import {useParams} from 'react-router-dom'
-import {BASE_SERVER_URL} from './constants'
+import { useParams } from "react-router-dom";
+import { BASE_SERVER_URL } from "./constants";
 
 export default function fileexplorer() {
     const [data, setData] = useState({});
-    const {branch, sem} = useParams()
+    const { branch, sem } = useParams();
     useEffect(() => {
         axios
             .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
@@ -46,22 +46,22 @@ export default function fileexplorer() {
     //     acc[file.subject][file.unit].push(file);
     //     return acc;
     // }, {});
-    
+
     const [selectedSubject, setSelectedSubject] = useState(null);
     const [selectedUnit, setSelectedUnit] = useState(null);
     const toggleFolderList = () => {
         setIsFolderListVisible(!isFolderListVisible);
     };
 
-
     return (
         <div className="file-explorer">
-
-<button className="toggle-btn" onClick={toggleFolderList}>
-                {isFolderListVisible ? 'Hide Folders' : 'Show Folders'}
+            <button className="toggle-btn" onClick={toggleFolderList}>
+                {isFolderListVisible ? "Hide Folders" : "Show Folders"}
             </button>
 
-            <div className={`left-pane ${isFolderListVisible ? 'visible' : ''}`}>
+            <div
+                className={`left-pane ${isFolderListVisible ? "visible" : ""}`}
+            >
                 <FolderList
                     groupedBySubject={groupedBySubject}
                     selectedSubject={selectedSubject}

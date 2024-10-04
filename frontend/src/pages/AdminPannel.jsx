@@ -7,8 +7,8 @@ import Upload from "./Upload";
 import { BASE_SERVER_URL } from "../constants";
 
 export default function AdminPannel() {
-    const [jwtToken, setJwtToken] = useState(localStorage.getItem("token"));
-    const [showLogin, setShowLogin] = useState(true);
+    const [jwtToken, setJwtToken] = useState();
+    const [showLogin, setShowLogin] = useState(false);
     const [view, setView] = useState("home");
 
     // Validate JWT Token and show login screen if invalid
@@ -30,7 +30,6 @@ export default function AdminPannel() {
     };
 
     useEffect(validateToken, [jwtToken, view]);
-
     return (
         <>
             <AdminNavbar setView={setView} />
@@ -38,7 +37,7 @@ export default function AdminPannel() {
             {!showLogin && (
                 <div>
                     {view == "home" && <AdminHome />}
-                    {view == "upload" && <Upload jwtToken={jwtToken}/>}
+                    {view == "upload" && <Upload jwtToken={jwtToken} />}
                     {view == "requests" && <Requests />}
                 </div>
             )}
@@ -53,7 +52,6 @@ const AdminHome = () => {
         </div>
     );
 };
-
 
 const Requests = () => {
     return <>Requests</>;

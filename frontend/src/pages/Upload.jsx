@@ -12,6 +12,7 @@ export default function Upload({ jwtToken }) {
     const [uploading, setUploading] = useState(false);
     const [selectedSubject, setSelectedSubject] = useState(null);
     const [selectedUnit, setSelectedUnit] = useState(null);
+    const [isFolderListVisible, setIsFolderListVisible] = useState(false);
     let branch, sem;
 
     const load = () => {
@@ -40,31 +41,31 @@ export default function Upload({ jwtToken }) {
     const [groupedBySubject, setGroupedBySubject] = useState({});
 
     useEffect(() => {
+        let a;
         if (data.files) {
-            setGroupedBySubject(
-                data.files.reduce((acc, file) => {
-                    if (!acc[file.subject]) {
-                        acc[file.subject] = {};
-                    }
-                    if (!acc[file.subject][file.unit]) {
-                        acc[file.subject][file.unit] = [];
-                    }
-                    acc[file.subject][file.unit].push(file);
-                    return acc;
-                }, {})
-            );
-        }else setGroupedBySubject({})
-        console.log("Got Till here");
+            a = data.files.reduce((acc, file) => {
+                if (!acc[file.subject]) {
+                    acc[file.subject] = {};
+                }
+                if (!acc[file.subject][file.unit]) {
+                    acc[file.subject][file.unit] = [];
+                }
+                acc[file.subject][file.unit].push(file);
+                return acc;
+            }, {});
+        } else a = {};
         if (selectedSubject && selectedUnit) {
-            console.log(groupedBySubject[selectedSubject][selectedUnit]);
-            if (!groupedBySubject[selectedSubject][selectedUnit]) {
-                console.log("removing access");
-                setSelectedUnit(null);
+            try {
+                const b = a[selectedSubject][selectedUnit];
+            } catch {
                 setSelectedSubject(null);
+                setSelectedUnit(null);
             }
         }
-        console.log("Pta nhi kya hua");
+        setGroupedBySubject(a);
     }, [data]);
+
+    useEffect(() => {}, [groupedBySubject]);
 
     const del = async (url) => {
         try {
@@ -86,7 +87,13 @@ export default function Upload({ jwtToken }) {
                 "Error deleting file:",
                 error.response ? error.response.data : error.message
             );
+        } finally {
+            load();
         }
+    };
+
+    const toggleFolderList = () => {
+        setIsFolderListVisible(!isFolderListVisible);
     };
 
     return (
@@ -109,7 +116,19 @@ export default function Upload({ jwtToken }) {
             {branchSem.branch && branchSem.sem && !uploading && (
                 <div className="upload">
                     <div className="file-explorer">
-                        <div className="left-pane">
+                        <button
+                            className="toggle-btn"
+                            onClick={toggleFolderList}
+                        >
+                            {isFolderListVisible
+                                ? "Hide Folders"
+                                : "Show Folders"}
+                        </button>
+                        <div
+                            className={`left-pane ${
+                                isFolderListVisible ? "visible" : ""
+                            }`}
+                        >
                             <AdminFolderList
                                 groupedBySubject={groupedBySubject}
                                 selectedSubject={selectedSubject}

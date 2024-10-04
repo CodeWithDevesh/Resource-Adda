@@ -68,7 +68,7 @@ function authenticateJWT(req, res, next) {
     });
 }
 
-app.get("/validate-token", (req, res) => {
+app.get("/server/validate-token", (req, res) => {
     const token = req.headers.authorization.split(" ")[1];
     if (!token) {
         return res.status(401).send("No token provided");
@@ -78,7 +78,6 @@ app.get("/validate-token", (req, res) => {
         if (err) {
             return res.status(403).send("Invalid token");
         }
-
         res.send("Token is valid");
     });
 });

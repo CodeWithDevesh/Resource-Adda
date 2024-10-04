@@ -20,7 +20,7 @@ const AdminFolderList = ({
 
     return (
         <div>
-            <h2>Subjects</h2>
+            <h2 className="folder-list-header">Subjects</h2>
             <ul className="folder-list">
                 {Object.keys(groupedBySubject).map((subject, idx) => (
                     <li key={idx} className="folder-item hover-effect">

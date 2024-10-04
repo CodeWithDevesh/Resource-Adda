@@ -49,8 +49,12 @@ export default function About() {
                     <img src={akshata} className="profile-photo" />
                     <span>Akshata Bakre</span>
                     <p>
-                    Hey peers! I worked on the design and frontend of this website, which aims to provide a convenient platform for you to browse relevant study material for your semester exams.📚
-                    Leave your worries to us as the most of these resources are tried and tested, and have helped us score good. I hope you make the most of it!🙃
+                        Hey peers! I worked on the design and frontend of this
+                        website, which aims to provide a convenient platform for
+                        you to browse relevant study material for your semester
+                        exams.📚 Leave your worries to us as the most of these
+                        resources are tried and tested, and have helped us score
+                        good. I hope you make the most of it!🙃
                     </p>
                     <p>
                         Email:{" "}
@@ -63,7 +67,12 @@ export default function About() {
                     <img src={akshat} className="profile-photo" />
                     <span>Akshat Mishra</span>
                     <p>
-                    Hello fellow learner! I’m a frontend developer who came up with the idea for this website and worked closely with my team to build it.👨🏻‍💻 I focused on making the site easy to use and visually appealing, bringing together design and development to turn our ideas into a working website.🙃
+                        Hello fellow learner! I’m a frontend developer who came
+                        up with the idea for this website and worked closely
+                        with my team to build it.👨🏻‍💻 I focused on making the site
+                        easy to use and visually appealing, bringing together
+                        design and development to turn our ideas into a working
+                        website.🙃
                     </p>
                     <p>
                         Email:{" "}
@@ -76,11 +85,13 @@ export default function About() {
                     <img src={divyansh} className="profile-photo" />
                     <span>Divyansh Sharma</span>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Aut illum placeat, alias beatae aliquam laboriosam
-                        fuga repellendus, expedita aliquid maxime iste in
-                        nostrum reiciendis obcaecati et repellat. Quia, laborum
-                        nesciunt.
+                        As part of the project, I worked on developing a website
+                        where I contributed to making it responsive across
+                        different devices. I was involved in both designing and
+                        creating webpages, ensuring the website was not only
+                        visually appealing but also fully functional. This
+                        project allowed me to enhance my skills in web design,
+                        responsiveness, and functionality.
                     </p>
                     <p>
                         Email:{" "}

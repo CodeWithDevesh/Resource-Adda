@@ -44,6 +44,14 @@ export default function Contribute() {
                             <option value="4">Sem-4</option>
                         </select>
                     </div>
+                    <div className="subject">
+                        <label htmlFor="subject">Subject ??</label>
+                        <input type="text" id="subject"/>
+                    </div>
+                    <div className="unit">
+                        <label htmlFor="unit">Unit ??</label>
+                        <input type="text" id="unit"/>
+                    </div>
                     </form>
                 </div>
             </div>

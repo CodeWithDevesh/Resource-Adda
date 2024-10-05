@@ -18,7 +18,6 @@ export function Home() {
                                 <span>Notes nhi milre ??</span>
                             </div>
                         </div>
-                        <img className="char" src={character} alt="" />
                         <NavigateButton className="res-btn" text={"Get Study Material"} path={"/resources"}/>
                     </div>
                     <div className="topper-sec">

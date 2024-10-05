@@ -4,10 +4,11 @@ import "./AdminPannel.css";
 import AdminNavbar from "../components/AdminNavbar";
 import LoginDialog from "../components/LoginDialog";
 import Upload from "./Upload";
+import Requests from "./Requests";
 import { BASE_SERVER_URL } from "../constants";
 
 export default function AdminPannel() {
-    const [jwtToken, setJwtToken] = useState();
+    const [jwtToken, setJwtToken] = useState(localStorage.getItem('token'));
     const [showLogin, setShowLogin] = useState(false);
     const [view, setView] = useState("home");
 
@@ -51,8 +52,4 @@ const AdminHome = () => {
             <div className="admin-inner-cont">Admin Panel</div>
         </div>
     );
-};
-
-const Requests = () => {
-    return <>Requests</>;
 };

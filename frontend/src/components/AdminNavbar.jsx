@@ -31,7 +31,7 @@ export default function AdminNavbar({ setView }) {
             <div>
                 <header className="admin-nav-header nav-header">
                     <div className="logo">
-                        <h1>ADDA</h1>
+                        <h1>Resource ADDA</h1>
                     </div>
                     <nav>
                         <ul>

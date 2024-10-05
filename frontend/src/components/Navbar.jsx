@@ -17,7 +17,7 @@ export default function Navbar() {
             <div>
                 <header className="nav-header">
                     <div className="logo">
-                        <h1>ADDA</h1>
+                        <h1>Resource ADDA</h1>
                     </div>
                     <nav>
                         <ul>
@@ -84,86 +84,6 @@ export default function Navbar() {
     );
 }
 
-// function BranchMenu() {
-//     return (
-//         <>
-//             <div className="branch-cont">
-//                 <ul>
-//                     <li>
-//                         <div className="branch">IT</div>
-//                         <SemMenu branch="IT" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">CSE</div>
-//                         <SemMenu branch="CSE" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">ECE</div>
-//                         <SemMenu branch="ECE" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">Electrical</div>
-//                         <SemMenu branch="Electrical" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">Metalurgy</div>
-//                         <SemMenu branch="Metalurgy" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">Mechanical</div>
-//                         <SemMenu branch="Mechanical" style={{ top: "-40%" }} />
-//                     </li>
-//                     <li>
-//                         <div className="branch">Mining</div>
-//                         <SemMenu branch="Mining" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">BioTechnology</div>
-//                         <SemMenu branch="BioTechnology" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">BioMedical</div>
-//                         <SemMenu branch="BioMedical" />
-//                     </li>
-//                 </ul>
-//             </div>
-//         </>
-//     );
-// }
-
-// function SemMenu({ branch }) {
-//     return (
-//         <div className="sem-cont">
-//             <ul>
-//                 <li>
-//                     <Link to={"/resources/" + branch + "/1"}>Sem-1</Link>
-//                 </li>
-//                 <li>
-//                     <Link to={"/resources/" + branch + "/2"}>Sem-2</Link>
-//                 </li>
-//                 <li>
-//                     <Link to={"/resources/" + branch + "/3"}>Sem-3</Link>
-//                 </li>
-//                 <li>
-//                     <Link to={"/resources/" + branch + "/4"}>Sem-4</Link>
-//                 </li>
-//                 <li>
-//                     <Link to={"/resources/" + branch + "/5"}>Sem-5</Link>
-//                 </li>
-//                 <li>
-//                     <Link to={"/resources/" + branch + "/6"}>Sem-6</Link>
-//                 </li>
-//                 <li>
-//                     <Link to={"/resources/" + branch + "/7"}>Sem-7</Link>
-//                 </li>
-//                 <li>
-//                     <Link to={"/resources/" + branch + "/8"}>Sem-8</Link>
-//                 </li>
-//             </ul>
-//         </div>
-//     );
-// }
-
 function HamburgerMenu() {
     return (
         <>
@@ -185,50 +105,3 @@ function HamburgerMenu() {
         </>
     );
 }
-
-// function HamburgerBranchMenu() {
-//     return (
-//         <>
-//             <div className="hamburger-branch-cont">
-//                 <ul>
-//                     <li>
-//                         <div className="branch">IT</div>
-//                         <SemMenu branch="IT" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">CSE</div>
-//                         <SemMenu branch="CSE" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">ECE</div>
-//                         <SemMenu branch="ECE" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">Electrical</div>
-//                         <SemMenu branch="Electrical" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">Metalurgy</div>
-//                         <SemMenu branch="Metalurgy" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">Mechanical</div>
-//                         <SemMenu branch="Mechanical" style={{ top: "-40%" }} />
-//                     </li>
-//                     <li>
-//                         <div className="branch">Mining</div>
-//                         <SemMenu branch="Mining" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">BioTechnology</div>
-//                         <SemMenu branch="BioTechnology" />
-//                     </li>
-//                     <li>
-//                         <div className="branch">BioMedical</div>
-//                         <SemMenu branch="BioMedical" />
-//                     </li>
-//                 </ul>
-//             </div>
-//         </>
-//     );
-// }

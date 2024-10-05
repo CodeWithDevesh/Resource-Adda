@@ -6,6 +6,7 @@ const { v4: uuidV4 } = require("uuid");
 const path = require("path");
 const Document = require("./document");
 const adminDoc = require("./admin");
+const Contribution = require("./contrbution");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -44,12 +45,13 @@ app.use(
 );
 
 app.use(express.static(path.join(__dirname, "dist")));
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+app.use(express.urlencoded({limit:'200mb', extended: false }));
+app.use(express.json({limit: '200mb'}));
 
 // Set up Multer to handle file uploads in memory
 const upload = multer({
     storage: multer.memoryStorage(), // Store file in memory before uploading
+    limits: {fileSize: 200 * 1024 * 1024}
 });
 
 // The middleware for authentication of admins
@@ -91,7 +93,6 @@ app.post(
         if (!req.file) {
             return res.status(400).send("No file uploaded.");
         }
-        console.log("trying to upload")
         // Extract the metadata from the request body
         const { branch, sem, subject, unit } = req.body;
 
@@ -152,6 +153,15 @@ app.post(
             } catch (error) {
                 console.error("Error saving to MongoDB:", error);
                 res.status(500).send("Error saving file metadata.");
+                try {
+                    const bucket = storage.bucket(bucketName);
+                    const file = bucket.file(blob.name);
+
+                    await file.delete();
+                    console.log("Deleted the uploaded file");
+                } catch {
+                    console.log("Failed to delete the uploaded file");
+                }
             }
         });
 
@@ -282,6 +292,79 @@ app.post("/server/addAdmin", async (req, res) => {
         return;
     }
     res.sendStatus(201);
+});
+
+app.post("/server/contribute/", upload.single("file"), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).send("No file uploaded.");
+    }
+    const { branch, sem, subject, unit, email } = req.body;
+
+    if (!branch || !sem || !subject || !unit || !email) {
+        return res
+            .status(400)
+            .send("Missing metadata: branch, sem, subject or unit.");
+    }
+
+    // Set up Google Cloud Storage file upload
+    const extension = path.extname(req.file.originalname);
+    const id = uuidV4() + extension;
+    const blob = bucket.file(id);
+    const blobStream = blob.createWriteStream({
+        resumable: false,
+    });
+
+    // Handle stream errors
+    blobStream.on("error", (err) => {
+        console.error(err);
+        res.status(500).send("Unable to upload file, something went wrong.");
+    });
+
+    // On successful upload, send back a response with file and metadata
+    blobStream.on("finish", async () => {
+        const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`;
+        try {
+            // Save file metadata to MongoDB
+            const fileRecord = new Contribution({
+                fileUrl: publicUrl, // Google Cloud Storage URL
+                branch,
+                sem,
+                filename: req.file.originalname, // UUID file name
+                subject,
+                unit,
+                email,
+            });
+
+            await fileRecord.save(); // Save to MongoDB
+
+            res.status(200).send();
+        } catch (error) {
+            console.error("Error saving to MongoDB:", error);
+            res.status(500).send("Error saving file metadata.");
+            try {
+                const bucket = storage.bucket(bucketName);
+                const file = bucket.file(blob.name);
+
+                await file.delete();
+                console.log("Deleted the uploaded file");
+            } catch {
+                console.log("Failed to delete the uploaded file");
+            }
+        }
+    });
+
+    // Upload file buffer to Google Cloud Storage
+    blobStream.end(req.file.buffer);
+});
+
+app.get("/server/pending-requests", async (req, res) => {
+    try {
+        const pendingRequests = await Contribution.find({ status: "pending" });
+        res.status(200).json(pendingRequests);
+    } catch (error) {
+        console.error("Error fetching pending requests:", error);
+        res.status(500).json({ message: "Server error" });
+    }
 });
 
 //serve static files if other routes does not match

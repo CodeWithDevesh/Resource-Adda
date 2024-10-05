@@ -215,6 +215,7 @@ const Uploader = ({ branch, sem, jwtToken, setUploading }) => {
     const [unit, setUnit] = useState("");
     const [file, setFile] = useState(null);
 
+    
     const submit = () => {
         if (!subject || !unit || !file || !branch || !sem) return;
 
@@ -231,10 +232,15 @@ const Uploader = ({ branch, sem, jwtToken, setUploading }) => {
                         Authorization: `Bearer ${jwtToken}`,
                         "Content-Type": "multipart/form-data",
                     },
+                    timeout: 0, // timeout dissabled for large uploads
                 })
                 .then((res) => {
                     console.log(res);
                     alert("Uploaded Successfully");
+                })
+                .catch((err) => {
+                    console.log(err);
+                    alert(err);
                 });
         } catch {
             alert("Something Went Wrong");

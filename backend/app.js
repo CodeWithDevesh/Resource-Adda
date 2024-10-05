@@ -11,6 +11,8 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const http = require("http");
+const socketIO = require("socket.io");
 const uri = process.env.MONGO_URI;
 const clientOptions = {
     serverApi: { version: "1", strict: true, deprecationErrors: true },
@@ -37,6 +39,9 @@ const bucket = storage.bucket(bucketName);
 const app = express();
 const port = process.env.PORT || 3333;
 
+const server = http.createServer(app);
+const io = socketIO(server);
+
 app.use(
     cors({
         origin: "http://localhost:5173", // Replace this with your frontend URL
@@ -45,13 +50,13 @@ app.use(
 );
 
 app.use(express.static(path.join(__dirname, "dist")));
-app.use(express.urlencoded({limit:'200mb', extended: false }));
-app.use(express.json({limit: '200mb'}));
+app.use(express.urlencoded({ limit: "200mb", extended: false }));
+app.use(express.json({ limit: "200mb" }));
 
 // Set up Multer to handle file uploads in memory
 const upload = multer({
     storage: multer.memoryStorage(), // Store file in memory before uploading
-    limits: {fileSize: 200 * 1024 * 1024}
+    limits: { fileSize: 200 * 1024 * 1024 },
 });
 
 // The middleware for authentication of admins
@@ -367,12 +372,91 @@ app.get("/server/pending-requests", async (req, res) => {
     }
 });
 
+io.use((socket, next) => {
+    const token = socket.handshake.auth.token; // Get token from handshake
+    if (!token) {
+        return next(new Error("Authentication error")); // No token
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return next(new Error("Authentication error")); // Invalid token
+        }
+        socket.username = decoded.username; // Attach username to socket
+        next(); // Proceed if token is valid
+    });
+});
+
+io.on("connection", (socket) => {
+    console.log("New client connected");
+
+    // Listen for the 'uploadFile' event from the client
+    socket.on("uploadFile", async (data) => {
+        const { fileBuffer, branch, sem, subject, unit, fileName } = data;
+
+        if (!fileBuffer || !branch || !sem || !subject || !unit || !fileName) {
+            socket.emit("error", "Missing required metadata or file.");
+            return;
+        }
+
+        try {
+            // Generate a unique file ID
+            const extension = path.extname(fileName);
+            const id = uuidV4() + extension;
+            const blob = bucket.file(id);
+            const blobStream = blob.createWriteStream({
+                resumable: false,
+            });
+
+            // Stream the file buffer to Google Cloud Storage
+            blobStream.end(Buffer.from(fileBuffer, "base64"));
+
+            // On successful upload
+            blobStream.on("finish", async () => {
+                const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`;
+
+                // Save the file metadata to MongoDB
+                const fileRecord = new Document({
+                    fileUrl: publicUrl, // Google Cloud Storage URL
+                    branch,
+                    sem,
+                    fileName,
+                    subject,
+                    unit,
+                });
+
+                await fileRecord.save(); // Save metadata to MongoDB
+
+                // Emit a success message to the client
+                socket.emit("uploadSuccess", {
+                    message: "File uploaded successfully!",
+                    fileUrl: publicUrl,
+                });
+            });
+
+            // Handle errors during file upload
+            blobStream.on("error", (err) => {
+                console.error(err);
+                socket.emit("error", "File upload failed.");
+            });
+        } catch (error) {
+            console.error("Error uploading file:", error);
+            socket.emit("error", "Error saving file metadata.");
+        }
+    });
+
+    // Handle client disconnection
+    socket.on("disconnect", () => {
+        console.log("Client disconnected");
+    });
+});
+
 //serve static files if other routes does not match
 app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "dist", "index.html"));
 });
 
-// Start the server
-app.listen(port, () => {
+// Start the server with Socket.IO
+server.listen(port, () => {
     console.log(`Server started on http://localhost:${port}`);
 });

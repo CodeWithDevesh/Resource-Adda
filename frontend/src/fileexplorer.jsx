@@ -17,7 +17,7 @@ export default function fileexplorer() {
             });
     }, []);
     const [groupedBySubject, setGroupedBySubject] = useState({});
-    const [isFolderListVisible, setIsFolderListVisible] = useState(false);
+    const [isFolderListVisible, setIsFolderListVisible] = useState(true);
 
     useEffect(() => {
         if (!data.files) return;

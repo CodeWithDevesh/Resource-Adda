@@ -165,29 +165,32 @@ app.get("/server/subjects", async (req, res) => {
     }
 });
 
-app.post("/server/admin_login", async (req, res) => {
-    const { username, password } = req.body;
-    if (!username || !password) {
-        res.sendStatus(400);
-        return;
+app.post(
+    "/server/admin_login",
+    express.urlencoded({ extended: false }),
+    async (req, res) => {
+        const { username, password } = req.body;
+        if (!username || !password) {
+            res.sendStatus(400);
+            return;
+        }
+
+        try {
+            const user = await adminDoc.findOne({ username });
+            if (!user) return res.status(401).send("Invalid credentials");
+            if (!(await bcrypt.compare(password, user.password)))
+                return res.status(401).send("Invalid credentials");
+
+            console.log("validated");
+            const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+                expiresIn: "1h",
+            });
+            res.json({ token });
+        } catch {
+            res.sendStatus(500);
+        }
     }
-
-    try {
-        const user = await adminDoc.findOne({ username });
-        if (!user) return res.status(401).send("Invalid credentials");
-        if (!(await bcrypt.compare(password, user.password)))
-            return res.status(401).send("Invalid credentials");
-
-        console.log("validated");
-        const token = jwt.sign({ username }, process.env.JWT_SECRET, {
-            expiresIn: "1h",
-        });
-        res.json({ token });
-    } catch {
-        res.sendStatus(500);
-    }
-});
-
+);
 
 app.post("/server/addAdmin", async (req, res) => {
     const { admin_password: ADMIN_PASS, username, password } = req.body;
@@ -225,11 +228,12 @@ app.get("/server/pending-requests", async (req, res) => {
     }
 });
 
-const socJwtAuth = (socket, next) => {
+io.use((socket, next) => {
     const token = socket.handshake.auth.token; // Get token from handshake
     if (!token) {
-        return next(new Error("Authentication error")); // No token
+        return next(); // Proceed without setting `socket.username`
     }
+
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             return next(new Error("Authentication error")); // Invalid token
@@ -237,11 +241,11 @@ const socJwtAuth = (socket, next) => {
         socket.username = decoded.username; // Attach username to socket
         next(); // Proceed if token is valid
     });
-};
+});
 
 const activeUploads = {}; // To keep track of active upload streams
 
-io.on("connection", socJwtAuth, (socket) => {
+io.on("connection", (socket) => {
     console.log("New client connected");
 
     socket.on("uploadFileChunk", async (data) => {
@@ -278,6 +282,12 @@ io.on("connection", socJwtAuth, (socket) => {
             socket.emit("error", "Missing email");
         }
 
+        // Admin uploads: Require valid JWT authentication
+        if (type === "upload" && !socket.username) {
+            socket.emit("error", "Unauthorized admin upload.");
+            return;
+        }
+
         // If this is the first chunk, create the write stream
         if (!activeUploads[id]) {
             const blob = bucket.file(id); // Store chunks in the same file using unique ID
@@ -306,6 +316,7 @@ io.on("connection", socJwtAuth, (socket) => {
             socket.emit("uploadProgress", uploadProgress);
 
             if (offset + buffer.length >= fileSize) {
+                try{
                 activeUploads[id].blobStream.end(); // Close the stream
 
                 const publicUrl = `https://storage.googleapis.com/${bucket.name}/${id}`;
@@ -325,7 +336,7 @@ io.on("connection", socJwtAuth, (socket) => {
                         fileUrl: publicUrl, // Google Cloud Storage URL
                         branch,
                         sem,
-                        filename, // UUID file name
+                        filename: fileName, // UUID file name
                         subject,
                         unit,
                         email: data.email,
@@ -346,6 +357,9 @@ io.on("connection", socJwtAuth, (socket) => {
                         console.error("Error saving file record:", err);
                         socket.emit("error", "Error saving file metadata.");
                     });
+                }catch(err){
+                    socket.emit("error", err)
+                }
             }
 
             socket.emit("chunkUploaded");

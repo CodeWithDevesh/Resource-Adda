@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Contribute.css";
 import Button from "../components/Button";
-import axios from "axios";
 import { SOCKET_URL } from "../constants";
 import { io } from "socket.io-client";
 import { v4 } from "uuid";
@@ -14,7 +13,10 @@ export default function Contribute() {
     const [unit, setUnit] = useState();
     const [file, setFile] = useState();
     const [email, setEmail] = useState();
-    const [progresses, setProgresses] = useState([]);
+    const [progresses, setProgresses] = useState([
+        { text: "Hello", progress: 50, id: "asdf" },
+        { text: "fasdldsaj asdlkfj", progress: 35, id: "faslkdjf" },
+    ]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -52,7 +54,7 @@ export default function Contribute() {
             setProgresses((prevProgresses) => {
                 return prevProgresses.filter((element) => element.id !== id);
             });
-            alert("Thanks for your contribution😊")
+            alert("Thanks for your contribution😊");
             socket.close();
         });
 
@@ -60,7 +62,8 @@ export default function Contribute() {
             setProgresses((prevProgresses) => {
                 return prevProgresses.filter((element) => element.id !== id);
             });
-            alert(errorMessage.message);
+            console.log(errorMessage);
+            alert(errorMessage);
             socket.close();
         });
 

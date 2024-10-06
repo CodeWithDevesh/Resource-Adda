@@ -2,6 +2,7 @@ import React from "react";
 import "./Navbar.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -22,16 +23,24 @@ export default function Navbar() {
                     <nav>
                         <ul>
                             <li>
-                                <Link className="hover-effect" to="/">Home</Link>
+                                <Link className="hover-effect" to="/">
+                                    Home
+                                </Link>
                             </li>
                             <li className="resources">
-                                <Link className="hover-effect" to="/resources">Resources</Link>
+                                <Link className="hover-effect" to="/resources">
+                                    Resources
+                                </Link>
                             </li>
                             <li>
-                                <Link className="hover-effect" to="/aboutus">About Us</Link>
+                                <Link className="hover-effect" to="/aboutus">
+                                    About Us
+                                </Link>
                             </li>
                             <li>
-                                <Link className="hover-effect" to="/contribute">Contribute</Link>
+                                <Link className="hover-effect" to="/contribute">
+                                    Contribute
+                                </Link>
                             </li>
                         </ul>
                         <div
@@ -85,22 +94,19 @@ export default function Navbar() {
 }
 
 function HamburgerMenu() {
+    const navigate = useNavigate();
     return (
         <>
             <ul>
-                <li>
-                    <Link to="/">Home</Link>
+                <li onClick={() => navigate("/")}>Home</li>
+                <li
+                    className="resources"
+                    onClick={() => navigate("/resources")}
+                >
+                    Resources
                 </li>
-                <li className="resources">
-                    <Link to="/resources">Resources</Link>
-                    {/* <BranchMenu /> */}
-                </li>
-                <li>
-                    <Link to="/aboutus">About Us</Link>
-                </li>
-                <li>
-                    <Link to="/contribute">Contribute</Link>
-                </li>
+                <li onClick={() => navigate("/aboutus")}>About Us</li>
+                <li onClick={() => navigate("/contribute")}>Contribute</li>
             </ul>
         </>
     );

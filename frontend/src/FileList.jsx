@@ -9,14 +9,13 @@ export default function FileList({ files, subject, unit }) {
             </h2>
             <ul className="file-list">
                 {files.map((file) => (
-                    <li key={file._id} className="file-item hover-effect">
-                        <a
-                            href={file.fileUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {file.fileName}
-                        </a>
+                    <li
+                        key={file._id}
+                        className="file-item hover-effect"
+                        onClick={() => window.open(file.fileUrl, "_blank", "noopener noreferrer")}
+                        style={{ cursor: "pointer" }} // Add a pointer cursor for better UX
+                    >
+                        {file.fileName}
                     </li>
                 ))}
             </ul>

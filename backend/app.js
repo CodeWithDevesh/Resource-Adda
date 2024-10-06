@@ -40,7 +40,12 @@ const app = express();
 const port = process.env.PORT || 3333;
 
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server, {
+    cors: {
+        origin: "http://localhost:5173", // Replace this with your frontend URL
+        methods: ["GET", "POST", "PUT", "DELETE"],
+    },
+});
 
 app.use(
     cors({
@@ -387,37 +392,71 @@ io.use((socket, next) => {
     });
 });
 
+const activeUploads = {}; // To keep track of active upload streams
+
 io.on("connection", (socket) => {
     console.log("New client connected");
 
-    // Listen for the 'uploadFile' event from the client
-    socket.on("uploadFile", async (data) => {
-        const { fileBuffer, branch, sem, subject, unit, fileName } = data;
+    socket.on("uploadFileChunk", async (data) => {
+        const {
+            fileBuffer,
+            branch,
+            sem,
+            subject,
+            unit,
+            fileName,
+            offset,
+            fileSize,
+            id,
+        } = data;
 
-        if (!fileBuffer || !branch || !sem || !subject || !unit || !fileName) {
+        if (
+            !fileBuffer ||
+            !branch ||
+            !sem ||
+            !subject ||
+            !unit ||
+            !fileName ||
+            offset === undefined
+        ) {
             socket.emit("error", "Missing required metadata or file.");
             return;
         }
 
-        try {
-            // Generate a unique file ID
-            const extension = path.extname(fileName);
-            const id = uuidV4() + extension;
-            const blob = bucket.file(id);
+        // If this is the first chunk, create the write stream
+        if (!activeUploads[id]) {
+            const blob = bucket.file(id); // Store chunks in the same file using unique ID
             const blobStream = blob.createWriteStream({
-                resumable: false,
+                resumable: true,
+                contentType: "application/octet-stream",
             });
+            activeUploads[id] = {};
+            activeUploads[id].blobStream = blobStream;
+            activeUploads[id].socketId = socket.id;
+            activeUploads[id].offset = 0;
+            activeUploads[id].fileName = fileName;
+            activeUploads[id].fileSize = fileSize;
+        }
 
-            // Stream the file buffer to Google Cloud Storage
-            blobStream.end(Buffer.from(fileBuffer, "base64"));
+        const buffer = Buffer.from(new Uint8Array(fileBuffer));
+        activeUploads[id].offset = offset;
+        activeUploads[id].blobStream.write(buffer, (err) => {
+            if (err) {
+                console.error("Error writing chunk:", err);
+                socket.emit("error", "Error writing chunk.");
+                return;
+            }
 
-            // On successful upload
-            blobStream.on("finish", async () => {
-                const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`;
+            const uploadProgress = ((offset + buffer.length) / fileSize) * 100;
+            socket.emit("uploadProgress", uploadProgress);
 
-                // Save the file metadata to MongoDB
+            if (offset + buffer.length >= fileSize) {
+                activeUploads[id].blobStream.end(); // Close the stream
+
+                const publicUrl = `https://storage.googleapis.com/${bucket.name}/${id}`;
+
                 const fileRecord = new Document({
-                    fileUrl: publicUrl, // Google Cloud Storage URL
+                    fileUrl: publicUrl,
                     branch,
                     sem,
                     fileName,
@@ -425,29 +464,63 @@ io.on("connection", (socket) => {
                     unit,
                 });
 
-                await fileRecord.save(); // Save metadata to MongoDB
+                fileRecord
+                    .save()
+                    .then(() => {
+                        socket.emit("uploadSuccess", {
+                            message: "File uploaded successfully!",
+                            fileUrl: publicUrl,
+                        });
 
-                // Emit a success message to the client
-                socket.emit("uploadSuccess", {
-                    message: "File uploaded successfully!",
-                    fileUrl: publicUrl,
-                });
-            });
+                        delete activeUploads[id];
+                    })
+                    .catch((err) => {
+                        console.error("Error saving file record:", err);
+                        socket.emit("error", "Error saving file metadata.");
+                    });
+            }
 
-            // Handle errors during file upload
-            blobStream.on("error", (err) => {
-                console.error(err);
-                socket.emit("error", "File upload failed.");
-            });
-        } catch (error) {
-            console.error("Error uploading file:", error);
-            socket.emit("error", "Error saving file metadata.");
-        }
+            socket.emit("chunkUploaded");
+        });
     });
 
     // Handle client disconnection
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
         console.log("Client disconnected");
+        const clientUploads = Object.keys(activeUploads).filter(
+            (id) => activeUploads[id].socketId === socket.id
+        );
+        for (const id of clientUploads) {
+            if (!activeUploads[id]) continue;
+
+            try {
+                await new Promise((resolve, reject) => {
+                    activeUploads[id].blobStream.end((err) => {
+                        if (err) reject(err);
+                        else resolve();
+                    });
+                });
+            } catch (err) {
+                console.log(
+                    `Failed to close the writestream for ${id}: ${err}`
+                );
+            }
+
+            if (activeUploads[id].offset < activeUploads[id].fileSize)
+                try {
+                    console.log(`Upload for file with id ${id} failed`);
+                    const bucket = storage.bucket(bucketName);
+                    const file = bucket.file(id);
+                    await file.delete();
+                    console.log("File deleted from Google Cloud Storage");
+                } catch (err) {
+                    console.log(
+                        `Failed to delete the incomplete file with id ${id}: ${err}`
+                    );
+                }
+
+            delete activeUploads[id];
+        }
     });
 });
 

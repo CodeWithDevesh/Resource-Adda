@@ -2,9 +2,12 @@ import React, { useDebugValue, useEffect } from "react";
 import { useState } from "react";
 import Button from "../components/Button";
 import axios from "axios";
-import { BASE_SERVER_URL } from "../constants";
+import { BASE_SERVER_URL, SOCKET_URL } from "../constants";
 import AdminFileList from "../components/AdminFileList";
 import AdminFolderList from "../components/AdminFolderList";
+import { io } from "socket.io-client";
+import { v4 } from "uuid";
+import path from "path";
 
 export default function Upload({ jwtToken }) {
     const [branchSem, setBranchSem] = useState({});
@@ -215,36 +218,91 @@ const Uploader = ({ branch, sem, jwtToken, setUploading }) => {
     const [unit, setUnit] = useState("");
     const [file, setFile] = useState(null);
 
-    
     const submit = () => {
-        if (!subject || !unit || !file || !branch || !sem) return;
+        const socket = io(SOCKET_URL, {
+            auth: {
+                token: jwtToken,
+            },
+            transports: ["websocket"],
+            upgrade: false,
+            perMessageDeflate: true,
+        });
 
-        try {
-            const formData = new FormData();
-            formData.append("branch", branch);
-            formData.append("sem", sem);
-            formData.append("subject", subject);
-            formData.append("unit", unit);
-            formData.append("file", file);
-            axios
-                .post(`${BASE_SERVER_URL}/upload`, formData, {
-                    headers: {
-                        Authorization: `Bearer ${jwtToken}`,
-                        "Content-Type": "multipart/form-data",
-                    },
-                    timeout: 0, // timeout dissabled for large uploads
-                })
-                .then((res) => {
-                    console.log(res);
-                    alert("Uploaded Successfully");
-                })
-                .catch((err) => {
-                    console.log(err);
-                    alert(err);
-                });
-        } catch {
-            alert("Something Went Wrong");
+        // Listen for upload progress and success
+        socket.on("uploadProgress", (progress) => {
+            console.log(`Upload Progress: ${progress}%`);
+        });
+
+        socket.on("uploadSuccess", (response) => {
+            console.log(response.message, response.fileUrl);
+            alert("Uploaded Successfully");
+            socket.close();
+        });
+
+        socket.on("error", (errorMessage) => {
+            console.error(errorMessage);
+            alert(errorMessage.message);
+            socket.close();
+        });
+
+        const chunkSize = 1024 * 512; // 512 KB chunks
+        let offset = 0;
+        const id = v4() + "." + file.name.split(".").pop(); // Unique ID for the file
+
+        let retries = 0;
+        const RETRY_LIMIT = 5;
+
+        // Function to send a chunk after the previous one is acknowledged
+        function uploadChunk(chunk, data) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+
+                reader.onload = () => {
+                    data.fileBuffer = reader.result;
+
+                    socket.emit("uploadFileChunk", data);
+                    socket.once("chunkUploaded", () => {
+                        retries = 0;
+                        resolve();
+                    });
+                };
+
+                reader.onerror = (error) => {
+                    reject(error);
+                };
+
+                reader.readAsArrayBuffer(chunk);
+            });
         }
+
+        async function uploadFileInChunks() {
+            while (offset < file.size) {
+                const chunk = file.slice(offset, offset + chunkSize);
+                const data = {
+                    branch,
+                    sem,
+                    subject,
+                    unit,
+                    fileName: file.name,
+                    offset,
+                    fileSize: file.size,
+                    id,
+                };
+
+                try {
+                    await uploadChunk(chunk, data);
+                    offset += chunkSize;
+                } catch (error) {
+                    console.error("Error uploading chunk:", error);
+                    if (retries < RETRY_LIMIT) {
+                        console.log("Retrying");
+                        retries++;
+                    } else break;
+                }
+            }
+        }
+
+        uploadFileInChunks();
     };
 
     const cancel = () => {

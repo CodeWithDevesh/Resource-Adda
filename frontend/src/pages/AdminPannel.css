@@ -70,6 +70,7 @@
     transition: .3s transform;
     cursor: pointer;
     color: white;
+    z-index: 99;
 }
 
 .add-file-btn:hover{

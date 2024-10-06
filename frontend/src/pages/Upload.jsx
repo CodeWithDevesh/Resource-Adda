@@ -7,7 +7,7 @@ import AdminFileList from "../components/AdminFileList";
 import AdminFolderList from "../components/AdminFolderList";
 import { io } from "socket.io-client";
 import { v4 } from "uuid";
-import path from "path";
+import ProgressMenu from "../components/ProgressMenu";
 
 export default function Upload({ jwtToken }) {
     const [branchSem, setBranchSem] = useState({});
@@ -16,6 +16,7 @@ export default function Upload({ jwtToken }) {
     const [selectedSubject, setSelectedSubject] = useState(null);
     const [selectedUnit, setSelectedUnit] = useState(null);
     const [isFolderListVisible, setIsFolderListVisible] = useState(false);
+    const [progresses, setProgresses] = useState([]);
     let branch, sem;
 
     const load = () => {
@@ -105,6 +106,7 @@ export default function Upload({ jwtToken }) {
 
     return (
         <>
+            <ProgressMenu progresses={progresses} />
             {(!branchSem.branch || !branchSem.sem) && (
                 <Select setBranchSem={setBranchSem} />
             )}
@@ -116,6 +118,7 @@ export default function Upload({ jwtToken }) {
                             sem={branchSem.sem}
                             jwtToken={jwtToken}
                             setUploading={setUploading}
+                            setProgresses={setProgresses}
                         />
                     </div>
                 </div>
@@ -213,12 +216,18 @@ const AddFileBtn = ({ setUploading }) => {
     );
 };
 
-const Uploader = ({ branch, sem, jwtToken, setUploading }) => {
+const Uploader = ({
+    branch,
+    sem,
+    jwtToken,
+    setUploading,
+    setProgresses,
+}) => {
     const [subject, setSubject] = useState("");
     const [unit, setUnit] = useState("");
     const [file, setFile] = useState(null);
 
-    const submit = () => {
+    const submit = async () => {
         const socket = io(SOCKET_URL, {
             auth: {
                 token: jwtToken,
@@ -228,26 +237,43 @@ const Uploader = ({ branch, sem, jwtToken, setUploading }) => {
             perMessageDeflate: true,
         });
 
-        // Listen for upload progress and success
+        const chunkSize = 1024 * 512; // 512 KB chunks
+        let offset = 0;
+        const id = v4() + "." + file.name.split(".").pop(); // Unique ID for the file
+
+        setProgresses((prevProgresses) => {
+            let a = prevProgresses.map((element) => {
+                return element;
+            });
+            a.push({ text: file.name, progress: 0, id });
+            return a;
+        });
+
         socket.on("uploadProgress", (progress) => {
-            console.log(`Upload Progress: ${progress}%`);
+            setProgresses((prevProgresses) => {
+                return prevProgresses.map((element) => {
+                    if (element.id === id) {
+                        return { ...element, progress };
+                    }
+                    return element;
+                });
+            });
         });
 
         socket.on("uploadSuccess", (response) => {
-            console.log(response.message, response.fileUrl);
-            alert("Uploaded Successfully");
+            setProgresses((prevProgresses) => {
+                return prevProgresses.filter((element) => element.id !== id);
+            });
             socket.close();
         });
 
         socket.on("error", (errorMessage) => {
-            console.error(errorMessage);
+            setProgresses((prevProgresses) => {
+                return prevProgresses.filter((element) => element.id !== id);
+            });
             alert(errorMessage.message);
             socket.close();
         });
-
-        const chunkSize = 1024 * 512; // 512 KB chunks
-        let offset = 0;
-        const id = v4() + "." + file.name.split(".").pop(); // Unique ID for the file
 
         let retries = 0;
         const RETRY_LIMIT = 5;
@@ -287,6 +313,7 @@ const Uploader = ({ branch, sem, jwtToken, setUploading }) => {
                     offset,
                     fileSize: file.size,
                     id,
+                    type: "upload",
                 };
 
                 try {

@@ -94,92 +94,6 @@ app.get("/server/validate-token", (req, res) => {
     });
 });
 
-// Endpoint for uploading a file along with metadata (branch, year, subject)
-app.post(
-    "/server/upload",
-    authenticateJWT,
-    upload.single("file"),
-    async (req, res) => {
-        if (!req.file) {
-            return res.status(400).send("No file uploaded.");
-        }
-        // Extract the metadata from the request body
-        const { branch, sem, subject, unit } = req.body;
-
-        if (!branch || !sem || !subject || !unit) {
-            return res
-                .status(400)
-                .send("Missing metadata: branch, sem, subject or unit.");
-        }
-
-        // Log the received metadata (for verification purposes)
-        console.log(
-            `Received metadata - Branch: ${branch}, Sem: ${sem}, Subject: ${subject}, Unit: ${unit}`
-        );
-
-        // Set up Google Cloud Storage file upload
-        const extension = path.extname(req.file.originalname);
-        const id = uuidV4() + extension;
-        const blob = bucket.file(id);
-        const blobStream = blob.createWriteStream({
-            resumable: false,
-        });
-
-        // Handle stream errors
-        blobStream.on("error", (err) => {
-            console.error(err);
-            res.status(500).send(
-                "Unable to upload file, something went wrong."
-            );
-        });
-
-        // On successful upload, send back a response with file and metadata
-        blobStream.on("finish", async () => {
-            const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`;
-            try {
-                // Save file metadata to MongoDB
-                const fileRecord = new Document({
-                    fileUrl: publicUrl, // Google Cloud Storage URL
-                    branch,
-                    sem,
-                    fileName: req.file.originalname, // UUID file name
-                    subject,
-                    unit,
-                });
-
-                await fileRecord.save(); // Save to MongoDB
-
-                res.status(200).json({
-                    message: "Success! File uploaded",
-                    fileUrl: publicUrl,
-                    metadata: {
-                        branch,
-                        sem,
-                        subject,
-                        unit,
-                        fileName: req.file.originalname,
-                    },
-                });
-            } catch (error) {
-                console.error("Error saving to MongoDB:", error);
-                res.status(500).send("Error saving file metadata.");
-                try {
-                    const bucket = storage.bucket(bucketName);
-                    const file = bucket.file(blob.name);
-
-                    await file.delete();
-                    console.log("Deleted the uploaded file");
-                } catch {
-                    console.log("Failed to delete the uploaded file");
-                }
-            }
-        });
-
-        // Upload file buffer to Google Cloud Storage
-        blobStream.end(req.file.buffer);
-    }
-);
-
 app.get("/server/files", async (req, res) => {
     const { branch, sem, subject, unit } = req.query;
 
@@ -251,32 +165,29 @@ app.get("/server/subjects", async (req, res) => {
     }
 });
 
-app.post(
-    "/server/admin_login",
-    express.urlencoded({ extended: false }),
-    async (req, res) => {
-        const { username, password } = req.body;
-        if (!username || !password) {
-            res.sendStatus(400);
-            return;
-        }
-
-        try {
-            const user = await adminDoc.findOne({ username });
-            if (!user) return res.status(401).send("Invalid credentials");
-            if (!(await bcrypt.compare(password, user.password)))
-                return res.status(401).send("Invalid credentials");
-
-            console.log("validated");
-            const token = jwt.sign({ username }, process.env.JWT_SECRET, {
-                expiresIn: "1h",
-            });
-            res.json({ token });
-        } catch {
-            res.sendStatus(500);
-        }
+app.post("/server/admin_login", async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        res.sendStatus(400);
+        return;
     }
-);
+
+    try {
+        const user = await adminDoc.findOne({ username });
+        if (!user) return res.status(401).send("Invalid credentials");
+        if (!(await bcrypt.compare(password, user.password)))
+            return res.status(401).send("Invalid credentials");
+
+        console.log("validated");
+        const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+            expiresIn: "1h",
+        });
+        res.json({ token });
+    } catch {
+        res.sendStatus(500);
+    }
+});
+
 
 app.post("/server/addAdmin", async (req, res) => {
     const { admin_password: ADMIN_PASS, username, password } = req.body;
@@ -304,69 +215,6 @@ app.post("/server/addAdmin", async (req, res) => {
     res.sendStatus(201);
 });
 
-app.post("/server/contribute/", upload.single("file"), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).send("No file uploaded.");
-    }
-    const { branch, sem, subject, unit, email } = req.body;
-
-    if (!branch || !sem || !subject || !unit || !email) {
-        return res
-            .status(400)
-            .send("Missing metadata: branch, sem, subject or unit.");
-    }
-
-    // Set up Google Cloud Storage file upload
-    const extension = path.extname(req.file.originalname);
-    const id = uuidV4() + extension;
-    const blob = bucket.file(id);
-    const blobStream = blob.createWriteStream({
-        resumable: false,
-    });
-
-    // Handle stream errors
-    blobStream.on("error", (err) => {
-        console.error(err);
-        res.status(500).send("Unable to upload file, something went wrong.");
-    });
-
-    // On successful upload, send back a response with file and metadata
-    blobStream.on("finish", async () => {
-        const publicUrl = `https://storage.googleapis.com/${bucketName}/${blob.name}`;
-        try {
-            // Save file metadata to MongoDB
-            const fileRecord = new Contribution({
-                fileUrl: publicUrl, // Google Cloud Storage URL
-                branch,
-                sem,
-                filename: req.file.originalname, // UUID file name
-                subject,
-                unit,
-                email,
-            });
-
-            await fileRecord.save(); // Save to MongoDB
-
-            res.status(200).send();
-        } catch (error) {
-            console.error("Error saving to MongoDB:", error);
-            res.status(500).send("Error saving file metadata.");
-            try {
-                const bucket = storage.bucket(bucketName);
-                const file = bucket.file(blob.name);
-
-                await file.delete();
-                console.log("Deleted the uploaded file");
-            } catch {
-                console.log("Failed to delete the uploaded file");
-            }
-        }
-    });
-
-    // Upload file buffer to Google Cloud Storage
-    blobStream.end(req.file.buffer);
-});
-
 app.get("/server/pending-requests", async (req, res) => {
     try {
         const pendingRequests = await Contribution.find({ status: "pending" });
@@ -377,12 +225,11 @@ app.get("/server/pending-requests", async (req, res) => {
     }
 });
 
-io.use((socket, next) => {
+const socJwtAuth = (socket, next) => {
     const token = socket.handshake.auth.token; // Get token from handshake
     if (!token) {
         return next(new Error("Authentication error")); // No token
     }
-
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             return next(new Error("Authentication error")); // Invalid token
@@ -390,11 +237,11 @@ io.use((socket, next) => {
         socket.username = decoded.username; // Attach username to socket
         next(); // Proceed if token is valid
     });
-});
+};
 
 const activeUploads = {}; // To keep track of active upload streams
 
-io.on("connection", (socket) => {
+io.on("connection", socJwtAuth, (socket) => {
     console.log("New client connected");
 
     socket.on("uploadFileChunk", async (data) => {
@@ -408,6 +255,7 @@ io.on("connection", (socket) => {
             offset,
             fileSize,
             id,
+            type,
         } = data;
 
         if (
@@ -417,10 +265,17 @@ io.on("connection", (socket) => {
             !subject ||
             !unit ||
             !fileName ||
-            offset === undefined
+            offset === undefined ||
+            !fileSize ||
+            !id ||
+            !type
         ) {
             socket.emit("error", "Missing required metadata or file.");
             return;
+        }
+
+        if (type == "contribute" && !data.email) {
+            socket.emit("error", "Missing email");
         }
 
         // If this is the first chunk, create the write stream
@@ -454,15 +309,28 @@ io.on("connection", (socket) => {
                 activeUploads[id].blobStream.end(); // Close the stream
 
                 const publicUrl = `https://storage.googleapis.com/${bucket.name}/${id}`;
+                let fileRecord;
 
-                const fileRecord = new Document({
-                    fileUrl: publicUrl,
-                    branch,
-                    sem,
-                    fileName,
-                    subject,
-                    unit,
-                });
+                if (type == "upload") {
+                    fileRecord = new Document({
+                        fileUrl: publicUrl,
+                        branch,
+                        sem,
+                        fileName,
+                        subject,
+                        unit,
+                    });
+                } else {
+                    fileRecord = new Contribution({
+                        fileUrl: publicUrl, // Google Cloud Storage URL
+                        branch,
+                        sem,
+                        filename, // UUID file name
+                        subject,
+                        unit,
+                        email: data.email,
+                    });
+                }
 
                 fileRecord
                     .save()

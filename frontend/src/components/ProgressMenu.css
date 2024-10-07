@@ -11,7 +11,9 @@
     cursor: pointer;
     transition: all 0.5s ease-in-out;
 }
-
+body{
+    overflow-x: hidden;
+}
 .progress-bar {
     display: flex;
     flex-direction: column;

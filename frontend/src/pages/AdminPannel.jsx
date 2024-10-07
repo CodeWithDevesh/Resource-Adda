@@ -39,7 +39,7 @@ export default function AdminPannel() {
                 <div>
                     {view == "home" && <AdminHome />}
                     {view == "upload" && <Upload jwtToken={jwtToken} />}
-                    {view == "requests" && <Requests />}
+                    {view == "requests" && <Requests jwtToken={jwtToken} />}
                 </div>
             )}
         </>

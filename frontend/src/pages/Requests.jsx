@@ -2,21 +2,25 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BASE_SERVER_URL } from "../constants";
 import Button from "../components/Button";
-import "./Requests.css"
+import "./Requests.css";
 
-const Requests = () => {
+const Requests = ({ jwtToken }) => {
     const [pendingRequests, setPendingRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedRequest, setSelectedRequest] = useState(null); // For managing selected request
+    const [showPopup, setShowPopup] = useState(false); // For showing the popup
 
     const fetchPendingRequests = async () => {
         setLoading(true);
         try {
             const response = await axios.get(
-                `${BASE_SERVER_URL}/pending-requests`
+                `${BASE_SERVER_URL}/pending-requests`,
+                {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                }
             );
             setPendingRequests(response.data);
-            console.log(response.data);
         } catch (err) {
             console.error("Error fetching pending requests:", err);
             setError(err.response ? err.response.data.message : "Server error");
@@ -32,9 +36,33 @@ const Requests = () => {
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
-    const showDetails = (id) => {
-        
-    }
+    const showDetails = (request) => {
+        setSelectedRequest(request); // Set the selected request details
+        setShowPopup(true); // Show the popup
+    };
+
+    const closePopup = () => {
+        setShowPopup(false); // Hide the popup
+        setSelectedRequest(null); // Clear selected request
+    };
+
+    const approve = (request) => {
+        try {
+            const data = { id: request._id };
+            axios
+                .post(`${BASE_SERVER_URL}/approve`, data, {
+                    headers: { Authorization: `Bearer ${jwtToken}` },
+                })
+                .then((res) => {
+                    
+                })
+                .catch((err) => {
+                    console.log(`Error while approving: ${err}`);
+                });
+        } catch (err) {
+            console.log(`Error while approving: ${err}`);
+        }
+    };
 
     return (
         <div>
@@ -42,7 +70,10 @@ const Requests = () => {
             {pendingRequests.length > 0 ? (
                 <ul className="file-list req-list">
                     {pendingRequests.map((request) => (
-                        <li key={request._id} className="file-item req-item hover-effect">
+                        <li
+                            key={request._id}
+                            className="file-item req-item hover-effect"
+                        >
                             <a
                                 href={request.fileUrl}
                                 target="_blank"
@@ -51,9 +82,27 @@ const Requests = () => {
                                 {request.filename}
                             </a>
                             <div className="req-btn-cont">
-                            <Button className={'req-details-btn'} text={"Details"}/>
-                            <Button className={"req-approve-btn"} text={"Approve"} />
-                            <Button className={"req-reject-btn"} text={"Reject"} />
+                                <Button
+                                    className={"req-details-btn"}
+                                    text={"Details"}
+                                    onClick={() => {
+                                        showDetails(request);
+                                    }}
+                                />
+                                <Button
+                                    className={"req-approve-btn"}
+                                    text={"Approve"}
+                                    onClick={() => {
+                                        approve(request);
+                                    }}
+                                />
+                                <Button
+                                    className={"req-reject-btn"}
+                                    text={"Reject"}
+                                    onClick={() => {
+                                        console.log("clicked");
+                                    }}
+                                />
                             </div>
                         </li>
                     ))}
@@ -61,17 +110,41 @@ const Requests = () => {
             ) : (
                 <p>No pending requests found.</p>
             )}
+
+            {showPopup && selectedRequest && (
+                <Popup request={selectedRequest} onClose={closePopup} />
+            )}
         </div>
     );
 };
 
-
-const Details = ({pendingRequests, id}) => {
-    const request = pendingRequests.filter((val) => {val._id == id})[0]
-    console.log(request)
-
-
-}
-
+// Popup component to show details of the request
+const Popup = ({ request, onClose }) => {
+    return (
+        <div className="popup-overlay" onClick={onClose}>
+            <div className="popup-content">
+                <h3>Request Details</h3>
+                <p>
+                    <strong>Filename:</strong> {request.filename}
+                </p>
+                <p>
+                    <strong>Branch:</strong> {request.branch}
+                </p>
+                <p>
+                    <strong>Semester:</strong> {request.sem}
+                </p>
+                <p>
+                    <strong>Subject:</strong> {request.subject}
+                </p>
+                <p>
+                    <strong>Unit:</strong> {request.unit}
+                </p>
+                <p>
+                    <strong>Email:</strong> {request.email}
+                </p>
+            </div>
+        </div>
+    );
+};
 
 export default Requests;

@@ -11,29 +11,43 @@ import Page404 from "./pages/Page404";
 import AdminPannel from "./pages/AdminPannel";
 import About from "./pages/About";
 import Contribute from "./pages/Contribute";
+import { ThemeProvider, createTheme } from "@mui/material";
+
+const theme = createTheme({
+    palette: {
+        primary: {
+            main: "rgba(0, 0, 0, .5)",
+            light: "#42a5f5",
+            dark: "#000000",
+            contrastText: "#fff",
+        },
+    },
+});
 
 function App() {
     return (
         <>
-            <Backdrop />
-            <BrowserRouter>
-                <Layout />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/resources" element={<Resources />} />
-                    <Route
-                        path="/resources/:branch/:sem"
-                        element={<Fileexplorer />}
-                    />
-                    <Route path="/aboutus" element={<About />} />
-                    <Route path="/groups" element={<Grouops />} />
-                    <Route path="/addAdmin" element={<SuperAdmin />} />
-                    <Route path="/admin" element={<AdminPannel />} />
-                    <Route path="/contribute" element={<Contribute />} />
-                    <Route path="*" element={<Page404 />} />
-                </Routes>
-            </BrowserRouter>
+            <ThemeProvider theme={theme}>
+                <Backdrop />
+                <BrowserRouter>
+                    <Layout />
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/resources" element={<Resources />} />
+                        <Route
+                            path="/resources/:branch/:sem"
+                            element={<Fileexplorer />}
+                        />
+                        <Route path="/aboutus" element={<About />} />
+                        <Route path="/groups" element={<Grouops />} />
+                        <Route path="/addAdmin" element={<SuperAdmin />} />
+                        <Route path="/admin" element={<AdminPannel />} />
+                        <Route path="/contribute" element={<Contribute />} />
+                        <Route path="*" element={<Page404 />} />
+                    </Routes>
+                </BrowserRouter>
+            </ThemeProvider>
         </>
     );
 }

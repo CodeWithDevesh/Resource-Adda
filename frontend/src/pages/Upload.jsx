@@ -1,4 +1,4 @@
-import React, { useDebugValue, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Button from "../components/Button";
 import axios from "axios";
@@ -8,6 +8,9 @@ import AdminFolderList from "../components/AdminFolderList";
 import { io } from "socket.io-client";
 import { v4 } from "uuid";
 import ProgressMenu from "../components/ProgressMenu";
+import { Fab } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import "./AdminPannel.css";
 
 export default function Upload({ jwtToken }) {
     const [branchSem, setBranchSem] = useState({});
@@ -165,7 +168,18 @@ export default function Upload({ jwtToken }) {
                             )}
                         </div>
                     </div>
-                    <AddFileBtn setUploading={setUploading} />
+                    <Fab
+                        className="add-file-btn hover-effect"
+                        color="primary"
+                        sx={{
+                            transition:
+                                "transform .25s ease-in-out, background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                            position: "fixed",
+                        }}
+                        aria-label="add"
+                    >
+                        <AddIcon />
+                    </Fab>
                 </div>
             )}
         </>
@@ -216,13 +230,7 @@ const AddFileBtn = ({ setUploading }) => {
     );
 };
 
-const Uploader = ({
-    branch,
-    sem,
-    jwtToken,
-    setUploading,
-    setProgresses,
-}) => {
+const Uploader = ({ branch, sem, jwtToken, setUploading, setProgresses }) => {
     const [subject, setSubject] = useState("");
     const [unit, setUnit] = useState("");
     const [file, setFile] = useState(null);

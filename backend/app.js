@@ -55,8 +55,8 @@ app.use(
 );
 
 app.use(express.static(path.join(__dirname, "dist")));
-app.use(express.urlencoded({ limit: "200mb", extended: false }));
-app.use(express.json({ limit: "200mb" }));
+app.use(express.urlencoded({extended: false }));
+app.use(express.json());
 
 // Set up Multer to handle file uploads in memory
 const upload = multer({
@@ -218,7 +218,7 @@ app.post("/server/addAdmin", async (req, res) => {
     res.sendStatus(201);
 });
 
-app.get("/server/pending-requests", async (req, res) => {
+app.get("/server/pending-requests", authenticateJWT,async (req, res) => {
     try {
         const pendingRequests = await Contribution.find({ status: "pending" });
         res.status(200).json(pendingRequests);
@@ -227,6 +227,13 @@ app.get("/server/pending-requests", async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
+
+app.post("/server/approve", authenticateJWT ,async (req, res) => {
+    console.log(req.body)
+    res.sendStatus(200)
+})
+
 
 io.use((socket, next) => {
     const token = socket.handshake.auth.token; // Get token from handshake
@@ -242,6 +249,7 @@ io.use((socket, next) => {
         next(); // Proceed if token is valid
     });
 });
+
 
 const activeUploads = {}; // To keep track of active upload streams
 

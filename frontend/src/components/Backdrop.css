@@ -20,6 +20,10 @@
 }
 
 .sec-1 .books-img{
+    position: absolute;
+    bottom: 15vh;
+    right: 10vw;
+    height: 30vh;
     
 }
 

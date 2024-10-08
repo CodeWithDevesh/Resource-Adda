@@ -12,11 +12,11 @@
 
 
 :root {
-  --hover-color: #c11c84;
+  --hover-color: #00ffcc;
   --text-color: white;
   --overlay-color: rgba(0, 0, 0, .7);
   --primary-back: rgba(0, 0, 0, .5);
-  --shadow-color: rgba(193, 28, 132, 0.5);
+  --shadow-color:  rgba(0, 255, 204, 0.5);;
   --font-family: "eraser";
   --secondary-font: "rusty-cage"
 }

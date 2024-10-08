@@ -12,10 +12,10 @@ export function Home() {
                     <div className="section-1">
                         <div className="slangs">
                             <div className="text first-slang">
-                                <span>Haa Bhaai... Aa gyaa Padhnee</span>
+                                <span>Haa bhai... Aa gaya padhne</span>
                             </div>
                             <div className="text second-slang">
-                                <span>Notes nhi milre ??</span>
+                                <span>Notes nahi mil rahe ??</span>
                             </div>
                         </div>
                         <NavigateButton className="res-btn" text={"Get Study Material"} path={"/resources"}/>

@@ -1,12 +1,16 @@
+
 .btn {
     background-color: var(--primary-back);
+    background-image: url("../assets/blue-text.jpeg");
+    color: pink;
     padding: 10px 20px;
     border-radius: 3vh;
     user-select: none;
-    font-size: 3vh;
+    font-size: 4vh;
     border: white 2px solid;
     transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color .3s ease-in-out, color .3s ease-in-out;
     cursor: pointer;
+    font-family: var(--secondary-font);
 }
 
 @media (max-width: 768px) {

@@ -5,10 +5,6 @@ export default function FileList({ files, subject, unit }) {
     console.log(files);
     return (
         <>
-            <DocViewer
-                documents={[{uri: new url('C://Users/deves/Downloads/sem2(mid).pdf')}]}
-                pluginRenderers={DocViewerRenderers}
-            />
             <div>
                 <h2>
                     {subject} :- {unit}

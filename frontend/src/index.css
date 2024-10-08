@@ -1,6 +1,13 @@
+
+
 @font-face {
-  font-family: chalk;
-  src: url('./assets/SqueakyChalkSound.ttf');
+  font-family: eraser;
+  src: url('./assets/EraserRegular.ttf');
+}
+
+@font-face {
+  font-family: rusty-cage;
+  src: url('./assets/RustyCagePersonalUseRegular-mL3x2.ttf');
 }
 
 
@@ -10,7 +17,8 @@
   --overlay-color: rgba(0, 0, 0, .7);
   --primary-back: rgba(0, 0, 0, .5);
   --shadow-color: rgba(0, 255, 204, 0.5);
-  --font-family: "chalk"
+  --font-family: "eraser";
+  --secondary-font: "rusty-cage"
 }
 
 *,

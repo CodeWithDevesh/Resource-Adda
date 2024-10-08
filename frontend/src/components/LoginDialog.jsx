@@ -19,7 +19,7 @@ export default function LoginDialog({ setJwtToken }) {
             );
             console.log(res);
             const { token } = res.data;
-            localStorage.setItem("token", token)
+            // localStorage.setItem("token", token)
             setJwtToken(token); // Save token in parent state
         } catch (error) {
             console.error("Login failed", error);

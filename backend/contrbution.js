@@ -18,7 +18,8 @@ const ContributionSchema = new mongoose.Schema({
     },
     unit: {
         type: String,
-        required: true, // Unit is required
+        required: true,
+        trim: true,
     },
     filename: {
         type: String,
@@ -66,7 +67,9 @@ ContributionSchema.pre("save", function (next) {
     if (contribution.subject) {
         contribution.subject = contribution.subject.toUpperCase();
     }
-
+    if (contribution.unit) {
+        contribution.unit = contribution.unit.toUpperCase();
+    }
     next();
 });
 

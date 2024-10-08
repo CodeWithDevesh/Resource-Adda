@@ -168,18 +168,7 @@ export default function Upload({ jwtToken }) {
                             )}
                         </div>
                     </div>
-                    <Fab
-                        className="add-file-btn hover-effect"
-                        color="primary"
-                        sx={{
-                            transition:
-                                "transform .25s ease-in-out, background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-                            position: "fixed",
-                        }}
-                        aria-label="add"
-                    >
-                        <AddIcon />
-                    </Fab>
+                    <AddFileBtn setUploading={setUploading} />
                 </div>
             )}
         </>
@@ -358,8 +347,9 @@ const Uploader = ({ branch, sem, jwtToken, setUploading, setProgresses }) => {
                     />
                 </div>
                 <div className="unit-cont">
-                    <label htmlFor="unit">Unit : </label>
+                    <label htmlFor="unit">Category : </label>
                     <input
+                        placeholder="Unit 1 Notes, Midsem PYQ, etc"
                         onChange={(e) => {
                             setUnit(e.target.value);
                         }}

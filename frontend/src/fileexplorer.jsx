@@ -54,35 +54,41 @@ export default function fileexplorer() {
     };
 
     return (
-        <div className="file-explorer">
-            <button className="toggle-btn" onClick={toggleFolderList}>
-                {isFolderListVisible ? "Hide Folders" : "Show Folders"}
-            </button>
+        <>
+            <div className="file-explorer">
+                <button className="toggle-btn" onClick={toggleFolderList}>
+                    {isFolderListVisible ? "Hide Folders" : "Show Folders"}
+                </button>
 
-            <div
-                className={`left-pane ${isFolderListVisible ? "visible" : ""}`}
-            >
-                <FolderList
-                    groupedBySubject={groupedBySubject}
-                    selectedSubject={selectedSubject}
-                    setSelectedSubject={setSelectedSubject}
-                    setSelectedUnit={setSelectedUnit}
-                    setIsFolderListVisible={setIsFolderListVisible}
-                />
-            </div>
-            <div className="right-pane">
-                {selectedSubject && selectedUnit ? (
-                    <FileList
-                        files={groupedBySubject[selectedSubject][selectedUnit]}
-                        subject={selectedSubject}
-                        unit={selectedUnit}
+                <div
+                    className={`left-pane ${
+                        isFolderListVisible ? "visible" : ""
+                    }`}
+                >
+                    <FolderList
+                        groupedBySubject={groupedBySubject}
+                        selectedSubject={selectedSubject}
+                        setSelectedSubject={setSelectedSubject}
+                        setSelectedUnit={setSelectedUnit}
+                        setIsFolderListVisible={setIsFolderListVisible}
                     />
-                ) : (
-                    <div className="empty-box">
-                        Select a folder to see files
-                    </div>
-                )}
+                </div>
+                <div className="right-pane">
+                    {selectedSubject && selectedUnit ? (
+                        <FileList
+                            files={
+                                groupedBySubject[selectedSubject][selectedUnit]
+                            }
+                            subject={selectedSubject}
+                            unit={selectedUnit}
+                        />
+                    ) : (
+                        <div className="empty-box">
+                            Select a folder to see files
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     );
 }

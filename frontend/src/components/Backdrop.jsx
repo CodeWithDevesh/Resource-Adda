@@ -1,5 +1,5 @@
 import React from "react";
-import secion1Image from "../assets/home section 1.webp";
+import secion1Image from "../assets/chalk-bg.jpg";
 import "./Backdrop.css"
 
 export default function Backdrop() {

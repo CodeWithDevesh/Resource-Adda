@@ -2,6 +2,7 @@
     display: none;
 }
 
+
 .hover-effect:hover{
     color: var(--hover-color);
     border-color: var(--hover-color);

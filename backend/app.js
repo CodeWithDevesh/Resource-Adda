@@ -55,7 +55,7 @@ app.use(
 );
 
 app.use(express.static(path.join(__dirname, "dist")));
-app.use(express.urlencoded({extended: false }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Set up Multer to handle file uploads in memory
@@ -198,27 +198,28 @@ app.post("/server/addAdmin", async (req, res) => {
         res.status(403).send("Forbidden");
         return;
     }
-    if (await bcrypt.compare(ADMIN_PASS, process.env.PASSWORD)) {
-        if (!username || !password) {
-            res.sendStatus(400);
-            return;
-        }
-        try {
-            const hashed = await bcrypt.hash(password, 10);
-            const admin = new adminDoc({ username, password: hashed });
-            await admin.save();
-        } catch {
-            res.sendStatus(500);
-            return;
-        }
-    } else {
-        res.status(403).send("Forbidden");
-        return;
-    }
-    res.sendStatus(201);
+    bcrypt
+        .compare(ADMIN_PASS, process.env.PASSWORD)
+        .then(async () => {
+            if (!username || !password) {
+                res.sendStatus(400);
+                return;
+            }
+            try {
+                const hashed = await bcrypt.hash(password, 10);
+                const admin = new adminDoc({ username, password: hashed });
+                await admin.save();
+                return res.sendStatus(201);
+            } catch {
+                return res.sendStatus(500);
+            }
+        })
+        .catch((err) => {
+            return res.status(403).send("Forbidden");
+        });
 });
 
-app.get("/server/pending-requests", authenticateJWT,async (req, res) => {
+app.get("/server/pending-requests", authenticateJWT, async (req, res) => {
     try {
         const pendingRequests = await Contribution.find({ status: "pending" });
         res.status(200).json(pendingRequests);
@@ -228,12 +229,10 @@ app.get("/server/pending-requests", authenticateJWT,async (req, res) => {
     }
 });
 
-
-app.post("/server/approve", authenticateJWT ,async (req, res) => {
-    console.log(req.body)
-    res.sendStatus(200)
-})
-
+app.post("/server/approve", authenticateJWT, async (req, res) => {
+    console.log(req.body);
+    res.sendStatus(200);
+});
 
 io.use((socket, next) => {
     const token = socket.handshake.auth.token; // Get token from handshake
@@ -249,7 +248,6 @@ io.use((socket, next) => {
         next(); // Proceed if token is valid
     });
 });
-
 
 const activeUploads = {}; // To keep track of active upload streams
 
@@ -324,49 +322,49 @@ io.on("connection", (socket) => {
             socket.emit("uploadProgress", uploadProgress);
 
             if (offset + buffer.length >= fileSize) {
-                try{
-                activeUploads[id].blobStream.end(); // Close the stream
+                try {
+                    activeUploads[id].blobStream.end(); // Close the stream
 
-                const publicUrl = `https://storage.googleapis.com/${bucket.name}/${id}`;
-                let fileRecord;
+                    const publicUrl = `https://storage.googleapis.com/${bucket.name}/${id}`;
+                    let fileRecord;
 
-                if (type == "upload") {
-                    fileRecord = new Document({
-                        fileUrl: publicUrl,
-                        branch,
-                        sem,
-                        fileName,
-                        subject,
-                        unit,
-                    });
-                } else {
-                    fileRecord = new Contribution({
-                        fileUrl: publicUrl, // Google Cloud Storage URL
-                        branch,
-                        sem,
-                        filename: fileName, // UUID file name
-                        subject,
-                        unit,
-                        email: data.email,
-                    });
-                }
-
-                fileRecord
-                    .save()
-                    .then(() => {
-                        socket.emit("uploadSuccess", {
-                            message: "File uploaded successfully!",
+                    if (type == "upload") {
+                        fileRecord = new Document({
                             fileUrl: publicUrl,
+                            branch,
+                            sem,
+                            fileName,
+                            subject,
+                            unit,
                         });
+                    } else {
+                        fileRecord = new Contribution({
+                            fileUrl: publicUrl, // Google Cloud Storage URL
+                            branch,
+                            sem,
+                            filename: fileName, // UUID file name
+                            subject,
+                            unit,
+                            email: data.email,
+                        });
+                    }
 
-                        delete activeUploads[id];
-                    })
-                    .catch((err) => {
-                        console.error("Error saving file record:", err);
-                        socket.emit("error", "Error saving file metadata.");
-                    });
-                }catch(err){
-                    socket.emit("error", err)
+                    fileRecord
+                        .save()
+                        .then(() => {
+                            socket.emit("uploadSuccess", {
+                                message: "File uploaded successfully!",
+                                fileUrl: publicUrl,
+                            });
+
+                            delete activeUploads[id];
+                        })
+                        .catch((err) => {
+                            console.error("Error saving file record:", err);
+                            socket.emit("error", "Error saving file metadata.");
+                        });
+                } catch (err) {
+                    socket.emit("error", err);
                 }
             }
 

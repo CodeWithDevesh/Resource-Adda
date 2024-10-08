@@ -42,12 +42,12 @@ const AdminFolderList = ({
                                 defaultValue=""
                             >
                                 <option value="" disabled hidden>
-                                    Select Unit
+                                    Select Category
                                 </option>
                                 {Object.keys(groupedBySubject[subject]).map(
                                     (unit, idx) => (
                                         <option key={idx} value={unit}>
-                                            Unit {unit}
+                                            {unit}
                                         </option>
                                     )
                                 )}

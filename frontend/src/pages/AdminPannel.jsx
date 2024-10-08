@@ -8,7 +8,7 @@ import Requests from "./Requests";
 import { BASE_SERVER_URL } from "../constants";
 
 export default function AdminPannel() {
-    const [jwtToken, setJwtToken] = useState(localStorage.getItem('token'));
+    const [jwtToken, setJwtToken] = useState();
     const [showLogin, setShowLogin] = useState(false);
     const [view, setView] = useState("home");
 

@@ -6,7 +6,7 @@ export default function AdminFileList({ files, subject, unit, del }) {
     return (
         <div>
             <h2>
-                Notes for {subject}, Unit {unit}
+                {subject} :- {unit}
             </h2>
             <ul className="file-list">
                 {files.map((file) => (

@@ -28,7 +28,7 @@ function App() {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <Backdrop />
+                {/* <Backdrop /> */}
                 <BrowserRouter>
                     <Layout />
                     <Routes>

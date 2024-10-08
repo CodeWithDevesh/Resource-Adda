@@ -10,6 +10,7 @@ const docSchema = new Schema({
     sem: {
         type: String,
         required: true,
+        trim: true,
     },
     fileName: { type: String, required: true },
     subject: {
@@ -19,8 +20,9 @@ const docSchema = new Schema({
     },
     uploadedAt: { type: Date, default: Date.now },
     unit: {
-        type: String, // Changed to Number for validation
+        type: String,
         required: true,
+        trim: true,
     },
 });
 
@@ -31,6 +33,10 @@ docSchema.pre("save", function (next) {
     // Convert branch and subject to uppercase
     if (doc.subject) {
         doc.subject = doc.subject.toUpperCase();
+    }
+
+    if(doc.unit){
+        doc.unit = doc.unit.toUpperCase();
     }
 
     next();

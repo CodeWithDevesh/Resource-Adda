@@ -14,8 +14,7 @@ export default function Contribute() {
     const [file, setFile] = useState();
     const [email, setEmail] = useState();
     const [progresses, setProgresses] = useState([
-        { text: "Hello", progress: 50, id: "asdf" },
-        { text: "fasdldsaj asdlkfj", progress: 35, id: "faslkdjf" },
+       
     ]);
 
     const handleSubmit = async (e) => {
@@ -172,11 +171,12 @@ export default function Contribute() {
                                 id="subject"
                                 required
                             />
-                            <label htmlFor="unit">Unit ??</label>
+                            <label htmlFor="unit">Category ??</label>
                             <input
                                 onChange={(e) => setUnit(e.target.value)}
                                 type="text"
                                 id="unit"
+                                placeholder="Unit 1 Notes, Midsem PYQ, etc"
                                 required
                             />
                             <label htmlFor="file">File ??</label>

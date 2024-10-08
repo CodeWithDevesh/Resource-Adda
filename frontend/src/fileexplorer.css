@@ -59,19 +59,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
-.file-item:hover a {
-  color: var(--hover-color);
-}
-
-.file-item a {
-  text-decoration: none;
-}
-
-.file-item a:hover{
-  text-decoration: underline;
-}
 
 .empty-box {
   font-size: 18px;

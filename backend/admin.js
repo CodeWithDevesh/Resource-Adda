@@ -6,5 +6,5 @@ const adminSchema = new Schema({
     password: {type: String, required: true}
 })
 
-const adminDoc = model('Admi', adminSchema)
+const adminDoc = model('Admin', adminSchema)
 module.exports = adminDoc

@@ -1,8 +1,8 @@
 
 .btn {
     background-color: var(--primary-back);
-    background-image: url("../assets/blue-chalk-texture.jpg");
-    color: red;
+    background-image: url("../assets/bluechalkbuttonbg.jpg");
+    color: #C11C84;
     padding: 10px 20px;
     border-radius: 3vh;
     user-select: none;
@@ -11,7 +11,9 @@
     transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color .3s ease-in-out, color .3s ease-in-out;
     cursor: pointer;
     font-family: var(--secondary-font);
+    font-weight: bolder;
 }
+
 
 @media (max-width: 768px) {
     .btn {

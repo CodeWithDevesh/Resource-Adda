@@ -3,7 +3,7 @@ import "./Button.css";
 export default function Button({ text, type = "button", className, onClick }) {
     return (
         <button
-            className={`btn hover-effect ${className}`}
+            className={`btn ${className}`}
             type={type}
             onClick={onClick}
         >

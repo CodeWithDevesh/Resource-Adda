@@ -147,6 +147,13 @@ export default function Contribute() {
                                 <option value="CSE">CSE</option>
                                 <option value="ECE">ECE</option>
                                 <option value="Electrical">Electrical</option>
+                                <option value="Chemical">Chemical</option>
+                                <option value="Mining">Mining</option>
+                                <option value="Mechanical">Mechanical</option>
+                                <option value="Metalurgy">Metalurgy</option>
+                                <option value="Civil">Civil</option>
+                                <option value="BioMed">BioMed</option>
+                                <option value="BioTech">BioTech</option>
                             </select>
                             <label htmlFor="sem">Semester ??</label>
                             <select

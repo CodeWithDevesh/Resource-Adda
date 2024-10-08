@@ -12,12 +12,14 @@
     justify-content: center;
     gap: 5vh;
     font-size: 5vh;
-    background-color: var(--primary-back);
+    background: url("https://media.rainpos.com/Benartex/9488-55.jpg");
+    /* background-color: var(--primary-back); */
     padding: 7vh 3vw;
     border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); */
     margin-left: 3vw;
     transition: transform 0.3s;
+    filter: contrast(150%) blur(.5px); 
 }
 
 .res-inner:hover {
@@ -34,25 +36,28 @@
 .res-inner label {
     font-size: 4vh;
     margin-right: 1vw;
+    /* color: black; */
     white-space: nowrap;
 }
 
 .res-inner div select{
-    border: 1px solid white;
+    border: 2px solid white;
     border-radius: 25px;
     min-width: max-content;
     cursor: pointer;
     padding: 0.5vh 1vw;
     min-width: 14ch; 
+    /* color: black; */
     width: fit-content;
     background-color: transparent;
     font-family:'Courier New', Courier, monospace;
-    transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: border 0.3s ease-in-out; box-shadow: 0.3s ease-in-out;
 }
 
 .res-inner div select:hover {
-    border-color: #00ffcc;
-    box-shadow: 0 4px 10px var(--shadow-color);
+    border-color: #00ffcc; 
+    color: #00ffcc;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.8);
 }
 
 .res-inner div option{
@@ -68,6 +73,8 @@
 
 .go-btn{
     align-self: center;
+    background: url("https://www.shutterstock.com/image-illustration/colorful-gold-yellow-chalk-pastel-260nw-1047047281.jpg");
+    /* border: 2px solid black; */
 }
 
 @media (max-width: 768px){

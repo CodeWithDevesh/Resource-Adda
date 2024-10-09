@@ -61,9 +61,9 @@
 }
 
 .res-inner div select:hover {
-    border-color: #00ffcc; 
-    color: #00ffcc;
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.8);
+    border-color:#c11c84;
+    box-shadow: 0 0 10px #c11c84;
+    color:#c11c84;
 }
 
 .res-inner div option{
@@ -74,7 +74,7 @@
 
 .res-inner div select:focus {
     outline: none;
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.8);
+    box-shadow: 0 0 10px  #c11c84;
 }
 
 .go-btn{

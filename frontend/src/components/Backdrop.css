@@ -9,12 +9,12 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
-    position: relative;
 }
 
 .sec-1 .bg-img {
     height: 100%;
     width: 100%;
+    position: relative;
     object-fit: cover;
     object-position: bottom;
 }
@@ -24,7 +24,6 @@
     bottom: 15vh;
     right: 10vw;
     height: 30vh;
-    
 }
 
 .overlay {

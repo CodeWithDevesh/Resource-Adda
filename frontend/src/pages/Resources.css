@@ -12,19 +12,25 @@
     justify-content: center;
     gap: 5vh;
     font-size: 5vh;
-    background: url("https://media.rainpos.com/Benartex/9488-55.jpg");
-    /* background-color: var(--primary-back); */
     padding: 7vh 3vw;
-    border-radius: 20px;
-    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); */
+    border-radius: 8px;
     margin-left: 3vw;
     transition: transform 0.3s;
     filter: contrast(150%) blur(.5px); 
+    position: absolute;
 }
-
+.notice-board{
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+/* 
 .res-inner:hover {
     transform: scale(1.02);
-}
+} */
 
 .res-inner div{
     display: flex;

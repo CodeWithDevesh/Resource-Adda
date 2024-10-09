@@ -12,6 +12,7 @@ import AdminPannel from "./pages/AdminPannel";
 import About from "./pages/About";
 import Contribute from "./pages/Contribute";
 import { ThemeProvider, createTheme } from "@mui/material";
+import { AnimatePresence } from "framer-motion";
 
 const theme = createTheme({
     palette: {
@@ -26,29 +27,33 @@ const theme = createTheme({
 
 function App() {
     return (
-        <>
-            <ThemeProvider theme={theme}>
-                {/* <Backdrop /> */}
-                <BrowserRouter>
-                    <Layout />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/resources" element={<Resources />} />
-                        <Route
-                            path="/resources/:branch/:sem"
-                            element={<Fileexplorer />}
-                        />
-                        <Route path="/aboutus" element={<About />} />
-                        <Route path="/groups" element={<Grouops />} />
-                        <Route path="/addAdmin" element={<SuperAdmin />} />
-                        <Route path="/admin" element={<AdminPannel />} />
-                        <Route path="/contribute" element={<Contribute />} />
-                        <Route path="*" element={<Page404 />} />
-                    </Routes>
-                </BrowserRouter>
-            </ThemeProvider>
-        </>
+        <ThemeProvider theme={theme}>
+            <BrowserRouter>
+                <Layout />
+                <AnimatedRoutes />
+            </BrowserRouter>
+        </ThemeProvider>
+    );
+}
+
+function AnimatedRoutes() {
+    const location = useLocation();
+
+    return (
+        <AnimatePresence >
+            <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<Home />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/resources" element={<Resources />} />
+                <Route path="/resources/:branch/:sem" element={<Fileexplorer />} />
+                <Route path="/aboutus" element={<About />} />
+                <Route path="/groups" element={<Grouops />} />
+                <Route path="/addAdmin" element={<SuperAdmin />} />
+                <Route path="/admin" element={<AdminPannel />} />
+                <Route path="/contribute" element={<Contribute />} />
+                <Route path="*" element={<Page404 />} />
+            </Routes>
+        </AnimatePresence>
     );
 }
 

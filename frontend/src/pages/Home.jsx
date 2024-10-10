@@ -1,8 +1,9 @@
 import React from "react";
 import "./Home.css";
 import NavigateButton from "../components/NavigateButton";
-import character from "../assets/character.png"
-import {backInOut, easeIn, easeInOut, motion } from "framer-motion";
+import character from "../assets/character.png";
+import {  motion } from "framer-motion";
+import {backInOut, easeIn, easeInOut } from "framer-motion";
 import { duration } from "@mui/material";
 export function Home() {
     return (

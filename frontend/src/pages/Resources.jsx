@@ -8,6 +8,7 @@ export default function Resources() {
     const [branch, setBranch] = useState("");
     const [sem, setSem] = useState("");
     const [redirect, setRedirect] = useState("");
+
     useEffect(() => {
         if (branch != "" && sem != "")
             setRedirect("/resources/" + branch + "/" + sem);

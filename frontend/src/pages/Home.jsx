@@ -5,7 +5,7 @@ import character from "../assets/character.png"
 import {motion } from "framer-motion";
 export function Home() {
     const TRANSITION_DELAY = 0.5;
-    const TRANSITION_DURATION = 1;
+    const TRANSITION_DURATION = 0.5;
     const TRANSITION_TYPE = "easeIn";
     const EXIT_DURATION = 0.5;
     return (

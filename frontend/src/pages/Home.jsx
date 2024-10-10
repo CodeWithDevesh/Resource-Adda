@@ -1,10 +1,8 @@
 import React from "react";
 import "./Home.css";
 import NavigateButton from "../components/NavigateButton";
-import character from "../assets/character.png";
-import {  motion } from "framer-motion";
-import {backInOut, easeIn, easeInOut } from "framer-motion";
-import { duration } from "@mui/material";
+import character from "../assets/character.png"
+import {motion } from "framer-motion";
 export function Home() {
     const TRANSITION_DELAY = 0.5;
     const TRANSITION_DURATION = 1;

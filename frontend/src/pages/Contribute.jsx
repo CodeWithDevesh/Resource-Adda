@@ -5,6 +5,7 @@ import { SOCKET_URL } from "../constants";
 import { io } from "socket.io-client";
 import { v4 } from "uuid";
 import ProgressMenu from "../components/ProgressMenu";
+import { easeIn, motion } from "framer-motion";
 
 export default function Contribute() {
     const [branch, setBranch] = useState("");
@@ -13,9 +14,13 @@ export default function Contribute() {
     const [unit, setUnit] = useState();
     const [file, setFile] = useState();
     const [email, setEmail] = useState();
-    const [progresses, setProgresses] = useState([
-       
-    ]);
+    const [progresses, setProgresses] = useState([]);
+    const TRANSITION_DURATION = 1.2;
+    const TRANSITION_DELAY = 0.2;
+    const TRANSITION_TYPE = "backInOut";
+    const EXIT_DELAY = 0;
+    const EXIT_DURATION = 1;
+    const EXIT_TYPE = "backInOut";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -26,9 +31,9 @@ export default function Contribute() {
             perMessageDeflate: true,
         });
 
-        const chunkSize = 1024 * 512; // 512 KB chunks
+        const chunkSize = 1024 * 512;
         let offset = 0;
-        const id = v4() + "." + file.name.split(".").pop(); // Unique ID for the file
+        const id = v4() + "." + file.name.split(".").pop();
 
         setProgresses((prevProgresses) => {
             let a = prevProgresses.map((element) => {
@@ -124,15 +129,70 @@ export default function Contribute() {
         uploadFileInChunks();
     };
 
+
     return (
         <>
             <ProgressMenu progresses={progresses} />
-            <div className="contribute">
-                <span className="contri-head">Wanna help others?</span>
+            <motion.div
+             className="contribute"
+             >
+                <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{
+                            duration: TRANSITION_DURATION,
+                            delay: TRANSITION_DELAY,
+                            ease: TRANSITION_TYPE,
+                        }}
+                        exit={{
+                            opacity: 0,
+                            transition: {
+                                delay: EXIT_DELAY,
+                                duration: EXIT_DURATION,
+                                ease: EXIT_TYPE,
+                            },
+                        }}
+                        className="overlay"
+                    ></motion.div>
+                <motion.div
+                className="contri-head"
+                initial={{right: "140%", x: "50%"}}
+                     animate={{right:"calc(15vw)" }}
+                     exit={{
+                        right: "-140%",
+                        transition: {
+                            delay: EXIT_DELAY,
+                            duration: EXIT_DURATION,
+                            ease: EXIT_TYPE,
+                        },
+                    }}
+                     transition={{
+                        duration: TRANSITION_DURATION,
+                        delay: TRANSITION_DELAY,
+                        ease: TRANSITION_TYPE,
+                    }}
+                >Wanna help others?</motion.div>
                 <div className="contri-form-cont">
-                    <div className="res-inner">
+                    <motion.div
+                     className="res-inner"
+                     initial={{left: "140%", x: "-50%"}}
+                     animate={{left: "calc(50vw)" }}
+                     exit={{
+                        left: "-140%",
+                        transition: {
+                            delay: EXIT_DELAY,
+                            duration: EXIT_DURATION,
+                            ease: EXIT_TYPE,
+                        },
+                    }}
+                     transition={{
+                        duration: TRANSITION_DURATION,
+                        delay: TRANSITION_DELAY,
+                        ease: TRANSITION_TYPE,
+                    }}
+                     >
                         <form onSubmit={handleSubmit} className="contri-form">
-                            <label htmlFor="branch">Branch ??</label>
+                            <label className="bang-bang" htmlFor="branch">Branch ??</label>
                             <select
                                 value={branch}
                                 onChange={(e) => setBranch(e.target.value)}
@@ -155,7 +215,7 @@ export default function Contribute() {
                                 <option value="BioMed">BioMed</option>
                                 <option value="BioTech">BioTech</option>
                             </select>
-                            <label htmlFor="sem">Semester ??</label>
+                            <label className="bang-bang" htmlFor="sem">Semester ??</label>
                             <select
                                 value={sem}
                                 onChange={(e) => setSem(e.target.value)}
@@ -171,14 +231,14 @@ export default function Contribute() {
                                 <option value="3">Sem-3</option>
                                 <option value="4">Sem-4</option>
                             </select>
-                            <label htmlFor="subject">Subject ??</label>
+                            <label className="bang-bang" htmlFor="subject">Subject ??</label>
                             <input
                                 onChange={(e) => setSubject(e.target.value)}
                                 type="text"
                                 id="subject"
                                 required
                             />
-                            <label htmlFor="unit">Category ??</label>
+                            <label className="bang-bang" htmlFor="unit">Category ??</label>
                             <input
                                 onChange={(e) => setUnit(e.target.value)}
                                 type="text"
@@ -186,14 +246,14 @@ export default function Contribute() {
                                 placeholder="Unit 1 Notes, Midsem PYQ, etc"
                                 required
                             />
-                            <label htmlFor="file">File ??</label>
+                            <label className="bang-bang" htmlFor="file">File ??</label>
                             <input
                                 onChange={(e) => setFile(e.target.files[0])}
                                 type="file"
                                 id="file"
                                 required
                             />
-                            <label htmlFor="email">Email ??</label>
+                            <label className="bang-bang" htmlFor="email">Email ??</label>
                             <input
                                 onChange={(e) => setEmail(e.target.value)}
                                 type="email"
@@ -206,9 +266,9 @@ export default function Contribute() {
                                 text={"Contribute"}
                             />
                         </form>
-                    </div>
+                    </motion.div>
                 </div>
-            </div>
+            </motion.div>
         </>
     );
 }

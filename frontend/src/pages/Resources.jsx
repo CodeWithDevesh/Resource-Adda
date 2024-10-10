@@ -8,7 +8,7 @@ export default function Resources() {
     const [branch, setBranch] = useState("");
     const [sem, setSem] = useState("");
     const [redirect, setRedirect] = useState("");
-    const TRANSITION_DURATION = 2;
+    const TRANSITION_DURATION = 1;
     const TRANSITION_DELAY = 0.2;
     const TRANSITION_TYPE = "backInOut";
     const EXIT_DELAY = 0;

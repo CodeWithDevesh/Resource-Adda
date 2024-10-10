@@ -8,6 +8,12 @@ export default function Resources() {
     const [branch, setBranch] = useState("");
     const [sem, setSem] = useState("");
     const [redirect, setRedirect] = useState("");
+    const TRANSITION_DURATION = 2;
+    const TRANSITION_DELAY = 0.2;
+    const TRANSITION_TYPE = "backInOut";
+    const EXIT_DELAY = 0;
+    const EXIT_DURATION = .5;
+    const EXIT_TYPE = "backInOut";
 
     useEffect(() => {
         if (branch != "" && sem != "")
@@ -26,14 +32,42 @@ export default function Resources() {
                     overflow: "hidden",
                 }}
             >
-                <motion.div initial={{opacity: 0}} animate={{opacity: 0.8}} transition={{duration: .5}} exit={{opacity: 0}} className="overlay"></motion.div>
+                <motion.div 
+                 initial={{ opacity: 0 }}
+                 animate={{ opacity: 1 }}
+                 transition={{
+                     duration: TRANSITION_DURATION,
+                     delay: TRANSITION_DELAY,
+                     ease: TRANSITION_TYPE,
+                 }}
+                 exit={{
+                     opacity: 0,
+                     transition: {
+                         delay: EXIT_DELAY,
+                         duration: EXIT_DURATION,
+                         ease: EXIT_TYPE,
+                     },
+                 }}
+                 className="overlay"
+                ></motion.div>
                 <div className="res">
                         <motion.div
                             className="res-inner"
                             initial={{ top: "140%", y: "-50%" }}
                             animate={{ top: "calc(50vh)" }}
-                            exit={{ top: "140%" }}
-                            transition={{ duration: 1, ease:"backInOut" }}
+                            exit={{
+                                top: "140%",
+                                transition: {
+                                    delay: EXIT_DELAY,
+                                    duration: EXIT_DURATION,
+                                    ease: EXIT_TYPE,
+                                },
+                            }}
+                            transition={{
+                                duration: TRANSITION_DURATION,
+                                delay: TRANSITION_DELAY,
+                                ease: TRANSITION_TYPE,
+                            }}
                         >
                             <img
                                 className="notice-board"

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Resources.css";
 import NavigateButton from "../components/NavigateButton";
 import noticeBoard from "../assets/notice-board-green.png";
-import { AnimatePresence, animate, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function Resources() {
     const [branch, setBranch] = useState("");
@@ -12,7 +12,7 @@ export default function Resources() {
     const TRANSITION_DELAY = 0.2;
     const TRANSITION_TYPE = "backInOut";
     const EXIT_DELAY = 0;
-    const EXIT_DURATION = .5;
+    const EXIT_DURATION = 1;
     const EXIT_TYPE = "backInOut";
 
     useEffect(() => {

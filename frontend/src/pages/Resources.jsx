@@ -25,14 +25,14 @@ export default function Resources() {
                     overflow: "hidden",
                 }}
             >
+                <motion.div initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: .5}} exit={{opacity: 0}} className="overlay"></motion.div>
                 <div className="res">
-                    <AnimatePresence>
                         <motion.div
                             className="res-inner"
                             initial={{ top: "140%", y: "-50%" }}
                             animate={{ top: "calc(50vh)" }}
                             exit={{ top: "140%" }}
-                            transition={{ duration: 2, ease: "backInOut" }}
+                            transition={{ duration: 1, ease: "backInOut" }}
                         >
                             <img
                                 className="notice-board"
@@ -81,7 +81,6 @@ export default function Resources() {
                                 path={redirect}
                             />
                         </motion.div>
-                    </AnimatePresence>
                 </div>
             </div>
         </>

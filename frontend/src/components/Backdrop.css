@@ -1,17 +1,21 @@
 .backdrop {
     position: fixed;
-    inset: -10px;
+    inset: 0;
+    bottom: -2px;
     overflow: hidden;
     z-index: -1;
 }
 
-.sec-1 {
-    height: 100%;
-    width: 100%;
+.frontdrop{
+    position: fixed;
+    bottom: -2px;
+    right: 0;
+    left: 0;
     overflow: hidden;
+    z-index: 999;
 }
 
-.sec-1 .bg-img {
+.bg-img {
     height: 100%;
     width: 100%;
     position: relative;
@@ -19,11 +23,8 @@
     object-position: bottom;
 }
 
-.sec-1 .books-img{
-    position: absolute;
-    bottom: 15vh;
-    right: 10vw;
-    height: 30vh;
+.front-img{
+    width: 100%;
 }
 
 .overlay {

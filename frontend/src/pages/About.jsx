@@ -10,8 +10,8 @@ export default function About() {
         <div className="aboutus">
             <span className="contact-head">About Us</span>
 
-            <section className="team-container res">
-                <div className="res-inner res-inner-contact">
+            <section className="team-container ">
+                <div className="res-inner-contact">
                     Welcome to our platform, crafted by a team of dedicated
                     students who understand the pressures of college life. We
                     built this resource hub to simplify last-minute study prep,
@@ -25,8 +25,8 @@ export default function About() {
 
             <span className="contact-head">Team</span>
 
-            <section className="team-container res">
-                <div className="res-inner res-inner-contact">
+            {/* <section className="team-container">
+                <div className="res-inner-contact">
                     <img src={devesh} className="profile-photo" />
                     <span>Devesh Agarwal</span>
                     <p>
@@ -45,7 +45,7 @@ export default function About() {
                     </p>
                 </div>
 
-                <div className="res-inner res-inner-contact">
+                <div className="res-inner-contact">
                     <img src={akshata} className="profile-photo" />
                     <span>Akshata Bakre</span>
                     <p>
@@ -63,7 +63,7 @@ export default function About() {
                         </a>
                     </p>
                 </div>
-                <div className="res-inner res-inner-contact">
+                <div className="res-inner-contact">
                     <img src={akshat} className="profile-photo" />
                     <span>Akshat Mishra</span>
                     <p>
@@ -81,7 +81,7 @@ export default function About() {
                         </a>
                     </p>
                 </div>
-                <div className="res-inner res-inner-contact">
+                <div className="res-inner-contact">
                     <img src={divyansh} className="profile-photo" />
                     <span>Divyansh Sharma</span>
                     <p>
@@ -100,7 +100,7 @@ export default function About() {
                         </a>
                     </p>
                 </div>
-            </section>
+            </section> */}
         </div>
     );
 }

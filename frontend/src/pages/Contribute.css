@@ -8,7 +8,9 @@
     width: 100vw;
 }
 
-
+.bang-bang{
+    color: black;
+}
 
 .contri-form-cont{
     flex-grow: 1;
@@ -21,12 +23,14 @@
 .contri-form{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    
     gap: 10px;
     align-items: center;
 }
 
 .contri-head{
     font-size: 3rem;
+    position: relative;
     margin-bottom: 30px;
     text-align: center;
 }
@@ -36,12 +40,13 @@
 }
 
 .contri-form select{
-    border: 1px solid white;
+    border: 2px solid black;
     border-radius: 25px;
     min-width: max-content;
     cursor: pointer;
     padding: 0.5vh 1vw;
     min-width: 14ch; 
+    color: black;
     /* width: fit-content; */
     background-color: transparent;
     font-family:'Courier New', Courier, monospace;
@@ -63,16 +68,20 @@
     outline: none;
     box-shadow: 0 0 10px rgba(0, 255, 204, 0.8);
 }
-
+.res-inner{
+    background:url("https://img.freepik.com/premium-vector/empty-old-paper-scroll-with-torn-crumpled-edges-cartoon-drawing-template-letter-text_480270-162.jpg");
+    background-position: center;
+    background-size: 120% 120%;
+}
 
 .contri-form input {
     background-color: transparent;
-    border: solid white 2px;
+    border: solid black 2px;
     border-radius: 3vh;
+    color: black;
     height: fit-content;
     padding: 5px;
 }
-
 
 .contri-btn{
     margin-top: 20px;

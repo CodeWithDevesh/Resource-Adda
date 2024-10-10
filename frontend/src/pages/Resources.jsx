@@ -32,88 +32,62 @@ export default function Resources() {
                     overflow: "hidden",
                 }}
             >
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{
-                        duration: TRANSITION_DURATION,
-                        delay: TRANSITION_DELAY,
-                        ease: TRANSITION_TYPE,
-                    }}
-                    exit={{
-                        opacity: 0,
-                        transition: {
-                            delay: EXIT_DELAY,
-                            duration: EXIT_DURATION,
-                            ease: EXIT_TYPE,
-                        },
-                    }}
-                    className="overlay"
-                ></motion.div>
+                <motion.div initial={{opacity: 0}} animate={{opacity: 0.8}} transition={{duration: .5}} exit={{opacity: 0}} className="overlay"></motion.div>
                 <div className="res">
-                    <motion.div
-                        className="res-inner"
-                        initial={{ top: "140%", y: "-50%" }}
-                        animate={{ top: "calc(50vh)" }}
-                        exit={{
-                            top: "140%",
-                            transition: {
-                                delay: EXIT_DELAY,
-                                duration: EXIT_DURATION,
-                                ease: EXIT_TYPE,
-                            },
-                        }}
-                        transition={{
-                            duration: TRANSITION_DURATION,
-                            delay: TRANSITION_DELAY,
-                            ease: TRANSITION_TYPE,
-                        }}
-                    >
-                        <img
-                            className="notice-board"
-                            src={noticeBoard}
-                            alt=""
-                        />
-                        <div className="br">
-                            <label htmlFor="branch">Aapki Branch ??</label>
-                            <select
-                                value={branch}
-                                onChange={(e) => setBranch(e.target.value)}
-                                name="Branch"
-                                id="branch"
-                            >
-                                <option value="" disabled hidden>
-                                    Select Branch
-                                </option>
-                                <option value="IT">IT</option>
-                                <option value="CSE">CSE</option>
-                                <option value="ECE">ECE</option>
-                                <option value="Electrical">Electrical</option>
-                            </select>
-                        </div>
-                        <div className="sem">
-                            <label htmlFor="sem">Aapka Sem ??</label>
-                            <select
-                                value={sem}
-                                onChange={(e) => setSem(e.target.value)}
-                                name="sem"
-                                id="sem"
-                            >
-                                <option value="" disabled hidden>
-                                    Select Semester
-                                </option>
-                                <option value="1">Sem-1</option>
-                                <option value="2">Sem-2</option>
-                                <option value="3">Sem-3</option>
-                                <option value="4">Sem-4</option>
-                            </select>
-                        </div>
-                        <NavigateButton
-                            className="go-btn"
-                            text={"GO"}
-                            path={redirect}
-                        />
-                    </motion.div>
+                        <motion.div
+                            className="res-inner"
+                            initial={{ top: "140%", y: "-50%" }}
+                            animate={{ top: "calc(50vh)" }}
+                            exit={{ top: "140%" }}
+                            transition={{ duration: 1, ease:"backInOut" }}
+                        >
+                            <img
+                                className="notice-board"
+                                src={noticeBoard}
+                                alt=""
+                            />
+                            <div className="br">
+                                <label htmlFor="branch">Aapki Branch ??</label>
+                                <select
+                                    value={branch}
+                                    onChange={(e) => setBranch(e.target.value)}
+                                    name="Branch"
+                                    id="branch"
+                                >
+                                    <option value="" disabled hidden>
+                                        Select Branch
+                                    </option>
+                                    <option value="IT">IT</option>
+                                    <option value="CSE">CSE</option>
+                                    <option value="ECE">ECE</option>
+                                    <option value="Electrical">
+                                        Electrical
+                                    </option>
+                                </select>
+                            </div>
+                            <div className="sem">
+                                <label htmlFor="sem">Aapka Sem ??</label>
+                                <select
+                                    value={sem}
+                                    onChange={(e) => setSem(e.target.value)}
+                                    name="sem"
+                                    id="sem"
+                                >
+                                    <option value="" disabled hidden>
+                                        Select Semester
+                                    </option>
+                                    <option value="1">Sem-1</option>
+                                    <option value="2">Sem-2</option>
+                                    <option value="3">Sem-3</option>
+                                    <option value="4">Sem-4</option>
+                                </select>
+                            </div>
+                            <NavigateButton
+                                className="go-btn"
+                                text={"GO"}
+                                path={redirect}
+                            />
+                        </motion.div>
                 </div>
             </div>
         </>

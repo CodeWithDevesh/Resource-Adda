@@ -32,14 +32,14 @@ export default function Resources() {
                     overflow: "hidden",
                 }}
             >
-                <motion.div initial={{opacity: 0}} animate={{opacity: 0.8}} transition={{duration: .5}} exit={{opacity: 0}} className="overlay"></motion.div>
+                <motion.div initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: .5}} exit={{opacity: 0}} className="overlay"></motion.div>
                 <div className="res">
                         <motion.div
                             className="res-inner"
                             initial={{ top: "140%", y: "-50%" }}
                             animate={{ top: "calc(50vh)" }}
                             exit={{ top: "140%" }}
-                            transition={{ duration: 1, ease:"backInOut" }}
+                            transition={{ duration: 1, ease: "backInOut" }}
                         >
                             <img
                                 className="notice-board"

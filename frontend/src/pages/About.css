@@ -51,7 +51,6 @@
 }
 
 .note {
-    position: relative;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -170,6 +169,10 @@
         height: 125px;
         width: 125px;
         font-size: 60px;
+    }
+
+    .team-mate>p{
+        font-size: 4vh;
     }
 }
 

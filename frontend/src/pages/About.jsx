@@ -4,14 +4,13 @@ import akshat from "../assets/akshat.jpg";
 import akshata from "../assets/akshata.jpg";
 import divyansh from "../assets/divyansh.jpg";
 import devesh from "../assets/devesh.jpg";
-import pinkNote from "../assets/sticky-pink.png";
 import { motion } from "framer-motion";
 
 export default function About() {
     const [selectedId, setId] = useState(null);
 
     return (
-        <div className="aboutus">
+        <motion.div initial={{opacity: 0}} animate={{opacity: 1}} transition={{duration: 1, delay: 1}} className="aboutus">
             <section className="about-sec1 about-sec">
                 <span className="contact-head">About Us</span>
                 <div className="res-inner-contact">
@@ -34,11 +33,9 @@ export default function About() {
                         onClick={() => {
                             setId("akshata");
                         }}
-                        whileHover={{ scale: "1.2" }}
-                        whileTap={{ scale: ".9" }}
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.4, ease: "easeIn" }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        transition={{ duration: 0.1, ease: "easeIn" }}
                         className="note akshata-note"
                     >
                         A
@@ -48,11 +45,9 @@ export default function About() {
                         onClick={() => {
                             setId("devesh");
                         }}
-                        whileHover={{ scale: "1.2" }}
-                        whileTap={{ scale: ".9" }}
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.4, ease: "easeIn" }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        transition={{ duration: 0.1, ease: "easeIn" }}
                         className="note devesh-note"
                     >
                         D
@@ -62,11 +57,9 @@ export default function About() {
                         onClick={() => {
                             setId("divyansh");
                         }}
-                        whileHover={{ scale: "1.2" }}
-                        whileTap={{ scale: ".9" }}
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.4, ease: "easeIn" }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        transition={{ duration: 0.1, ease: "easeIn" }}
                         className="note divyansh-note"
                     >
                         D
@@ -76,11 +69,9 @@ export default function About() {
                         onClick={() => {
                             setId("akshat");
                         }}
-                        whileHover={{ scale: "1.2" }}
-                        whileTap={{ scale: ".9" }}
-                        initial={{ y: 50, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ duration: 0.4, ease: "easeIn" }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        transition={{ duration: 0.1, ease: "easeIn" }}
                         className="note akshat-note"
                     >
                         A
@@ -259,6 +250,6 @@ export default function About() {
                     </p>
                 </div>
             </section> */}
-        </div>
+        </motion.div>
     );
 }

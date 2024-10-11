@@ -1,5 +1,3 @@
-
-
 @font-face {
   font-family: eraser;
   src: url('./assets/EraserRegular.ttf');
@@ -10,6 +8,31 @@
   src: url('./assets/Neucha-Regular.ttf');
 }
 
+@font-face {
+  font-family: kalam;
+  src: url('./assets/Kalam-Regular.ttf');
+}
+
+@font-face {
+  font-family: akshata;
+  src: url('./assets/akshata-font.ttf');
+}
+
+@font-face {
+  font-family: devesh;
+  src: url('./assets/devesh-font.ttf');
+}
+
+@font-face {
+  font-family: divyansh;
+  src: url('./assets/divyansh-font.otf');
+}
+
+@font-face {
+  font-family: akshat;
+  src: url('./assets/akshat-font.ttf');
+}
+
 
 :root {
   --hover-color: #c11c84;
@@ -18,7 +41,12 @@
   --primary-back: rgba(0, 0, 0, .5);
   --shadow-color: rgba(193, 28, 132, 0.5);
   --font-family: "eraser";
-  --secondary-font: "rusty-cage"
+  --secondary-font: "rusty-cage";
+  --kalam-font: "kalam";
+  --akshata-font: "akshata";
+  --devesh-font: "devesh";
+  --akshat-font: "akshat";
+  --divyansh-font: "divyansh";
 }
 
 *,

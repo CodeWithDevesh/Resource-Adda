@@ -6,65 +6,227 @@
     margin-bottom: 2vh;
 }
 
-.aboutus{
+.aboutus {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    min-height: 80vh;
 }
 
-.intro{
+.intro {
     max-width: 80vw;
 }
 
-.contact-head{
+.contact-head {
     font-size: 8vh;
     margin: 2rem;
     text-align: center;
+    text-decoration: underline;
 }
 
-.team-container {
+.about-sec {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 2rem;
+    justify-content: center;
+    gap: 20px;
     height: fit-content;
     max-width: 80vw;
 }
 
-.res-inner-contact{
+.res-inner-contact {
     margin-left: 0;
     width: 100%;
+    text-align: center;
 }
 
-.res-inner-contact>img{
-    align-self: center;
+.sticky-notes {
+    display: grid;
+    gap: 10px;
+    width: 80vw;
+    grid-template-columns: auto auto auto auto;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
 }
 
-.res-inner-contact>span{
-    font-size: 7vh;
-    align-self: center;
+.note {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    max-height: 150px;
+    max-width: 150px;
+    height: 18vw;
+    width: 18vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+    font-family: var(--kalam-font);
+    color: black;
+    padding-top: 20px;
+    cursor: pointer;
 }
 
-@media (max-width: 1000px){
-    .res-inner-contact{
-        font-size:larger;
-        width: 100%;
-    }
+.akshata-note {
+    background-image: url(../assets/sticky-pink.png);
 }
-@media (max-width: 768px){
-    .contact-head{
+
+.devesh-note {
+    background-image: url(../assets/sticky-blue.png);
+}
+
+.divyansh-note {
+    background-image: url(../assets/sticky-green.png);
+}
+
+.akshat-note {
+    background-image: url(../assets/sticky-yellow.png);
+}
+
+.team-mate-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: var(--overlay-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.team-mate {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: fit-content;
+    width: 80vw;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 20px;
+}
+
+.team-mate>img {
+    object-position: center;
+    height: 20vw;
+}
+
+.team-mate>p {
+    text-align: center;
+    font-size: 5vh;
+    color: black;
+}
+
+.akshata>p {
+    font-family: var(--akshata-font);
+    font-weight: bold;
+}
+
+.devesh>p {
+    font-family: var(--devesh-font);
+}
+
+.divyansh>p {
+    font-family: var(--divyansh-font);
+}
+
+.akshat>p {
+    font-family: var(--akshat-font);
+}
+
+.akshata {
+    background-image: url(../assets/paper-pink.jpg);
+}
+
+.devesh {
+    background-image: url(../assets/paper-blue.jpeg);
+}
+
+.divyansh {
+    background-image: url(../assets/paper-green.jpg);
+}
+
+.akshat {
+    background-image: url(../assets/paper-yellow.png);
+}
+
+
+@media (max-width: 1000px) {
+    .contact-head {
         font-size: 6vh;
         margin: 1rem;
     }
 
-    .res-inner-contact{
-        font-size:small;
+    .res-inner-contact {
         width: 100%;
         gap: 3vh;
     }
 
-    .res-inner-contact span{
+    .res-inner-contact span {
         font-size: 4vh;
+    }
+
+    .note {
+        height: 125px;
+        width: 125px;
+        font-size: 60px;
+    }
+
+    .team-mate>p{
+        font-size: 4vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-head {
+        font-size: 10vw;
+        margin: 1rem;
+    }
+
+    .team-mate {
+        flex-direction: column;
+    }
+
+    .team-mate>img {
+        height: 20vh;
+    }
+
+    .team-mate>p {
+        font-size: 4vw;
+    }
+
+    .divyansh>p {
+        font-size: 5vw;
+    }
+
+    .akshata>p {
+        font-size: 6vw;
+    }
+
+    .res-inner-contact {
+        font-size: small;
+        width: 100%;
+        gap: 3vh;
+    }
+
+    .res-inner-contact span {
+        font-size: 4vh;
+    }
+
+    .note {
+        height: 18vw;
+        width: 18vw;
+    }
+}
+
+@media (max-width: 580px) {
+    .sticky-notes {
+        grid-template-columns: auto auto;
+        grid-template-rows: auto auto;
+    }
+
+    .note {
+        height: 40vw;
+        width: 40vw;
+        font-size: 30vw;
     }
 }

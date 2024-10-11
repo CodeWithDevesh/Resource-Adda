@@ -105,31 +105,46 @@
     padding: 20px;
 }
 
-.team-mate>img {
+.team-mate img {
     object-position: center;
     height: 20vw;
 }
 
-.team-mate>p {
+.team-mate p {
     text-align: center;
     font-size: 5vh;
+}
+
+.team-mate h2 {
+    text-align: center;
+    text-decoration: underline;
+    font-size: 6vh;
+}
+
+.team-mate * {
     color: black;
 }
 
-.akshata>p {
+.team-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.akshata .team-text * {
     font-family: var(--akshata-font);
     font-weight: bold;
 }
 
-.devesh>p {
+.devesh .team-text * {
     font-family: var(--devesh-font);
 }
 
-.divyansh>p {
+.divyansh .team-text * {
     font-family: var(--divyansh-font);
 }
 
-.akshat>p {
+.akshat .team-text * {
     font-family: var(--akshat-font);
 }
 
@@ -171,9 +186,14 @@
         font-size: 60px;
     }
 
-    .team-mate>p{
+    .team-mate h2 {
+        font-size: 5vh;
+    }
+
+    .team-mate p {
         font-size: 4vh;
     }
+
 }
 
 @media (max-width: 768px) {
@@ -186,31 +206,10 @@
         flex-direction: column;
     }
 
-    .team-mate>img {
+    .team-mate img {
         height: 20vh;
     }
 
-    .team-mate>p {
-        font-size: 4vw;
-    }
-
-    .divyansh>p {
-        font-size: 5vw;
-    }
-
-    .akshata>p {
-        font-size: 6vw;
-    }
-
-    .res-inner-contact {
-        font-size: small;
-        width: 100%;
-        gap: 3vh;
-    }
-
-    .res-inner-contact span {
-        font-size: 4vh;
-    }
 
     .note {
         height: 18vw;
@@ -222,6 +221,22 @@
     .sticky-notes {
         grid-template-columns: auto auto;
         grid-template-rows: auto auto;
+    }
+
+    .team-mate h2 {
+        font-size: 6vw;
+    }
+
+    .team-mate p {
+        font-size: 5vw;
+    }
+
+    .akshat h2 {
+        font-size: 5vw;
+    }
+
+    .akshat p {
+        font-size: 4vw;
     }
 
     .note {

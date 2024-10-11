@@ -4,7 +4,7 @@ import NavigateButton from "../components/NavigateButton";
 import character from "../assets/character.png";
 import { motion } from "framer-motion";
 export function Home() {
-    const TRANSITION_DELAY = 0.5;
+    const TRANSITION_DELAY = 1;
     const TRANSITION_DURATION = 0.5;
     const TRANSITION_TYPE = "easeIn";
     const EXIT_DURATION = 0.5;
@@ -102,7 +102,7 @@ export function Home() {
                             transition={{ duration: 1 }}
                         >
                             <NavigateButton
-                                className={"contri-btn"}
+                                className={"home-contri-btn"}
                                 text={"Contribute"}
                                 path={"/contribute"}
                             />

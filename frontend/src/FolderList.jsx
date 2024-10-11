@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./fileexplorer.css";
+import { motion } from "framer-motion";
 
 const FolderList = ({
     groupedBySubject,
@@ -8,7 +9,7 @@ const FolderList = ({
     setSelectedUnit,
     setIsFolderListVisible,
 }) => {
-    const [dropdownOpen, setDropdownOpen] = useState(null); // Manage dropdown state for each subject
+    const [dropdownOpen, setDropdownOpen] = useState(null);
 
     const toggleDropdown = (subject) => {
         if (dropdownOpen === subject) {
@@ -17,7 +18,7 @@ const FolderList = ({
             setDropdownOpen(subject);
         }
         setSelectedSubject(subject);
-        setSelectedUnit(null); // Reset selected unit when folder changes
+        setSelectedUnit(null);
     };
 
     return (
@@ -25,7 +26,13 @@ const FolderList = ({
             <h2 className="folder-list-header">Subjects</h2>
             <ul className="folder-list">
                 {Object.keys(groupedBySubject).map((subject, idx) => (
-                    <li key={idx} className="folder-item hover-effect">
+                    <motion.li
+                        key={idx}
+                        className="folder-item hover-effect"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: idx * 0.1 }}
+                    >
                         <div
                             onClick={() => toggleDropdown(subject)}
                             className={`subject ${
@@ -34,15 +41,16 @@ const FolderList = ({
                         >
                             📁 {subject}
                         </div>
-                        {/* Dropdown for units */}
                         {dropdownOpen === subject && (
-                            <select
+                            <motion.select
                                 className="unit-dropdown hover-effect"
-                                onChange={(e) =>{
-                                    setSelectedUnit(e.target.value)
-                                    setIsFolderListVisible(false)
-                                }
-                                }
+                                onChange={(e) => {
+                                    setSelectedUnit(e.target.value);
+                                    setIsFolderListVisible(false);
+                                }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.2 }}
                                 defaultValue=""
                             >
                                 <option value="" disabled hidden>
@@ -55,9 +63,9 @@ const FolderList = ({
                                         </option>
                                     )
                                 )}
-                            </select>
+                            </motion.select>
                         )}
-                    </li>
+                    </motion.li>
                 ))}
             </ul>
         </div>

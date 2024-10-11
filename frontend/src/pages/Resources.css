@@ -57,13 +57,12 @@
     width: fit-content;
     background-color: transparent;
     font-family:'Courier New', Courier, monospace;
-    transition: border 0.3s ease-in-out; box-shadow: 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .res-inner div select:hover {
-    border-color:#c11c84;
-    box-shadow: 0 0 10px #c11c84;
-    color:#c11c84;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px var(--shadow-color);
 }
 
 .res-inner div option{
@@ -74,13 +73,13 @@
 
 .res-inner div select:focus {
     outline: none;
-    box-shadow: 0 0 10px  #c11c84;
 }
 
 .go-btn{
     align-self: center;
     background: url("https://www.shutterstock.com/image-illustration/colorful-gold-yellow-chalk-pastel-260nw-1047047281.jpg");
-    /* border: 2px solid black; */
+    color: rgb(133, 100, 7);
+    border: none;
 }
 
 @media (max-width: 768px){

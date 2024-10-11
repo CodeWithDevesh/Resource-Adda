@@ -19,7 +19,7 @@
     height: 100%;
     width: 100%;
     position: relative;
-    object-fit: none;
+    object-fit: cover;
     object-position: center;
 }
 
@@ -31,7 +31,7 @@
     background-color: var(--overlay-color);
     height: 100%;
     width: 100%;
-    position: absolute;
+    position: fixed;
     inset: 0;
 }
 

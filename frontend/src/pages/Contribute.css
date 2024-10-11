@@ -2,10 +2,11 @@
     min-height: 80vh;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     padding-top: 1rem;
     width: 100vw;
+    margin-bottom: 30px;
 }
 
 .bang-bang{
@@ -23,9 +24,13 @@
 .contri-form{
     display: grid;
     grid-template-columns: 1fr 1fr;
-    
     gap: 10px;
     align-items: center;
+}
+
+.contri-form label{
+    font-family: var(--kalam-font);
+    text-align: center;
 }
 
 .contri-head{
@@ -33,10 +38,6 @@
     position: relative;
     margin-bottom: 30px;
     text-align: center;
-}
-
-.contribute .res-inner{
-    margin: 0;
 }
 
 .contri-form select{
@@ -50,11 +51,11 @@
     /* width: fit-content; */
     background-color: transparent;
     font-family:'Courier New', Courier, monospace;
-    transition: border 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .contri-form select:hover {
-    border-color: #00ffcc;
+    transform: scale(1.05);
     box-shadow: 0 4px 10px var(--shadow-color);
 }
 
@@ -66,12 +67,13 @@
 
 .contri-form select:focus {
     outline: none;
-    box-shadow: 0 0 10px rgba(0, 255, 204, 0.8);
 }
-.res-inner{
-    background:url("https://img.freepik.com/premium-vector/empty-old-paper-scroll-with-torn-crumpled-edges-cartoon-drawing-template-letter-text_480270-162.jpg");
+
+.contri-inner{
+    background:url("../assets/contri-back.png");
     background-position: center;
     background-size: 120% 120%;
+    padding: 30px 20px;
 }
 
 .contri-form input {
@@ -80,7 +82,13 @@
     border-radius: 3vh;
     color: black;
     height: fit-content;
-    padding: 5px;
+    font-family:'Courier New', Courier, monospace;
+    padding: 0.5vh 1vw;
+    transition: transform .3s ease-in-out;
+}
+.contri-form input:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px var(--shadow-color);
 }
 
 .contri-btn{
@@ -88,6 +96,20 @@
     grid-column: 1 / 3;
     width: fit-content;
     justify-self: center;
+    background-color: transparent;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 3vh;
+    user-select: none;
+    font-size: 4vh;
+    cursor: pointer;
+    font-family: var(--secondary-font);
+    font-weight: bolder;
+}
+
+.contri-btn:hover{
+    border-width: 3px;
+    box-shadow: 0 4px 10px var(--shadow-color);
 }
 
 @media (max-width: 768px){

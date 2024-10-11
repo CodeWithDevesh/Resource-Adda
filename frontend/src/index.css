@@ -35,13 +35,13 @@
 
 
 :root {
-  --hover-color: #c11c84;
+  --hover-color: #16ad23;
   --text-color: white;
   --overlay-color: rgba(0, 0, 0, .7);
   --primary-back: rgba(0, 0, 0, .5);
-  --shadow-color: rgba(193, 28, 132, 0.5);
+  --shadow-color: rgba(68, 141, 70, 0.5);
   --font-family: "eraser";
-  --secondary-font: "rusty-cage";
+  --secondary-font: "Courier New";
   --kalam-font: "kalam";
   --akshata-font: "akshata";
   --devesh-font: "devesh";
@@ -59,6 +59,7 @@
   color: var(--text-color);
   font-family: var(--font-family);
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {

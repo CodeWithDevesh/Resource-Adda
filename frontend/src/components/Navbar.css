@@ -1,6 +1,7 @@
 .nav-header {
     display: flex;
     position: sticky;
+    top: 0;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
@@ -136,8 +137,9 @@ nav ul li label {
 
 .underlay{
     display: block;
-    position: absolute;
+    position: fixed;
     inset: 0;
+    z-index: 99;
 }
 
 .underlay.collapse{

@@ -51,9 +51,6 @@
     align-self: flex-end;
 }
 
-.btn:hover {
-    background-color: rgba(0, 0, 0, .9);
-}
 
 .topper-sec {
     display: flex;
@@ -88,7 +85,7 @@
     }
 
     .res-btn,
-    .contri-btn {
+    .home-contri-btn {
         align-self: center;
     }
 }

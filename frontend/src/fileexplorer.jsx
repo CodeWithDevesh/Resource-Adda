@@ -9,12 +9,19 @@ import { BASE_SERVER_URL } from "./constants";
 export default function fileexplorer() {
     const [data, setData] = useState({});
     const { branch, sem } = useParams();
+    const [loading, setLoading] = useState(true);
+    const [message, setMessage] = useState("Loading...")
+
     useEffect(() => {
         axios
             .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
             .then((res) => {
                 setData(res.data);
-            });
+                setLoading(false);
+            })
+            .catch((err) => {
+                setMessage("Something went wrong... \ncould not load")
+            })
     }, []);
     const [groupedBySubject, setGroupedBySubject] = useState({});
     const [isFolderListVisible, setIsFolderListVisible] = useState(true);
@@ -65,13 +72,16 @@ export default function fileexplorer() {
                         isFolderListVisible ? "visible" : ""
                     }`}
                 >
-                    <FolderList
-                        groupedBySubject={groupedBySubject}
-                        selectedSubject={selectedSubject}
-                        setSelectedSubject={setSelectedSubject}
-                        setSelectedUnit={setSelectedUnit}
-                        setIsFolderListVisible={setIsFolderListVisible}
-                    />
+                    {loading && (<h2>{message}</h2>)}
+                    {!loading && (
+                        <FolderList
+                            groupedBySubject={groupedBySubject}
+                            selectedSubject={selectedSubject}
+                            setSelectedSubject={setSelectedSubject}
+                            setSelectedUnit={setSelectedUnit}
+                            setIsFolderListVisible={setIsFolderListVisible}
+                        />
+                    )}
                 </div>
                 <div className="right-pane">
                     {selectedSubject && selectedUnit ? (

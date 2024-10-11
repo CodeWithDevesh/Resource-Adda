@@ -101,13 +101,15 @@
 
   .left-pane {
     position: fixed;
-    top: 0;
+    top: 80px;
     left: 0;
     width: 100%;
     height: 100%;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
+    overflow-y: auto;
     z-index: 999;
+    background-color: black;
   }
 
   .left-pane.visible {

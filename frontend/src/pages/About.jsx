@@ -40,7 +40,7 @@ export default function About() {
                         }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        transition={{ duration: 0.1, ease: "easeIn" }}
+                        transition={{ duration: 0.3, ease: "easeIn" }}
                         className="note akshata-note"
                     >
                         A
@@ -52,7 +52,7 @@ export default function About() {
                         }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        transition={{ duration: 0.1, ease: "easeIn" }}
+                        transition={{ duration: 0.3, ease: "easeIn" }}
                         className="note devesh-note"
                     >
                         D
@@ -64,7 +64,7 @@ export default function About() {
                         }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        transition={{ duration: 0.1, ease: "easeIn" }}
+                        transition={{ duration: 0.3, ease: "easeIn" }}
                         className="note divyansh-note"
                     >
                         D
@@ -76,7 +76,7 @@ export default function About() {
                         }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        transition={{ duration: 0.1, ease: "easeIn" }}
+                        transition={{ duration: 0.3, ease: "easeIn" }}
                         className="note akshat-note"
                     >
                         A

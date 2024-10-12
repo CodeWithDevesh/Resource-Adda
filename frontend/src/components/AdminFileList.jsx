@@ -2,7 +2,6 @@ import React from "react";
 import Button from "./Button";
 
 export default function AdminFileList({ files, subject, unit, del }) {
-    console.log(files);
     return (
         <div>
             <h2>

@@ -101,7 +101,6 @@ const Requests = ({ jwtToken }) => {
                                     className={"req-reject-btn"}
                                     text={"Reject"}
                                     onClick={() => {
-                                        console.log("clicked");
                                     }}
                                 />
                             </div>

@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const AdminFolderList = ({
     groupedBySubject,
     selectedSubject,
     setSelectedSubject,
     setSelectedUnit,
+    branchSem
 }) => {
     const [dropdownOpen, setDropdownOpen] = useState(null); // Manage dropdown state for each subject
+    const [branches, setBranches] = useState(null)
+    const [sem, setSem] = useState(null)
+
+    useEffect(() => {
+        setBranches(branchSem.branch.join(', '))
+        setSem(branchSem.sem)
+    }, [branchSem])
 
     const toggleDropdown = (subject) => {
         if (dropdownOpen === subject) {
@@ -15,11 +23,14 @@ const AdminFolderList = ({
             setDropdownOpen(subject);
         }
         setSelectedSubject(subject);
-        setSelectedUnit(null); // Reset selected unit when folder changes
+        setSelectedUnit(null); 
     };
 
     return (
-        <div>
+        <div className="admin-folder-list">
+            <p>Branches:- {branches}</p>
+            <p>Sem:- {sem}</p>
+            <hr/>
             <h2 className="folder-list-header">Subjects</h2>
             <ul className="folder-list">
                 {Object.keys(groupedBySubject).map((subject, idx) => (
@@ -32,7 +43,6 @@ const AdminFolderList = ({
                         >
                             📁 {subject}
                         </div>
-                        {/* Dropdown for units */}
                         {dropdownOpen === subject && (
                             <select
                                 className="unit-dropdown hover-effect"

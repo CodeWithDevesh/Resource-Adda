@@ -101,16 +101,62 @@ app.get("/server/files", async (req, res) => {
         return res.status(400).send("Please provide both branch and sem.");
     }
 
-    const searchPara = { branch, sem };
-    if (subject) searchPara.subject = subject;
-    if (unit) searchPara.unit = unit;
-
     try {
-        // Find files by branch and sem
-        const files = await Document.find(searchPara);
+        // Check if 'branch' is an array (multiple branches) or a single branch
+        const branches = Array.isArray(branch) ? branch : [branch];
 
+        // Create the base search parameters for semester, subject, and unit
+        const searchPara = { sem };
+        if (subject) searchPara.subject = subject;
+        if (unit) searchPara.unit = unit;
+        console.log(branches);
+        let files;
+
+        // If multiple branches are provided, find files common across the branches
+        if (branches.length > 1) {
+            // Fetch files that are common to the provided branches
+            const documents = await Document.find({
+                branch: { $in: branches },
+                ...searchPara,
+            });
+            console.log(documents);
+
+            // Create a map to track file occurrences across branches
+            const fileMap = new Map();
+
+            documents.forEach((doc) => {
+                if (fileMap.has(doc.fileUrl)) {
+                    const fileData = fileMap.get(doc.fileUrl);
+                    fileData.count += 1;
+                    fileMap.set(doc.fileUrl, fileData);
+                } else {
+                    fileMap.set(doc.fileUrl, {
+                        fileUrl: doc.fileUrl,
+                        fileName: doc.fileName,
+                        branch: doc.branch,
+                        sem: doc.sem,
+                        subject: doc.subject,
+                        uploadedAt: doc.uploadedAt,
+                        unit: doc.unit,
+                        count: 1, // Initialize count to 1
+                    });
+                }
+            });
+
+            // Only keep files that are common to all branches
+            files = Array.from(fileMap.values()).filter(
+                (file) => file.count === branches.length
+            );
+        } else {
+            // If only one branch is provided, use the current functionality
+            files = await Document.find({ branch: branches[0], ...searchPara });
+        }
+
+        // Send the response
         res.status(200).json({
-            message: `Files for branch: ${branch}, sem: ${sem}`,
+            message: `Files for branch(es): ${branches.join(
+                ", "
+            )}, sem: ${sem}`,
             files,
         });
     } catch (error) {
@@ -120,30 +166,62 @@ app.get("/server/files", async (req, res) => {
 });
 
 app.delete("/server/delete", authenticateJWT, async (req, res) => {
-    const { fileUrl } = req.body;
+    const { fileUrl, branch } = req.body; // Accept both fileUrl and branch from the body
 
-    if (!fileUrl) {
-        return res.status(400).json({ error: "File URL is required" });
+    if (!fileUrl || !branch) {
+        return res
+            .status(400)
+            .json({ error: "File URL and branch are required" });
     }
 
     try {
-        const document = await Document.findOne({ fileUrl });
-        if (!document) {
+        // Check if branch is an array or not
+        const branches = Array.isArray(branch) ? branch : [branch];
+
+        // Find all documents that reference this file URL
+        const documents = await Document.find({ fileUrl });
+
+        if (!documents.length) {
             return res.status(404).json({ error: "File not found" });
         }
 
-        const fileName = fileUrl.split("/").pop(); // Adjust this depending on the structure of your file URL
+        // Filter documents that match the branches to be deleted
+        const documentsToDelete = documents.filter((doc) =>
+            branches.includes(doc.branch)
+        );
 
-        const bucket = storage.bucket(bucketName);
-        const file = bucket.file(fileName);
+        if (!documentsToDelete.length) {
+            return res.status(404).json({
+                error: "No documents found for the specified branches",
+            });
+        }
 
-        await file.delete();
-        console.log("File deleted from Google Cloud Storage");
+        // Delete documents for the specified branches
+        await Document.deleteMany({
+            fileUrl,
+            branch: { $in: branches },
+        });
+        console.log("Documents deleted from MongoDB for branches:", branches);
 
-        await Document.deleteOne({ fileUrl });
-        console.log("Document deleted from MongoDB");
+        // Check if there are any remaining documents that still reference the file
+        const remainingDocuments = await Document.find({ fileUrl });
 
-        return res.status(200).json({ message: "File deleted successfully" });
+        // Only delete the file from GCP if no other branches reference it
+        if (!remainingDocuments.length) {
+            const fileName = fileUrl.split("/").pop(); // Adjust this depending on the structure of your file URL
+
+            const bucket = storage.bucket(bucketName);
+            const file = bucket.file(fileName);
+
+            await file.delete();
+            console.log("File deleted from Google Cloud Storage");
+        } else {
+            console.log("File retained because other branches reference it.");
+        }
+
+        return res.status(200).json({
+            message: "File deleted successfully for the specified branches",
+        });
     } catch (error) {
         console.error("Error deleting file:", error);
         return res.status(500).json({ error: "Internal Server Error" });
@@ -326,43 +404,59 @@ io.on("connection", (socket) => {
                     activeUploads[id].blobStream.end(); // Close the stream
 
                     const publicUrl = `https://storage.googleapis.com/${bucket.name}/${id}`;
-                    let fileRecord;
+                    let fileRecords = [];
 
                     if (type == "upload") {
-                        fileRecord = new Document({
-                            fileUrl: publicUrl,
-                            branch,
-                            sem,
-                            fileName,
-                            subject,
-                            unit,
-                        });
+                        const branches = Array.isArray(branch)
+                            ? branch
+                            : [branch];
+
+                        for (br of branches)
+                            fileRecords.push(
+                                new Document({
+                                    fileUrl: publicUrl,
+                                    branch: br,
+                                    sem,
+                                    fileName,
+                                    subject,
+                                    unit,
+                                })
+                            );
                     } else {
-                        fileRecord = new Contribution({
-                            fileUrl: publicUrl, // Google Cloud Storage URL
-                            branch,
-                            sem,
-                            filename: fileName, // UUID file name
-                            subject,
-                            unit,
-                            email: data.email,
-                        });
+                        const branches = Array.isArray(branch)
+                            ? branch
+                            : [branch];
+                        for (br of branches)
+                            fileRecords.push(
+                                Contribution({
+                                    fileUrl: publicUrl, // Google Cloud Storage URL
+                                    branch,
+                                    sem,
+                                    filename: fileName, // UUID file name
+                                    subject,
+                                    unit,
+                                    email: data.email,
+                                })
+                            );
                     }
 
-                    fileRecord
-                        .save()
-                        .then(() => {
-                            socket.emit("uploadSuccess", {
-                                message: "File uploaded successfully!",
-                                fileUrl: publicUrl,
-                            });
+                    for (fr of fileRecords)
+                        fr.save()
+                            .then(() => {
+                                socket.emit("uploadSuccess", {
+                                    message: "File uploaded successfully!",
+                                    fileUrl: publicUrl,
+                                });
 
-                            delete activeUploads[id];
-                        })
-                        .catch((err) => {
-                            console.error("Error saving file record:", err);
-                            socket.emit("error", "Error saving file metadata.");
-                        });
+                                delete activeUploads[id];
+                            })
+                            .catch((err) => {
+                                console.error("Error saving file record:", err);
+                                socket.emit(
+                                    "error",
+                                    "Error saving file metadata."
+                                );
+                            });
                 } catch (err) {
                     socket.emit("error", err);
                 }

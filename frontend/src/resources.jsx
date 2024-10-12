@@ -11,13 +11,10 @@ export default function Resources() {
         axios
             .get(`http://localhost:3333/files?branch=${branch}&sem=${sem}`)
             .then((response) => {
-                console.log(response.data);
                 setFiles(response.data.files);
                 groupFilesBySubject(response.data.files);
-                console.log(gf)
             })
             .catch((error) => {
-                console.error("Error fetching files:", error);
             });
     }, [branch, sem]);
     const groupFilesBySubject = (files) => {
@@ -26,7 +23,6 @@ export default function Resources() {
             acc[file.subject].push(file);
             return acc;
         }, {});
-        console.log(groupedFiles)
     };
 
     return <>Resources</>;

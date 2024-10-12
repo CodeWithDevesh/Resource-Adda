@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import Button from "../components/Button";
 import axios from "axios";
@@ -8,9 +8,8 @@ import AdminFolderList from "../components/AdminFolderList";
 import { io } from "socket.io-client";
 import { v4 } from "uuid";
 import ProgressMenu from "../components/ProgressMenu";
-import { Fab } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import "./AdminPannel.css";
+import "./Upload.css";
 
 export default function Upload({ jwtToken }) {
     const [branchSem, setBranchSem] = useState({});
@@ -27,10 +26,13 @@ export default function Upload({ jwtToken }) {
         branch = branchSem.branch;
         sem = branchSem.sem;
         try {
+            const branchQuery = branch
+                .map((b) => `branch=${encodeURIComponent(b)}`)
+                .join("&");
+
             axios
-                .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
+                .get(`${BASE_SERVER_URL}/files?${branchQuery}&sem=${sem}`)
                 .then((res) => {
-                    console.log("Got Files");
                     setData(res.data);
                 })
                 .catch((e) => {
@@ -80,26 +82,22 @@ export default function Upload({ jwtToken }) {
 
     const del = async (url) => {
         try {
-            axios
-                .delete(`${BASE_SERVER_URL}/delete`, {
-                    headers: {
-                        Authorization: `Bearer ${jwtToken}`,
-                    },
-                    data: {
-                        fileUrl: url,
-                    },
-                })
-                .then((res) => {
-                    console.log("File deleted successfully:", res.data);
-                    load();
-                });
+            const response = await axios.delete(`${BASE_SERVER_URL}/delete`, {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`,
+                },
+                data: {
+                    fileUrl: url,
+                    branch: branchSem.branch, // Pass the array of branches
+                },
+            });
         } catch (error) {
             console.error(
                 "Error deleting file:",
                 error.response ? error.response.data : error.message
             );
         } finally {
-            load();
+            load(); // This will run regardless of success or failure
         }
     };
 
@@ -147,6 +145,7 @@ export default function Upload({ jwtToken }) {
                                 selectedSubject={selectedSubject}
                                 setSelectedSubject={setSelectedSubject}
                                 setSelectedUnit={setSelectedUnit}
+                                branchSem={branchSem}
                             />
                         </div>
                         <div className="right-pane">
@@ -376,35 +375,116 @@ const Uploader = ({ branch, sem, jwtToken, setUploading, setProgresses }) => {
     );
 };
 
+const branches = [
+    { title: "IT" },
+    { title: "CSE" },
+    { title: "ECE" },
+    { title: "Electrical" },
+    { title: "Chemical" },
+    { title: "Mining" },
+    { title: "Mechanical" },
+    { title: "Metalurgy" },
+    { title: "Civil" },
+    { title: "BioMed" },
+    { title: "BioTect" },
+];
+
 const Select = ({ setBranchSem }) => {
-    const [branch, setBranch] = useState("");
     const [sem, setSem] = useState("");
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [selectedBranches, setSelectedBranches] = useState([]);
+    const dropdownRef = useRef(null);
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleBranchSelection = (branch) => {
+        setSelectedBranches((prevSelected) => {
+            if (prevSelected.includes(branch)) {
+                // If already selected, remove it
+                return prevSelected.filter((b) => b !== branch);
+            } else {
+                // Otherwise, add it to the selected branches
+                return [...prevSelected, branch];
+            }
+        });
+    };
+
+    // Close dropdown when clicking outside of it
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        // Add event listener for clicks
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            // Remove event listener on cleanup
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dropdownRef]);
 
     const setItems = () => {
-        if (!branch || !sem) return;
-        setBranchSem({ branch, sem });
+        if (!selectedBranches || !sem) return;
+        if (selectedBranches.length == 0) return;
+        setBranchSem({ branch: selectedBranches, sem });
     };
 
     return (
         <>
-            <div className="res">
-                <div className="res-inner">
+            <div className="upload-select">
+                <div className="upload-select-inner">
                     <div className="br">
                         <label htmlFor="branch">Branch ??</label>
-                        <select
-                            value={branch}
-                            onChange={(e) => setBranch(e.target.value)}
-                            name="Branch"
-                            id="branch"
+                        <div
+                            ref={dropdownRef}
+                            className="multi-select-container"
                         >
-                            <option value="" disabled hidden>
-                                Select Branch
-                            </option>
-                            <option value="IT">IT</option>
-                            <option value="CSE">CSE</option>
-                            <option value="ECE">ECE</option>
-                            <option value="Electrical">Electrical</option>
-                        </select>
+                            <div
+                                className="multi-select"
+                                onClick={toggleDropdown}
+                            >
+                                <span>Select Branches</span>
+                                <div
+                                    className={`dropdown-icon ${
+                                        isDropdownOpen ? "open" : ""
+                                    }`}
+                                >
+                                    ▼
+                                </div>
+                            </div>
+
+                            {isDropdownOpen && (
+                                <div className="dropdown-menu">
+                                    {branches.map((branch, index) => (
+                                        <label
+                                            key={index}
+                                            className="dropdown-item"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedBranches.includes(
+                                                    branch.title
+                                                )}
+                                                onChange={() =>
+                                                    handleBranchSelection(
+                                                        branch.title
+                                                    )
+                                                }
+                                            />
+                                            {branch.title}
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <div className="sem">
                         <label htmlFor="sem">Semester ??</label>
@@ -421,6 +501,10 @@ const Select = ({ setBranchSem }) => {
                             <option value="2">Sem-2</option>
                             <option value="3">Sem-3</option>
                             <option value="4">Sem-4</option>
+                            <option value="5">Sem-5</option>
+                            <option value="6">Sem-6</option>
+                            <option value="7">Sem-7</option>
+                            <option value="8">Sem-8</option>
                         </select>
                     </div>
                     <Button className="go-btn" text={"GO"} onClick={setItems} />

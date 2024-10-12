@@ -1,5 +1,4 @@
 import React from "react";
-import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
 export default function FileList({ files, subject, unit }) {
     return (

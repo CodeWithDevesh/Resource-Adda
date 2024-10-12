@@ -3,7 +3,6 @@ import axios from "axios";
 import { BASE_SERVER_URL } from "../constants";
 import Button from "../components/Button";
 import "./Requests.css";
-import { Dialog } from "@mui/material";
 
 const Requests = ({ jwtToken }) => {
     const [pendingRequests, setPendingRequests] = useState([]);

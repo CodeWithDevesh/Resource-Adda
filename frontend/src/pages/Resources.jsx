@@ -89,6 +89,13 @@ export default function Resources() {
                                 <option value="CSE">CSE</option>
                                 <option value="ECE">ECE</option>
                                 <option value="Electrical">Electrical</option>
+                                <option value="Chemical">Chemical</option>
+                                <option value="Mining">Mining</option>
+                                <option value="Mechanical">Mechanical</option>
+                                <option value="Metalurgy">Metalurgy</option>
+                                <option value="Civil">Civil</option>
+                                <option value="BioMed">BioMed</option>
+                                <option value="BioTech">BioTech</option>
                             </select>
                         </div>
                         <div className="sem">
@@ -106,6 +113,10 @@ export default function Resources() {
                                 <option value="2">Sem-2</option>
                                 <option value="3">Sem-3</option>
                                 <option value="4">Sem-4</option>
+                                <option value="5">Sem-5</option>
+                                <option value="6">Sem-6</option>
+                                <option value="7">Sem-7</option>
+                                <option value="8">Sem-8</option>
                             </select>
                         </div>
                         <NavigateButton

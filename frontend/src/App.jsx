@@ -11,28 +11,14 @@ import Page404 from "./pages/Page404";
 import AdminPannel from "./pages/AdminPannel";
 import About from "./pages/About";
 import Contribute from "./pages/Contribute";
-import { ThemeProvider, createTheme } from "@mui/material";
 import { AnimatePresence } from "framer-motion";
-
-const theme = createTheme({
-    palette: {
-        primary: {
-            main: "rgba(0, 0, 0, .5)",
-            light: "#42a5f5",
-            dark: "#000000",
-            contrastText: "#fff",
-        },
-    },
-});
 
 function App() {
     return (
-        <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <Layout />
-                <AnimatedRoutes />
-            </BrowserRouter>
-        </ThemeProvider>
+        <BrowserRouter>
+            <Layout />
+            <AnimatedRoutes />
+        </BrowserRouter>
     );
 }
 
@@ -40,12 +26,15 @@ function AnimatedRoutes() {
     const location = useLocation();
 
     return (
-        <AnimatePresence >
+        <AnimatePresence>
             <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<Home />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/resources" element={<Resources />} />
-                <Route path="/resources/:branch/:sem" element={<Fileexplorer />} />
+                <Route
+                    path="/resources/:branch/:sem"
+                    element={<Fileexplorer />}
+                />
                 <Route path="/aboutus" element={<About />} />
                 <Route path="/groups" element={<Grouops />} />
                 <Route path="/addAdmin" element={<SuperAdmin />} />

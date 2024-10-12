@@ -232,6 +232,10 @@ export default function Contribute() {
                                 <option value="2">Sem-2</option>
                                 <option value="3">Sem-3</option>
                                 <option value="4">Sem-4</option>
+                                <option value="5">Sem-5</option>
+                                <option value="6">Sem-6</option>
+                                <option value="7">Sem-7</option>
+                                <option value="8">Sem-8</option>
                             </select>
                             <label className="bang-bang" htmlFor="subject">
                                 Subject

@@ -12,10 +12,32 @@ import AdminPannel from "./pages/AdminPannel";
 import About from "./pages/About";
 import Contribute from "./pages/Contribute";
 import { AnimatePresence } from "framer-motion";
+import GoogleTagManager from "./components/GTM";
+import View from "./pages/View";
 
+const gtmId = "GTM-PX8DZBK5";
+
+// App Component
 function App() {
+    // useEffect(() => {
+    //     TagManager.initialize(tagManagerArgs);
+    // }, []);
+
+    // const location = useLocation();
+    // useEffect(() => {
+    //     const sdf = {
+    //         event: "pageview",
+    //         page: {
+    //             path: location.pathname,
+    //             title: document.title,
+    //         },
+    //     };
+    //     TagManager.dataLayer(sdf);
+    // }, [location]);
+
     return (
         <BrowserRouter>
+            <GoogleTagManager gtmId={gtmId} />
             <Layout />
             <AnimatedRoutes />
         </BrowserRouter>
@@ -41,6 +63,7 @@ function AnimatedRoutes() {
                 <Route path="/admin" element={<AdminPannel />} />
                 <Route path="/contribute" element={<Contribute />} />
                 <Route path="*" element={<Page404 />} />
+                <Route path="/view" element={<View />} />
             </Routes>
         </AnimatePresence>
     );
@@ -52,7 +75,7 @@ function Layout() {
     return (
         <>
             <Backdrop />
-            {location.pathname !== "/admin" && <Navbar />}
+            {location.pathname !== "/admin" && location.pathname !== "/view" && <Navbar />}
         </>
     );
 }

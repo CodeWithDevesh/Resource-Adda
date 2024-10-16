@@ -52,6 +52,10 @@
     border: solid yellow 2px;
 }
 
+.popup-content *{
+    font-family: 'Courier New', Courier, monospace;
+}
+
 .popup-content * {
     color: yellow;
 }

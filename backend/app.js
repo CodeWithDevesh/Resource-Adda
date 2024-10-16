@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const multer = require("multer");
 const { Storage } = require("@google-cloud/storage");
-const { v4: uuidV4 } = require("uuid");
 const path = require("path");
 const Document = require("./document");
 const adminDoc = require("./admin");
@@ -13,7 +12,12 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const http = require("http");
 const socketIO = require("socket.io");
+const axios = require("axios");
 const uri = process.env.MONGO_URI;
+const RequestCount = require("./requestCount");
+
+const SAVE_USER_CNT = false;
+
 const clientOptions = {
     serverApi: { version: "1", strict: true, deprecationErrors: true },
 };
@@ -80,6 +84,106 @@ function authenticateJWT(req, res, next) {
     });
 }
 
+let requestCount = 0; // Initialize request count
+
+// Function to reset the request count at midnight
+function resetRequestCount() {
+    const now = new Date();
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0); // Set the time to midnight of the current day
+
+    const timeToMidnight = midnight - now; // Calculate the time remaining until midnight
+
+    setTimeout(async () => {
+        // Before resetting, save the current request count to MongoDB
+        if (SAVE_USER_CNT)
+            try {
+                const newRequestCount = new RequestCount({
+                    date: new Date(), // Save the current date
+                    count: requestCount, // Save the request count
+                });
+                await newRequestCount.save(); // Save the document to MongoDB
+                console.log("Request count saved to MongoDB:", requestCount);
+            } catch (error) {
+                console.error("Error saving request count to MongoDB:", error);
+            }
+
+        requestCount = 0; // Reset the request count after saving
+        console.log("Request count reset to 0 at midnight");
+
+        // Set an interval to reset the request count every 24 hours
+        setInterval(async () => {
+            if (SAVE_USER_CNT)
+                try {
+                    const newRequestCount = new RequestCount({
+                        date: new Date(), // Save the current date
+                        count: requestCount, // Save the request count
+                    });
+                    await newRequestCount.save(); // Save the document to MongoDB
+                    console.log(
+                        "Request count saved to MongoDB:",
+                        requestCount
+                    );
+                } catch (error) {
+                    console.error(
+                        "Error saving request count to MongoDB:",
+                        error
+                    );
+                }
+
+            requestCount = 0; // Reset the request count
+            console.log("Request count reset to 0 every day at midnight");
+        }, 24 * 60 * 60 * 1000); // Every 24 hours
+    }, timeToMidnight);
+}
+
+resetRequestCount();
+
+// GET endpoint to retrieve the request count
+app.get("/server/request-count", async (req, res) => {
+    const { date } = req.query;
+
+    // If no date is provided, return the current request count
+    if (!date) {
+        return res.json({
+            message: "Current request count",
+            count: requestCount,
+        });
+    }
+
+    try {
+        // If date is provided, fetch the request count from MongoDB
+        const requestedDate = new Date(date);
+        const nextDay = new Date(requestedDate);
+        nextDay.setDate(nextDay.getDate() + 1);
+
+        // Query for the request count on the provided date
+        const requestCountDoc = await RequestCount.findOne({
+            date: {
+                $gte: requestedDate, // Start of the day
+                $lt: nextDay, // Before the next day starts
+            },
+        });
+
+        // If no record is found for the date, return 0
+        if (!requestCountDoc) {
+            return res.json({
+                message: `No request count found for the date: ${date}`,
+                count: 0,
+            });
+        }
+
+        // Return the request count for the provided date
+        return res.json({
+            message: `Request count for ${date}`,
+            count: requestCountDoc.count,
+        });
+    } catch (error) {
+        console.error("Error fetching request count from MongoDB:", error);
+        return res.status(500).json({ error: "Server error" });
+    }
+});
+
 app.get("/server/validate-token", (req, res) => {
     const token = req.headers.authorization.split(" ")[1];
     if (!token) {
@@ -96,11 +200,11 @@ app.get("/server/validate-token", (req, res) => {
 
 app.get("/server/files", async (req, res) => {
     const { branch, sem, subject, unit } = req.query;
-
     if (!branch || !sem) {
         return res.status(400).send("Please provide both branch and sem.");
     }
 
+    requestCount++;
     try {
         // Check if 'branch' is an array (multiple branches) or a single branch
         const branches = Array.isArray(branch) ? branch : [branch];
@@ -269,6 +373,31 @@ app.post(
         }
     }
 );
+
+app.get("/server/download", async (req, res) => {
+    const { fileUrl, fileName } = req.query;
+    try {
+        // Use axios or any HTTP client to fetch the file
+        const response = await axios({
+            url: fileUrl,
+            method: "GET",
+            responseType: "stream", // Stream the file to the client
+        });
+
+        // Set the headers to force the download with the desired file name
+        res.setHeader(
+            "Content-Disposition",
+            `attachment; filename="${fileName}"`
+        );
+        res.setHeader("Content-Type", response.headers["content-type"]);
+
+        // Pipe the file stream to the response
+        response.data.pipe(res);
+    } catch (error) {
+        console.error("Error fetching file:", error);
+        res.status(500).send("Error downloading the file.");
+    }
+});
 
 app.post("/server/addAdmin", async (req, res) => {
     const { admin_password: ADMIN_PASS, username, password } = req.body;

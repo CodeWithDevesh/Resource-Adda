@@ -221,111 +221,117 @@ const AddFileBtn = ({ setUploading }) => {
 const Uploader = ({ branch, sem, jwtToken, setUploading, setProgresses }) => {
     const [subject, setSubject] = useState("");
     const [unit, setUnit] = useState("");
-    const [file, setFile] = useState(null);
+    const [files, setFile] = useState([]);
 
     const submit = async () => {
-        const socket = io(SOCKET_URL, {
-            auth: {
-                token: jwtToken,
-            },
-            transports: ["websocket"],
-            upgrade: false,
-            perMessageDeflate: true,
-        });
-
-        const chunkSize = 1024 * 512; // 512 KB chunks
-        let offset = 0;
-        const id = v4() + "." + file.name.split(".").pop(); // Unique ID for the file
-
-        setProgresses((prevProgresses) => {
-            let a = prevProgresses.map((element) => {
-                return element;
+        for (let file of files) {
+            const socket = io(SOCKET_URL, {
+                auth: {
+                    token: jwtToken,
+                },
+                transports: ["websocket"],
+                upgrade: false,
+                perMessageDeflate: true,
             });
-            a.push({ text: file.name, progress: 0, id });
-            return a;
-        });
 
-        socket.on("uploadProgress", (progress) => {
+            const chunkSize = 1024 * 512; // 512 KB chunks
+            let offset = 0;
+            const id = v4() + "." + file.name.split(".").pop(); // Unique ID for the file
+
             setProgresses((prevProgresses) => {
-                return prevProgresses.map((element) => {
-                    if (element.id === id) {
-                        return { ...element, progress };
-                    }
+                let a = prevProgresses.map((element) => {
                     return element;
                 });
+                a.push({ text: file.name, progress: 0, id });
+                return a;
             });
-        });
 
-        socket.on("uploadSuccess", (response) => {
-            setProgresses((prevProgresses) => {
-                return prevProgresses.filter((element) => element.id !== id);
-            });
-            socket.close();
-        });
-
-        socket.on("error", (errorMessage) => {
-            setProgresses((prevProgresses) => {
-                return prevProgresses.filter((element) => element.id !== id);
-            });
-            alert(errorMessage.message);
-            socket.close();
-        });
-
-        let retries = 0;
-        const RETRY_LIMIT = 5;
-
-        // Function to send a chunk after the previous one is acknowledged
-        function uploadChunk(chunk, data) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-
-                reader.onload = () => {
-                    data.fileBuffer = reader.result;
-
-                    socket.emit("uploadFileChunk", data);
-                    socket.once("chunkUploaded", () => {
-                        retries = 0;
-                        resolve();
+            socket.on("uploadProgress", (progress) => {
+                setProgresses((prevProgresses) => {
+                    return prevProgresses.map((element) => {
+                        if (element.id === id) {
+                            return { ...element, progress };
+                        }
+                        return element;
                     });
-                };
-
-                reader.onerror = (error) => {
-                    reject(error);
-                };
-
-                reader.readAsArrayBuffer(chunk);
+                });
             });
-        }
 
-        async function uploadFileInChunks() {
-            while (offset < file.size) {
-                const chunk = file.slice(offset, offset + chunkSize);
-                const data = {
-                    branch,
-                    sem,
-                    subject,
-                    unit,
-                    fileName: file.name,
-                    offset,
-                    fileSize: file.size,
-                    id,
-                    type: "upload",
-                };
+            socket.on("uploadSuccess", (response) => {
+                setProgresses((prevProgresses) => {
+                    return prevProgresses.filter(
+                        (element) => element.id !== id
+                    );
+                });
+                socket.close();
+            });
 
-                try {
-                    await uploadChunk(chunk, data);
-                    offset += chunkSize;
-                } catch (error) {
-                    console.error("Error uploading chunk:", error);
-                    if (retries < RETRY_LIMIT) {
-                        console.log("Retrying");
-                        retries++;
-                    } else break;
+            socket.on("error", (errorMessage) => {
+                setProgresses((prevProgresses) => {
+                    return prevProgresses.filter(
+                        (element) => element.id !== id
+                    );
+                });
+                alert(errorMessage.message);
+                socket.close();
+            });
+
+            let retries = 0;
+            const RETRY_LIMIT = 5;
+
+            // Function to send a chunk after the previous one is acknowledged
+            function uploadChunk(chunk, data) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+
+                    reader.onload = () => {
+                        data.fileBuffer = reader.result;
+
+                        socket.emit("uploadFileChunk", data);
+                        socket.once("chunkUploaded", () => {
+                            retries = 0;
+                            resolve();
+                        });
+                    };
+
+                    reader.onerror = (error) => {
+                        reject(error);
+                    };
+
+                    reader.readAsArrayBuffer(chunk);
+                });
+            }
+
+            async function uploadFileInChunks() {
+                while (offset < file.size) {
+                    const chunk = file.slice(offset, offset + chunkSize);
+                    const data = {
+                        branch,
+                        sem,
+                        subject,
+                        unit,
+                        fileName: file.name,
+                        offset,
+                        fileSize: file.size,
+                        id,
+                        type: "upload",
+                    };
+
+                    try {
+                        await uploadChunk(chunk, data);
+                        offset += chunkSize;
+                    } catch (error) {
+                        console.error("Error uploading chunk:", error);
+                        if (retries < RETRY_LIMIT) {
+                            console.log("Retrying");
+                            retries++;
+                        } else break;
+                    }
                 }
             }
-        }
 
-        uploadFileInChunks();
+            uploadFileInChunks();
+        }
     };
 
     const cancel = () => {
@@ -360,10 +366,11 @@ const Uploader = ({ branch, sem, jwtToken, setUploading, setProgresses }) => {
                     <label htmlFor="file">File : </label>
                     <input
                         onChange={(e) => {
-                            setFile(e.target.files[0]);
+                            setFile(e.target.files);
                         }}
                         type="file"
                         id="file"
+                        multiple
                     />
                 </div>
                 <div className="btn-cont">
@@ -386,7 +393,7 @@ const branches = [
     { title: "Metalurgy" },
     { title: "Civil" },
     { title: "BioMed" },
-    { title: "BioTect" },
+    { title: "BioTech" },
 ];
 
 const Select = ({ setBranchSem }) => {

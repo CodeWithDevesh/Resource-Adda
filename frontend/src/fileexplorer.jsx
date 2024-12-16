@@ -11,7 +11,6 @@ export default function fileexplorer() {
     const { branch, sem } = useParams();
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState("Loading...")
-
     useEffect(() => {
         axios
             .get(`${BASE_SERVER_URL}/files?branch=${branch}&sem=${sem}`)
@@ -41,18 +40,6 @@ export default function fileexplorer() {
             }, {})
         );
     }, [data]);
-    // State to track the selected folder
-
-    // const groupedBySubject = data.files.reduce((acc, file) => {
-    //     if (!acc[file.subject]) {
-    //         acc[file.subject] = {};
-    //     }
-    //     if (!acc[file.subject][file.unit]) {
-    //         acc[file.subject][file.unit] = [];
-    //     }
-    //     acc[file.subject][file.unit].push(file);
-    //     return acc;
-    // }, {});
 
     const [selectedSubject, setSelectedSubject] = useState(null);
     const [selectedUnit, setSelectedUnit] = useState(null);

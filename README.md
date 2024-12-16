@@ -1,3 +1,7 @@
+# Link
+
+https://resource-adda-1030059749120.asia-south1.run.app/
+
 # Resource Adda
 
 **Resource Adda** is an academic resource-sharing platform designed to help students access study materials, contribute resources, and connect with communities for their academic growth. The platform is structured to make it easy for users to find relevant study materials by semester, branch, and subjects while offering a space for top-performing students to share their notes.

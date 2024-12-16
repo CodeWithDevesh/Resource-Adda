@@ -19,22 +19,6 @@ const gtmId = "GTM-PX8DZBK5";
 
 // App Component
 function App() {
-    // useEffect(() => {
-    //     TagManager.initialize(tagManagerArgs);
-    // }, []);
-
-    // const location = useLocation();
-    // useEffect(() => {
-    //     const sdf = {
-    //         event: "pageview",
-    //         page: {
-    //             path: location.pathname,
-    //             title: document.title,
-    //         },
-    //     };
-    //     TagManager.dataLayer(sdf);
-    // }, [location]);
-
     return (
         <BrowserRouter>
             <GoogleTagManager gtmId={gtmId} />
